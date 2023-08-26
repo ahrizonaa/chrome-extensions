@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>
+
+<script>
+  class Node {
+    constructor(val, x = 0, y = 0, r = 0) {
+      this.val = val;
+      this.x = x;
+      this.y = y;
+      this.r = r;
+    }
+  }
+
+  let weighted_edges = [
+    [3, 1, 2],
+    [3, 2, 3],
+    [1, 1, 3],
+    [1, 2, 4],
+    [1, 1, 2],
+    [2, 3, 4],
+  ];
+
+  let unique_nodes = new Set(weighted_edges.flatMap((edge) => edge.slice(1)));
+  let width = Math.ceil(Math.sqrt(unique_nodes.size));
+
+  let canvas = document.createElement("canvas");
+
+  canvas.width = width * 100;
+  canvas.height = width * 100;
+  canvas.style.backgroundColor = "#111";
+  document.body.appendChild(canvas);
+
+  let ctx = canvas.getContext("2d");
+
+  let node_list = Array.from(unique_nodes.values()).sort((a, b) => a - b);
+
+  let matrix = [];
+
+  for (let i = 0; i < width; i++) {
+    matrix.push(
+      node_list
+        .slice(i * width, i * width + width)
+        .map((node) => new Node(node))
+    );
+  }
+  console.log(matrix);
+
+  console.log(node_list);
+
+  let graph = {};
+  let radius = 30;
+
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[row].length; col++) {
+      ctx.beginPath();
+      ctx.fillStyle = "#D2E9E9";
+      let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
+      let offset_y = Math.floor(Math.random() * (10 - -10 + 1) + -10);
+      let x = 100 * row + 50 + offset_x;
+      let y = 100 * col + 50 + offset_y;
+
+      matrix[row][col].x = x;
+      matrix[row][col].y = y;
+      matrix[row][col].r = 30;
+      graph[matrix[row][col].val] = matrix[row][col];
+
+      console.log(x, y);
+      ctx.arc(x, y, radius, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.fillStyle = "#111111";
+      ctx.textAlign = "center";
+      ctx.fillText(String(matrix[row][col].val), x, y + 3);
+    }
+  }
+
+  for (let [weight, from, to] of weighted_edges) {
+    let node = graph[from];
+    let neighbor = graph[to];
+
+    let total_dist = Math.sqrt(
+      Math.pow(neighbor.x - node.x, 2) + Math.pow(neighbor.y - node.y, 2)
+    );
+    let travel_dist = radius;
+    let dist_ratio = travel_dist / total_dist;
+
+    let xt = (1 - dist_ratio) * node.x + dist_ratio * neighbor.x;
+    let yt = (1 - dist_ratio) * node.y + dist_ratio * neighbor.y;
+
+    ctx.beginPath();
+    ctx.moveTo(xt, yt);
+    ctx.lineTo(neighbor.x, neighbor.y);
+    ctx.stroke();
+  }
+</script>

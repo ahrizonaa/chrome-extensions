@@ -10,6 +10,11 @@
         justify-content: center;
         align-items: center;
       }
+
+      canvas {
+        font-smooth: never !important;
+        -webkit-font-smoothing: none !important;
+      }
     </style>
   </head>
   <body></body>
@@ -44,11 +49,13 @@
   canvas.style.backgroundColor = "#111";
   document.body.appendChild(canvas);
 
-  let ctx = canvas.getContext("2d");
+  let ctx = canvas.getContext("2d", { alpha: false });
 
   let node_list = Array.from(unique_nodes.values()).sort((a, b) => a - b);
 
   let matrix = [];
+  let graph = {};
+  let radius = 30;
 
   for (let i = 0; i < width; i++) {
     matrix.push(
@@ -57,12 +64,20 @@
         .map((node) => new Node(node))
     );
   }
-  console.log(matrix);
 
-  console.log(node_list);
+  let weights = {};
 
-  let graph = {};
-  let radius = 30;
+  for (let edge of weighted_edges) {
+    let key = edge[1] + "_" + edge[2];
+    let key_reverse = edge[2] + "_" + edge[1];
+    if (key in weights) {
+      weights[key].push(edge[0]);
+    } else if (key_reverse in weights) {
+      weights[key_reverse].push(edge[0]);
+    } else {
+      weights[key] = [edge[0]];
+    }
+  }
 
   for (let row = 0; row < matrix.length; row++) {
     for (let col = 0; col < matrix[row].length; col++) {
@@ -78,11 +93,11 @@
       matrix[row][col].r = 30;
       graph[matrix[row][col].val] = matrix[row][col];
 
-      console.log(x, y);
       ctx.arc(x, y, radius, 0, 2 * Math.PI);
       ctx.fill();
 
-      ctx.fillStyle = "#111111";
+      ctx.fillStyle = "#010101";
+      ctx.font = "12px Helvetica";
       ctx.textAlign = "center";
       ctx.fillText(String(matrix[row][col].val), x, y + 3);
     }
@@ -92,18 +107,47 @@
     let node = graph[from];
     let neighbor = graph[to];
 
+    let key = from + "_" + to;
+    let key_reverse = to + "_" + from;
+    if (weights[key] == undefined && weights[key_reverse] == undefined) {
+      continue;
+    }
+
     let total_dist = Math.sqrt(
       Math.pow(neighbor.x - node.x, 2) + Math.pow(neighbor.y - node.y, 2)
     );
     let travel_dist = radius;
     let dist_ratio = travel_dist / total_dist;
 
-    let xt = (1 - dist_ratio) * node.x + dist_ratio * neighbor.x;
-    let yt = (1 - dist_ratio) * node.y + dist_ratio * neighbor.y;
+    let xa = (1 - dist_ratio) * node.x + dist_ratio * neighbor.x;
+    let ya = (1 - dist_ratio) * node.y + dist_ratio * neighbor.y;
+
+    let xb = (1 - dist_ratio) * neighbor.x + dist_ratio * node.x;
+    let yb = (1 - dist_ratio) * neighbor.y + dist_ratio * node.y;
+
+    let xt = (node.x + neighbor.x) / 2;
+    let yt = (node.y + neighbor.y) / 2;
+
+    let text = "";
+    if (weights[key] != undefined || weights[key_reverse] != undefined) {
+      if (weights[key]) {
+        text = weights[key].sort((a, b) => a - b).join(", ");
+      } else if (weights[key_reverse]) {
+        text = weights[key_reverse].sort((a, b) => b - a).join(",");
+      }
+      delete weights[key];
+      delete weights[key_reverse];
+    }
 
     ctx.beginPath();
-    ctx.moveTo(xt, yt);
-    ctx.lineTo(neighbor.x, neighbor.y);
+    ctx.strokeStyle = "#cccccc";
+    ctx.moveTo(xa, ya);
+    ctx.lineTo(xb, yb);
     ctx.stroke();
+
+    ctx.fillStyle = "#CCCCCC";
+    ctx.font = "12px Helvetica";
+    ctx.textAlign = "center";
+    ctx.fillText(text, xt - text.length - 5, yt);
   }
 </script>

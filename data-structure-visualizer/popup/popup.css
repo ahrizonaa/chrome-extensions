@@ -1,0 +1,39 @@
+body {
+	height: 400px;
+	width: 400px;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #101010;
+}
+
+canvas {
+	-webkit-font-smoothing: none !important;
+	/* background-color: #101010; */
+	height: 80%;
+	width: 380px;
+}
+
+.input-group {
+	/* align-items: unset !important; */
+}
+
+.content {
+	width: 100%;
+	height: -webkit-fill-available;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+#ds-input-form {
+	/* height: 20%; */
+}
+
+li > a.dropdown-item {
+	font-size: 12px !important;
+}

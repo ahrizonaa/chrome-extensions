@@ -9,7 +9,7 @@ import { InputTypes } from '../scripts/constants.js';
 	function dropdownItemSelected(event) {
 		if (event.target.dataset.isdropdownitem) {
 			type = event.target.dataset.val;
-			let dropdownLabel = document.querySelector('#ds-input-label');
+			let dropdownLabel = document.querySelector('#go-btn');
 			if (dropdownLabel) {
 				dropdownLabel.innerText = event.target.innerText;
 			}
@@ -24,7 +24,8 @@ import { InputTypes } from '../scripts/constants.js';
 	}
 
 	function visualize() {
-		let input = document.querySelector('input#ds-input').value;
+		let input = document.querySelector('#dataset-textarea').value;
+		console.log(input);
 
 		if (Parser.validate_input(input)) {
 			let parsed_input = Parser.parse_input(input);
@@ -58,14 +59,14 @@ import { InputTypes } from '../scripts/constants.js';
 		document.querySelector('#go-btn').addEventListener('click', goClicked);
 
 		setInterval(() => {
-			let inputform = document.querySelector('input#ds-input');
+			let inputform = document.querySelector('#dataset-textarea');
 
 			inputform.value = Parser.sanitize_input(inputform.value);
 		}, 100);
 		let content_div = document.querySelector('.content');
-		let input_form = document.querySelector('#ds-input-form');
+		let input_form = document.querySelector('.form-container');
 		canvas = document.querySelector('canvas');
-		canvas.height = content_div.clientHeight - input_form.clientHeight - 20;
+		canvas.width = content_div.clientWidth - input_form.clientWidth - 20;
 		ctx = canvas.getContext('2d', { alpha: false });
 		ctx.fillStyle = '#212529';
 		ctx.beginPath();

@@ -1,6 +1,6 @@
 body {
-	height: 400px;
-	width: 400px;
+	height: 600px;
+	width: 600px;
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -12,28 +12,49 @@ body {
 canvas {
 	-webkit-font-smoothing: none !important;
 	/* background-color: #101010; */
-	height: 80%;
+	height: 580px;
 	width: 380px;
-}
-
-.input-group {
-	/* align-items: unset !important; */
 }
 
 .content {
 	width: 100%;
 	height: -webkit-fill-available;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
-	padding: 10px;
+	align-items: flex-start;
 	box-sizing: border-box;
-}
-
-#ds-input-form {
-	/* height: 20%; */
+	border: 1px solid lightgreen;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 li > a.dropdown-item {
 	font-size: 12px !important;
+}
+
+.form-container {
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.dataset-form {
+	height: 15%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.dataset-form > .btn-group {
+	width: 100%;
+}
+
+.dataset-container {
+	height: -webkit-fill-available;
+	width: 100%;
 }

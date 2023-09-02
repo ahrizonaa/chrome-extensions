@@ -8,131 +8,128 @@
 	</head>
 	<body>
 		<div class="content container">
-			<div class="">
-				<div id="ds-input-form" class="input-group">
-					<div class="form-floating">
-						<input
-							id="ds-input"
-							placeholder="Dataset"
-							type="text"
-							class="form-control"
-							aria-label="Text input with 2 dropdown buttons" />
-						<label id="ds-input-label" for="ds-input">Adjacency List</label>
+			<div class="form-container container">
+				<div class="dataset-form">
+					<div class="btn-group">
+						<button id="go-btn" class="btn btn-secondary btn-sm" type="button">
+							Select Input Format
+						</button>
+						<button
+							type="button"
+							class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+							data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<span class="visually-hidden">Toggle Dropdown</span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li style="display: flex; align-items: center">
+								<h6 style="text-wrap: nowrap" class="dropdown-header">Graph</h6>
+								<hr
+									class="dropdown-divider"
+									style="width: -webkit-fill-available; margin-right: 10px" />
+							</li>
+							<li>
+								<a
+									data-val="graph_adjacency_list"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Adjacency List</a
+								>
+							</li>
+							<li>
+								<a
+									data-val="graph_weighted_adjacency_list"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Weighted Adjacency List</a
+								>
+							</li>
+							<li>
+								<a
+									data-val="graph_adjacency_matrix"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Adjacency Matrix</a
+								>
+							</li>
+							<li style="display: flex; align-items: center">
+								<h6 style="text-wrap: nowrap" class="dropdown-header">
+									Binary Tree
+								</h6>
+								<hr
+									class="dropdown-divider"
+									style="width: -webkit-fill-available; margin-right: 10px" />
+							</li>
+							<li>
+								<a
+									data-val="tree_array"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Array</a
+								>
+							</li>
+							<li style="display: flex; align-items: center">
+								<h6 style="text-wrap: nowrap" class="dropdown-header">Stack</h6>
+								<hr
+									class="dropdown-divider"
+									style="width: -webkit-fill-available; margin-right: 10px" />
+							</li>
+							<li>
+								<a
+									data-val="stack_array"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Array</a
+								>
+							</li>
+							<li style="display: flex; align-items: center">
+								<h6 style="text-wrap: nowrap" class="dropdown-header">Queue</h6>
+								<hr
+									class="dropdown-divider"
+									style="width: -webkit-fill-available; margin-right: 10px" />
+							</li>
+							<li>
+								<a
+									data-val="queue_array"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Array</a
+								>
+							</li>
+							<li style="display: flex; align-items: center">
+								<h6 style="text-wrap: nowrap" class="dropdown-header">
+									Linked List
+								</h6>
+								<hr
+									class="dropdown-divider"
+									style="width: -webkit-fill-available; margin-right: 10px" />
+							</li>
+							<li>
+								<a
+									data-val="linkedlist_array"
+									data-isdropdownitem="true"
+									class="dropdown-item"
+									href="#"
+									>Array</a
+								>
+							</li>
+						</ul>
 					</div>
-					<button
-						style="width: 60px !important"
-						class="btn btn-outline-secondary"
-						type="button"
-						id="go-btn">
-						Go
-					</button>
-					<button
-						id="dropdown-btn"
-						class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-						type="button"
-						data-bs-toggle="dropdown"
-						aria-expanded="false">
-						<span class="visually-hidden">Input Format</span>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li style="display: flex; align-items: center">
-							<h6 style="text-wrap: nowrap" class="dropdown-header">Graph</h6>
-							<hr
-								class="dropdown-divider"
-								style="width: -webkit-fill-available; margin-right: 10px" />
-						</li>
-						<li>
-							<a
-								data-val="graph_adjacency_list"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Adjacency List</a
-							>
-						</li>
-						<li>
-							<a
-								data-val="graph_weighted_adjacency_list"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Weighted Adjacency List</a
-							>
-						</li>
-						<li>
-							<a
-								data-val="graph_adjacency_matrix"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Adjacency Matrix</a
-							>
-						</li>
-						<li style="display: flex; align-items: center">
-							<h6 style="text-wrap: nowrap" class="dropdown-header">
-								Binary Tree
-							</h6>
-							<hr
-								class="dropdown-divider"
-								style="width: -webkit-fill-available; margin-right: 10px" />
-						</li>
-						<li>
-							<a
-								data-val="tree_array"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Array</a
-							>
-						</li>
-						<li style="display: flex; align-items: center">
-							<h6 style="text-wrap: nowrap" class="dropdown-header">Stack</h6>
-							<hr
-								class="dropdown-divider"
-								style="width: -webkit-fill-available; margin-right: 10px" />
-						</li>
-						<li>
-							<a
-								data-val="stack_array"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Array</a
-							>
-						</li>
-						<li style="display: flex; align-items: center">
-							<h6 style="text-wrap: nowrap" class="dropdown-header">Queue</h6>
-							<hr
-								class="dropdown-divider"
-								style="width: -webkit-fill-available; margin-right: 10px" />
-						</li>
-						<li>
-							<a
-								data-val="queue_array"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Array</a
-							>
-						</li>
-						<li style="display: flex; align-items: center">
-							<h6 style="text-wrap: nowrap" class="dropdown-header">
-								Linked List
-							</h6>
-							<hr
-								class="dropdown-divider"
-								style="width: -webkit-fill-available; margin-right: 10px" />
-						</li>
-						<li>
-							<a
-								data-val="linkedlist_array"
-								data-isdropdownitem="true"
-								class="dropdown-item"
-								href="#"
-								>Array</a
-							>
-						</li>
-					</ul>
+				</div>
+				<div class="dataset-container">
+					<div>
+						<textarea
+							class="form-control"
+							placeholder="Example:&#10;[&#10;  1,&#10;  2,&#10;  3&#10;]"
+							id="dataset-textarea"
+							style="height: 450px"></textarea>
+					</div>
 				</div>
 			</div>
 			<canvas></canvas>

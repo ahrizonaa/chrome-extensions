@@ -76,6 +76,7 @@ class Graph {
 	}
 
 	plot() {
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height, '#212529');
 		if (this.type == InputTypes.graph.weighted_adjacency_list)
 			this.plotWeightedUndirectedGraph();
 		else if (this.type == InputTypes.graph.adjacency_list)

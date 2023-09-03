@@ -7,7 +7,8 @@ class Graph extends DataStructure {
 		super();
 		this.ctx = ctx;
 		this.canvas = canvas;
-		this.type = null;
+		this.dstype = null;
+		this.inputtype = '';
 		this.dataset = [];
 		this.matrix = [];
 		this.graph = {};
@@ -23,10 +24,11 @@ class Graph extends DataStructure {
 		this.animation_frame_id = NaN;
 	}
 
-	parse(input_dataset, ds_type) {
+	parse(input_dataset, dstype, inputtype) {
 		this.dataset = input_dataset;
-		this.type = ds_type;
-		if (this.type == InputTypes.graph.adjacency_list) {
+		this.dstype = dstype;
+		this.inputtype = inputtype;
+		if (this.inputtype == InputTypes[this.dstype].adjacency_list.name) {
 			this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge));
 			this.node_list = Array.from(this.unique_nodes.values()).sort(
 				(a, b) => a - b
@@ -40,7 +42,9 @@ class Graph extends DataStructure {
 						.map((node) => new TreeNode(node))
 				);
 			}
-		} else if (this.type == InputTypes.graph.weighted_adjacency_list) {
+		} else if (
+			this.inputtype == InputTypes[this.dstype].weighted_adjacency_list.name
+		) {
 			this.unique_nodes = new Set(
 				this.dataset.flatMap((edge) => edge.slice(1))
 			);
@@ -68,7 +72,9 @@ class Graph extends DataStructure {
 					this.weights[key] = [edge[0]];
 				}
 			}
-		} else if (this.type == InputTypes.graph.adjacency_matrix) {
+		} else if (
+			this.inputtype == InputTypes[this.dstype].adjacency_matrix.name
+		) {
 			// todo: implement
 		}
 
@@ -79,9 +85,9 @@ class Graph extends DataStructure {
 	plot() {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		if (this.type == InputTypes.graph.weighted_adjacency_list)
+		if (this.inputtype == InputTypes[this.dstype].weighted_adjacency_list.name)
 			this.plotWeightedUndirectedGraph();
-		else if (this.type == InputTypes.graph.adjacency_list)
+		else if (this.inputtype == InputTypes[this.dstype].adjacency_list.name)
 			this.plotUnweightedUndirectedGraph();
 	}
 

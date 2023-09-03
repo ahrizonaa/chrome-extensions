@@ -3,14 +3,15 @@ import { Graph } from '../scripts/graph.js';
 import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 
 (() => {
-	let inputtype = 'graph_adjacency_list';
+	let dstype = 'graph';
+	let inputtype = 'adjacency_list';
 	let canvas;
 	let ctx;
 
 	function dropdownItemSelected(event) {
 		if (event.target.hasAttribute('dsinputtypeoption')) {
-			let dstype = event.target.getAttribute('dstype');
-			let inputtype = event.target.getAttribute('dsinputtype');
+			dstype = event.target.getAttribute('dstype');
+			inputtype = event.target.getAttribute('dsinputtype');
 			let dropdown_text = document.querySelector('.dataset-dropdown-text');
 			if (dropdown_text) {
 				dropdown_text.innerText = event.target.innerText;
@@ -47,15 +48,15 @@ import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 				switch (inputtype) {
 					case null:
 						return;
-					case InputTypes.graph.adjacency_list:
-					case InputTypes.graph.weighted_adjacency_list:
-					case InputTypes.graph.adjacency_matrix:
+					case InputTypes.graph.adjacency_list.name:
+					case InputTypes.graph.weighted_adjacency_list.name:
+					case InputTypes.graph.adjacency_matrix.name:
 						ds = new Graph(ctx, canvas);
 						break;
 					default:
 						return;
 				}
-				ds.parse(parsed_input, inputtype);
+				ds.parse(parsed_input, dstype, inputtype);
 				ds.plot();
 			}
 		}

@@ -98,3 +98,8 @@ button#go-btn {
 #dataset-textarea {
 	font-size: 14px !important;
 }
+
+.dropdown-divider {
+	width: -webkit-fill-available;
+	margin-right: 10px;
+}

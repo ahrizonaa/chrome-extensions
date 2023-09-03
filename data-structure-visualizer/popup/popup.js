@@ -1,34 +1,33 @@
 import { Parser } from '../scripts/utility-functions.js';
 import { Graph } from '../scripts/graph.js';
-import {
-	InputTypes,
-	InputPlaceholders,
-	CanvasBgColor
-} from '../scripts/constants.js';
+import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 
 (() => {
-	let type = 'graph_adjacency_list';
+	let inputtype = 'graph_adjacency_list';
 	let canvas;
 	let ctx;
 
 	function dropdownItemSelected(event) {
-		if (event.target.dataset.isdropdownitem) {
-			type = event.target.dataset.val;
+		if (event.target.hasAttribute('dsinputtypeoption')) {
+			let dstype = event.target.getAttribute('dstype');
+			let inputtype = event.target.getAttribute('dsinputtype');
 			let dropdown_text = document.querySelector('.dataset-dropdown-text');
 			if (dropdown_text) {
 				dropdown_text.innerText = event.target.innerText;
 			}
 			let textarea = document.getElementById('dataset-textarea');
 			if (textarea) {
-				console.log(InputPlaceholders[type]);
-				textarea.setAttribute('placeholder', `${InputPlaceholders[type]}`);
+				textarea.setAttribute(
+					'placeholder',
+					InputTypes[dstype][inputtype].placeholder
+				);
 			}
 			visualize();
 		}
 	}
 
 	function goClicked() {
-		if (type) {
+		if (inputtype) {
 			visualize();
 		}
 	}
@@ -45,7 +44,7 @@ import {
 				canvas_overlay.style.display = 'none';
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				let ds = null;
-				switch (type) {
+				switch (inputtype) {
 					case null:
 						return;
 					case InputTypes.graph.adjacency_list:
@@ -56,13 +55,48 @@ import {
 					default:
 						return;
 				}
-				ds.parse(parsed_input, type);
+				ds.parse(parsed_input, inputtype);
 				ds.plot();
 			}
 		}
 	}
 
+	function construct_dropdown_options() {
+		let elements = [];
+
+		for (let datastructure in InputTypes) {
+			let header = document.createElement('li');
+			let h6 = document.createElement('h6');
+			h6.innerText =
+				datastructure.slice(0, 1).toUpperCase() + datastructure.slice(1);
+			h6.className = 'dropdown-header';
+			let hr = document.createElement('hr');
+			hr.className = 'dropdown-divider';
+			header.appendChild(h6);
+			elements.push(header);
+
+			for (let inputtype in InputTypes[datastructure]) {
+				let li = document.createElement('li');
+				let a = document.createElement('a');
+				a.className = 'dropdown-item';
+				a.href = '#';
+				a.innerText = InputTypes[datastructure][inputtype].desc;
+				a.setAttribute('dstype', datastructure);
+				a.setAttribute('dsinputtypeoption', '');
+				a.setAttribute('dsinputtype', inputtype);
+				li.appendChild(a);
+				elements.push(li);
+			}
+			elements.push(hr);
+		}
+
+		let dropdownMenu = document.querySelector('.dropdown-menu');
+		for (let item of elements) dropdownMenu.appendChild(item);
+	}
+
 	function init() {
+		construct_dropdown_options();
+
 		document
 			.querySelector('.dropdown-menu')
 			.addEventListener('click', dropdownItemSelected);

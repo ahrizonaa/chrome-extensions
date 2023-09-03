@@ -37,7 +37,7 @@ import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 		let input = document.querySelector('#dataset-textarea').value;
 
 		if (Parser.validate_input(input)) {
-			let parsed_input = Parser.parse_input(input);
+			let parsed_input = Parser.parse_input(input, dstype, inputtype);
 			if (parsed_input == null) {
 				// do nothing
 			} else {

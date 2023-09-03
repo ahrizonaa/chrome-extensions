@@ -11,21 +11,21 @@ const InputTypes = {
 		adjacency_list: {
 			name: 'adjacency_list',
 			desc: 'Adjacency List',
-			placeholder: `List of node, neighbor${n + n}e.g.,${n}[${n + t}[1, 2]${
+			placeholder: `N x 2 array of node, neighbor${n + n}e.g.,${n}[${
 				n + t
-			}[2, 3]${n + t}[4, 2]${n}]`
+			}[1, 2]${n + t}[2, 3]${n + t}[4, 2]${n}]`
 		},
 		weighted_adjacency_list: {
 			name: 'weighted_adjacency_list',
 			desc: 'Weighted Adjacency List',
-			placeholder: `List of weight, node, neighbor${n + n}e.g.,${n}[${
+			placeholder: `N x 3 array of weight, node, neighbor${n + n}e.g.,${n}[${
 				n + t
 			}[2, 1, 2]${n + t}[4, 2, 3]${n + t}[1, 4, 2]${n}]`
 		},
 		adjacency_matrix: {
 			name: 'adjacency_matrix',
 			desc: 'Adjacency Matrix',
-			placeholder: `N x N matrix denoting edges between nodes${
+			placeholder: `N x N matrix where matrix[row][col] defines edge between row and col${
 				n + n
 			}e.g.,${n}[${n + t}[0, 1, 0, 1]${n + t}[0, 1, 1, 0]${
 				n + t

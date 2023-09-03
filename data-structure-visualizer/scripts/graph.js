@@ -13,6 +13,7 @@ class Graph extends DataStructure {
 		this.matrix = [];
 		this.graph = {};
 		this.weights = [];
+		this.edgelist = [];
 		this.unique_nodes = new Set();
 		this.node_list = [];
 		this.edges = [];
@@ -28,70 +29,117 @@ class Graph extends DataStructure {
 		this.dataset = input_dataset;
 		this.dstype = dstype;
 		this.inputtype = inputtype;
-		if (this.inputtype == InputTypes[this.dstype].adjacency_list.name) {
-			this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge));
-			this.node_list = Array.from(this.unique_nodes.values()).sort(
-				(a, b) => a - b
-			);
-			this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
-
-			for (let i = 0; i < this.grid_size; i++) {
-				this.matrix.push(
-					this.node_list
-						.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
-						.map((node) => new TreeNode(node))
-				);
-			}
-		} else if (
-			this.inputtype == InputTypes[this.dstype].weighted_adjacency_list.name
-		) {
-			this.unique_nodes = new Set(
-				this.dataset.flatMap((edge) => edge.slice(1))
-			);
-			this.node_list = Array.from(this.unique_nodes.values()).sort(
-				(a, b) => a - b
-			);
-			this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
-
-			for (let i = 0; i < this.grid_size; i++) {
-				this.matrix.push(
-					this.node_list
-						.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
-						.map((node) => new TreeNode(node))
-				);
-			}
-
-			for (let edge of this.dataset) {
-				let key = edge[1] + '_' + edge[2];
-				let key_reverse = edge[2] + '_' + edge[1];
-				if (key in this.weights) {
-					this.weights[key].push(edge[0]);
-				} else if (key_reverse in this.weights) {
-					this.weights[key_reverse].push(edge[0]);
-				} else {
-					this.weights[key] = [edge[0]];
-				}
-			}
-		} else if (
-			this.inputtype == InputTypes[this.dstype].adjacency_matrix.name
-		) {
-			// todo: implement
+		switch (this.inputtype) {
+			case InputTypes.graph.adjacency_list.name:
+				this.parse_adjacency_list();
+				break;
+			case InputTypes.graph.weighted_adjacency_list.name:
+				this.parse_weighted_adjacency_list();
+				break;
+			case InputTypes.graph.adjacency_matrix.name:
+				this.parse_undirected_unweighted_adjacency_matrix();
+				break;
+			default:
+				break;
 		}
 
 		this.cell_size = this.canvas.width / this.grid_size;
 		this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
 	}
 
+	parse_adjacency_list() {
+		this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge));
+		this.node_list = Array.from(this.unique_nodes.values()).sort(
+			(a, b) => a - b
+		);
+		this.edgelist = this.dataset;
+		this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
+
+		for (let i = 0; i < this.grid_size; i++) {
+			this.matrix.push(
+				this.node_list
+					.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
+					.map((node) => new TreeNode(node))
+			);
+		}
+		console.log(this.matrix);
+	}
+
+	parse_weighted_adjacency_list() {
+		this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge.slice(1)));
+		this.node_list = Array.from(this.unique_nodes.values()).sort(
+			(a, b) => a - b
+		);
+		this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
+
+		for (let i = 0; i < this.grid_size; i++) {
+			this.matrix.push(
+				this.node_list
+					.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
+					.map((node) => new TreeNode(node))
+			);
+		}
+
+		for (let edge of this.dataset) {
+			let key = edge[1] + '_' + edge[2];
+			let key_reverse = edge[2] + '_' + edge[1];
+			if (key in this.weights) {
+				this.weights[key].push(edge[0]);
+			} else if (key_reverse in this.weights) {
+				this.weights[key_reverse].push(edge[0]);
+			} else {
+				this.weights[key] = [edge[0]];
+			}
+		}
+	}
+
+	parse_undirected_unweighted_adjacency_matrix() {
+		this.node_list = Array.from(Array(this.dataset.length).keys()).map(
+			(n) => n + 1
+		);
+		this.unique_nodes = new Set(this.node_list);
+
+		console.log(this.unique_nodes, this.node_list);
+
+		this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
+
+		for (let row = 0; row < this.dataset.length; row++) {
+			for (let col = row + 1; col < this.dataset.length; col++) {
+				if (this.dataset[row][col] == 1) {
+					this.edgelist.push([row + 1, col + 1]);
+				}
+			}
+		}
+		console.log(this.edgelist);
+
+		for (let i = 0; i < this.grid_size; i++) {
+			this.matrix.push(
+				this.node_list
+					.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
+					.map((node) => new TreeNode(node))
+			);
+		}
+	}
+
 	plot() {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		if (this.inputtype == InputTypes[this.dstype].weighted_adjacency_list.name)
-			this.plotWeightedUndirectedGraph();
-		else if (this.inputtype == InputTypes[this.dstype].adjacency_list.name)
-			this.plotUnweightedUndirectedGraph();
+		switch (this.inputtype) {
+			case InputTypes.graph.adjacency_list.name:
+				this.plotUnweightedUndirectedGraph();
+				break;
+			case InputTypes.graph.weighted_adjacency_list.name:
+				this.plotWeightedUndirectedGraph();
+				break;
+			case InputTypes.graph.adjacency_matrix.name:
+				this.plotUnweightedUndirectedGraph();
+				break;
+			default:
+				break;
+		}
 	}
 
-	plotUnweightedUndirectedGraph() {
+	plot_nodes() {
 		for (let row = 0; row < this.matrix.length; row++) {
 			for (let col = 0; col < this.matrix[row].length; col++) {
 				let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
@@ -118,8 +166,13 @@ class Graph extends DataStructure {
 				this.ctx.closePath();
 			}
 		}
+		console.log(this.matrix);
+	}
 
-		for (let [from, to] of this.dataset) {
+	plotUnweightedUndirectedGraph() {
+		this.plot_nodes();
+
+		for (let [from, to] of this.edgelist) {
 			let p1 = this.graph[from];
 			let p2 = this.graph[to];
 
@@ -137,32 +190,7 @@ class Graph extends DataStructure {
 	}
 
 	plotWeightedUndirectedGraph() {
-		for (let row = 0; row < this.matrix.length; row++) {
-			for (let col = 0; col < this.matrix[row].length; col++) {
-				let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
-				let offset_y = Math.floor(Math.random() * (10 - -10 + 1) + -10);
-				let x = this.cell_size * row + this.cell_size / 2 + offset_x;
-				let y = this.cell_size * col + this.cell_size / 2 + offset_y;
-
-				this.matrix[row][col].x = x;
-				this.matrix[row][col].y = y;
-				this.matrix[row][col].r = this.radius;
-				this.graph[this.matrix[row][col].val] = this.matrix[row][col];
-
-				this.ctx.beginPath();
-				this.ctx.fillStyle = '#D2E9E9';
-				this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI);
-				this.ctx.fill();
-				this.ctx.closePath();
-
-				this.ctx.beginPath();
-				this.ctx.fillStyle = '#010101';
-				this.ctx.font = '12px monospace';
-				this.ctx.textAlign = 'center';
-				this.ctx.fillText(String(this.matrix[row][col].val), x, y + 3);
-				this.ctx.closePath();
-			}
-		}
+		this.plot_nodes();
 
 		for (let [, from, to] of this.dataset) {
 			let p1 = this.graph[from];

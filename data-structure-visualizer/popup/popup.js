@@ -1,12 +1,17 @@
 import { Parser } from '../scripts/utility-functions.js';
 import { Graph } from '../scripts/graph.js';
-import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
+import {
+	InputTypes,
+	InputOptions,
+	CanvasBgColor
+} from '../scripts/constants.js';
 
 (() => {
 	let dstype = 'graph';
 	let inputtype = 'adjacency_list';
 	let canvas;
 	let ctx;
+	let input_options_panel;
 
 	function dropdownItemSelected(event) {
 		if (event.target.hasAttribute('dsinputtypeoption')) {
@@ -16,15 +21,76 @@ import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 			if (dropdown_text) {
 				dropdown_text.innerText = event.target.innerText;
 			}
+
 			let textarea = document.getElementById('dataset-textarea');
+			let placeholder = parse_input_options();
+
 			if (textarea) {
-				textarea.setAttribute(
-					'placeholder',
-					InputTypes[dstype][inputtype].placeholder
-				);
+				textarea.setAttribute('placeholder', placeholder);
 			}
-			visualize();
 		}
+	}
+
+	function parse_input_options() {
+		if (['graph', 'tree', 'linkedlist'].includes(dstype)) {
+			let graph_opts = document.getElementById('graph-options-panel');
+			let tree_opts = document.getElementById('tree-options-panel');
+			let linkedlist_opts = document.getElementById('linkedlist-options-panel');
+
+			switch (dstype) {
+				case 'graph':
+					tree_opts.classList.toggle('hide-opts-panel', true);
+					linkedlist_opts.classList.toggle('hide-opts-panel', true);
+					graph_opts.classList.toggle('hide-opts-panel', false);
+
+					input_options_panel.show();
+
+					let weighted_switch = document.getElementById('weighted_switch');
+					let directed_switch = document.getElementById('directed-switch');
+
+					InputOptions.graph.weighted = weighted_switch.checked;
+					InputOptions.graph.directed = directed_switch.checked;
+
+					if (inputtype == 'adjacency_list') {
+						if (weighted_switch.checked) {
+							return InputTypes.graph.weighted_adjacency_list.placeholder;
+						} else {
+							return InputTypes.graph.adjacency_list.placeholder;
+						}
+					}
+					break;
+				case 'tree':
+					graph_opts.classList.toggle('hide-opts-panel', true);
+					linkedlist_opts.classList.toggle('hide-opts-panel', true);
+					tree_opts.classList.toggle('hide-opts-panel', false);
+
+					input_options_panel.show();
+
+					setTimeout(() => {
+						let bst_switch = document.getElementById('bst_switch');
+						let nary_switch = document.getElementById('nary-switch');
+						let nulls_switch = document.getElementById('nulls-switch');
+						InputOptions.binary_tree.bst = bst_switch.checked;
+						InputOptions.binary_tree.nulls = nulls_switch.checked;
+						InputOptions.binary_tree.nary = nary_switch.checked;
+					}, 200);
+					break;
+				case 'linkedlist':
+					tree_opts.classList.toggle('hide-opts-panel', true);
+					graph_opts.classList.toggle('hide-opts-panel', true);
+					linkedlist_opts.classList.toggle('hide-opts-panel', false);
+
+					input_options_panel.show();
+
+					let doubly_switch = document.getElementById('doubly_switch');
+					InputOptions.linkedlist.doubly = doubly_switch.checked;
+					break;
+				default:
+					break;
+			}
+		}
+
+		return InputTypes[dstype][inputtype].placeholder;
 	}
 
 	function goClicked() {
@@ -97,6 +163,28 @@ import { InputTypes, CanvasBgColor } from '../scripts/constants.js';
 
 	function init() {
 		construct_dropdown_options();
+
+		input_options_panel = new bootstrap.Collapse('#ds-collapse-panel', {
+			toggle: false
+		});
+
+		let weighted_switch = document.getElementById('weighted_switch');
+		weighted_switch.addEventListener('click', (event) => {
+			if (inputtype != 'adjacency_list') return;
+			let textarea = document.getElementById('dataset-textarea');
+
+			if (event.target.checked) {
+				textarea.setAttribute(
+					'placeholder',
+					InputTypes.graph.weighted_adjacency_list.placeholder
+				);
+			} else {
+				textarea.setAttribute(
+					'placeholder',
+					InputTypes.graph.adjacency_list.placeholder
+				);
+			}
+		});
 
 		document
 			.querySelector('.dropdown-menu')

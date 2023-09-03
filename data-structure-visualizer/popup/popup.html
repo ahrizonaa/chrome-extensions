@@ -12,14 +12,14 @@
 				<div class="dataset-form">
 					<div class="btn-group" role="group">
 						<button
-							class="btn btn-sm btn-dark dropdown-toggle dataset-dropdown"
+							class="btn btn-sm btn-secondary dropdown-toggle dataset-dropdown"
 							type="button"
 							data-bs-toggle="dropdown"
 							aria-expanded="false">
 							<span class="dataset-dropdown-text">Select Input Format</span>
 						</button>
 						<ul class="dropdown-menu"></ul>
-						<button id="go-btn" class="btn btn-dark btn-sm" type="button">
+						<button id="go-btn" class="btn btn-secondary btn-sm" type="button">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -34,6 +34,85 @@
 									d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
 							</svg>
 						</button>
+					</div>
+					<div class="collapse" id="ds-collapse-panel">
+						<div class="card card-body">
+							<div
+								id="graph-options-panel"
+								class="btn-group btn-group-sm options-panel hide-opts-panel"
+								role="group">
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="weighted_switch" />
+									<label class="form-check-label" for="weighted_switch"
+										>Weighted</label
+									>
+								</div>
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="directed-switch" />
+									<label class="form-check-label" for="directed-switch"
+										>Directed</label
+									>
+								</div>
+							</div>
+							<div
+								id="tree-options-panel"
+								class="btn-group btn-group-sm options-panel hide-opts-panel"
+								role="group">
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="bst_switch" />
+									<label class="form-check-label" for="bst_switch"
+										>Binary Search Tree</label
+									>
+								</div>
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="nary-switch" />
+									<label class="form-check-label" for="nary-switch"
+										>N-ary Tree</label
+									>
+								</div>
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="nulls-switch" />
+									<label class="form-check-label" for="nulls-switch"
+										>Null Children</label
+									>
+								</div>
+							</div>
+							<div
+								id="linkedlist-options-panel"
+								class="btn-group btn-group-sm options-panel hide-opts-panel"
+								role="group">
+								<div class="form-check form-switch">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										role="switch"
+										id="doubly_switch" />
+									<label class="form-check-label" for="doubly_switch"
+										>Doubly Linked</label
+									>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="dataset-container">

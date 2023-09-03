@@ -70,6 +70,23 @@ const InputTypes = {
 	}
 };
 
+const InputOptions = {
+	graph: {
+		directed: false,
+		weighted: false
+	},
+	binary_tree: {
+		bst: false,
+		nary: false,
+		nulls: false
+	},
+	stack: {},
+	queue: {},
+	linkedlist: {
+		doubly: false
+	}
+};
+
 const CanvasBgColor = '#212529';
 const EdgeColor = '#EEEEEE';
 const NodeColor = '#141824';
@@ -79,6 +96,7 @@ const NodeFontColor = '#EEEEEE';
 
 export {
 	InputTypes,
+	InputOptions,
 	CanvasBgColor,
 	EdgeColor,
 	NodeColor,

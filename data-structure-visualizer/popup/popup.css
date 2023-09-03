@@ -9,10 +9,18 @@ body {
 	background-color: #101010;
 }
 
+.canvas-container {
+	width: auto;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 canvas {
 	-webkit-font-smoothing: none !important;
 	/* background-color: #101010; */
-	height: 580px;
+	height: 380px;
 	width: 380px;
 }
 
@@ -24,7 +32,6 @@ canvas {
 	justify-content: center;
 	align-items: flex-start;
 	box-sizing: border-box;
-	border: 1px solid lightgreen;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
@@ -40,6 +47,9 @@ li > a.dropdown-item {
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+	width: 187px !important;
+	max-width: 187px !important;
+	min-width: 187px !important;
 }
 
 .dataset-form {
@@ -54,7 +64,37 @@ li > a.dropdown-item {
 	width: 100%;
 }
 
+.dataset-dropdown {
+	width: 154px;
+
+	display: flex !important;
+	align-items: center !important;
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+
+.dataset-dropdown-text {
+	max-width: 17ch;
+	min-width: 17ch;
+	text-overflow: ellipsis;
+	overflow-x: hidden;
+	display: inline-block;
+}
+
+button#go-btn {
+	display: flex;
+	align-items: center;
+}
+
 .dataset-container {
 	height: -webkit-fill-available;
 	width: 100%;
+}
+
+.textarea-container {
+	height: 100%;
+}
+
+#dataset-textarea {
+	font-size: 14px !important;
 }

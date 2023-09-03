@@ -1,9 +1,10 @@
-import { TreeNode, Edge } from './base-data-structures.js';
+import { TreeNode, Edge, DataStructure } from './base-data-structures.js';
 import { Maths } from './math-functions.js';
 import { InputTypes } from './constants.js';
 
-class Graph {
+class Graph extends DataStructure {
 	constructor(ctx, canvas) {
+		super();
 		this.ctx = ctx;
 		this.canvas = canvas;
 		this.type = null;
@@ -71,12 +72,13 @@ class Graph {
 			// todo: implement
 		}
 
-		this.cell_size = this.canvas.height / this.grid_size;
-		this.radius = this.cell_size * 0.25;
+		this.cell_size = this.canvas.width / this.grid_size;
+		this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
 	}
 
 	plot() {
-		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height, '#212529');
+		this.ctx.fillStyle = this.canvasBgColor;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		if (this.type == InputTypes.graph.weighted_adjacency_list)
 			this.plotWeightedUndirectedGraph();
 		else if (this.type == InputTypes.graph.adjacency_list)
@@ -97,14 +99,14 @@ class Graph {
 				this.graph[this.matrix[row][col].val] = this.matrix[row][col];
 
 				this.ctx.beginPath();
-				this.ctx.fillStyle = '#D2E9E9';
+				this.ctx.fillStyle = this.nodeColor;
 				this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI);
 				this.ctx.fill();
 				this.ctx.closePath();
 
 				this.ctx.beginPath();
-				this.ctx.fillStyle = '#010101';
-				this.ctx.font = '12px monospace';
+				this.ctx.fillStyle = this.nodeFontColor;
+				this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
 				this.ctx.textAlign = 'center';
 				this.ctx.fillText(String(this.matrix[row][col].val), x, y + 3);
 				this.ctx.closePath();
@@ -254,7 +256,7 @@ class Graph {
 		);
 
 		this.ctx.beginPath();
-		this.ctx.strokeStyle = '#cccccc';
+		this.ctx.strokeStyle = this.edgeColor;
 		this.ctx.moveTo(p.p1.x, p.p1.y);
 		this.ctx.lineTo(p.p2.x, p.p2.y);
 		this.ctx.stroke();

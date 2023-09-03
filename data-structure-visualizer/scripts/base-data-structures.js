@@ -1,3 +1,12 @@
+import {
+	CanvasBgColor,
+	EdgeColor,
+	NodeColor,
+	NodeFontSize,
+	NodeFontFamily,
+	NodeFontColor
+} from './constants.js';
+
 class TreeNode {
 	constructor(val, x = 0, y = 0, r = 0) {
 		this.val = val;
@@ -21,4 +30,15 @@ function* Edge(arr) {
 	return { value: null, done: true };
 }
 
-export { TreeNode, Edge };
+class DataStructure {
+	canvasBgColor = CanvasBgColor;
+	maxCellSize = 50;
+	maxRadius = 50;
+	edgeColor = EdgeColor;
+	nodeColor = NodeColor;
+	nodeFontSize = NodeFontSize;
+	nodeFontFamily = NodeFontFamily;
+	nodeFontColor = NodeFontColor;
+}
+
+export { TreeNode, Edge, DataStructure };

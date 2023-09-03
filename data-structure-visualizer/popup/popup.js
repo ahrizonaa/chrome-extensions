@@ -1,6 +1,11 @@
 import { Parser } from '../scripts/utility-functions.js';
 import { Graph } from '../scripts/graph.js';
-import { InputTypes } from '../scripts/constants.js';
+import {
+	InputTypes,
+	InputPlaceholders,
+	CanvasBgColor
+} from '../scripts/constants.js';
+
 (() => {
 	let type = 'graph_adjacency_list';
 	let canvas;
@@ -9,9 +14,14 @@ import { InputTypes } from '../scripts/constants.js';
 	function dropdownItemSelected(event) {
 		if (event.target.dataset.isdropdownitem) {
 			type = event.target.dataset.val;
-			let dropdownLabel = document.querySelector('#go-btn');
-			if (dropdownLabel) {
-				dropdownLabel.innerText = event.target.innerText;
+			let dropdown_text = document.querySelector('.dataset-dropdown-text');
+			if (dropdown_text) {
+				dropdown_text.innerText = event.target.innerText;
+			}
+			let textarea = document.getElementById('dataset-textarea');
+			if (textarea) {
+				console.log(InputPlaceholders[type]);
+				textarea.setAttribute('placeholder', `${InputPlaceholders[type]}`);
 			}
 			visualize();
 		}
@@ -25,13 +35,14 @@ import { InputTypes } from '../scripts/constants.js';
 
 	function visualize() {
 		let input = document.querySelector('#dataset-textarea').value;
-		console.log(input);
 
 		if (Parser.validate_input(input)) {
 			let parsed_input = Parser.parse_input(input);
 			if (parsed_input == null) {
 				// do nothing
 			} else {
+				let canvas_overlay = document.getElementById('idle-canvas-overlay');
+				canvas_overlay.style.display = 'none';
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				let ds = null;
 				switch (type) {
@@ -58,18 +69,19 @@ import { InputTypes } from '../scripts/constants.js';
 
 		document.querySelector('#go-btn').addEventListener('click', goClicked);
 
-		setInterval(() => {
-			let inputform = document.querySelector('#dataset-textarea');
+		// setInterval(() => {
+		// 	let inputform = document.querySelector('#dataset-textarea');
 
-			inputform.value = Parser.sanitize_input(inputform.value);
-		}, 100);
+		// 	inputform.value = Parser.sanitize_input(inputform.value);
+		// }, 100);
+
 		let content_div = document.querySelector('.content');
 		let input_form = document.querySelector('.form-container');
 		canvas = document.querySelector('canvas');
 		canvas.width = content_div.clientWidth - input_form.clientWidth - 20;
+		canvas.height = canvas.width;
 		ctx = canvas.getContext('2d', { alpha: false });
-		ctx.fillStyle = '#212529';
-		ctx.beginPath();
+		ctx.fillStyle = CanvasBgColor;
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 	}
 

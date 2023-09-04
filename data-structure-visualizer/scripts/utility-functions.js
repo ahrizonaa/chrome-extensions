@@ -1,6 +1,6 @@
 import { InputTypes } from './constants.js';
 
-const parse_input = (input_dirty, dstype, inputtype) => {
+const parse_input = (input_dirty, dstype, inputtype, InputOptions) => {
 	let input_safe = sanitize_input(input_dirty);
 	if (validate_input(input_safe)) {
 		let obj = deserialize_input(input_safe);
@@ -31,19 +31,11 @@ const parse_input = (input_dirty, dstype, inputtype) => {
 			}
 
 			if (inputtype == 'adjacency_list') {
+				let rowsize = InputOptions.graph.weighted ? 3 : 2;
 				for (let row of obj) {
-					if (row.length != 2) {
-						console.error('Adjacency list is not N x 2');
+					if (row.length != rowsize) {
+						console.error(`Adjacency list is not N x ${rowsize}`);
 						return null;
-					}
-				}
-				return obj;
-			}
-
-			if (inputtype == 'weighted_adjacency_list') {
-				for (let row of obj) {
-					if (row.length != 3) {
-						console.error('Weighted Adjacency List is not N x 3');
 					}
 				}
 				return obj;
@@ -81,3 +73,5 @@ const Parser = {
 };
 
 export { Parser };
+
+// [[1,1,2],[2,2,3],[3,4,5]]

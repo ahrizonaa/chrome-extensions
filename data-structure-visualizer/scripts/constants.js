@@ -13,12 +13,8 @@ const InputTypes = {
 			desc: 'Adjacency List',
 			placeholder: `N x 2 array of node, neighbor${n + n}e.g.,${n}[${
 				n + t
-			}[1, 2]${n + t}[2, 3]${n + t}[4, 2]${n}]`
-		},
-		weighted_adjacency_list: {
-			name: 'weighted_adjacency_list',
-			desc: 'Weighted Adjacency List',
-			placeholder: `N x 3 array of weight, node, neighbor${n + n}e.g.,${n}[${
+			}[1, 2]${n + t}[2, 3]${n + t}[4, 2]${n}]`,
+			placeholder2: `N x 3 array of weight, node, neighbor${n + n}e.g.,${n}[${
 				n + t
 			}[2, 1, 2]${n + t}[4, 2, 3]${n + t}[1, 4, 2]${n}]`
 		},

@@ -12,6 +12,7 @@ import {
 	let canvas;
 	let ctx;
 	let input_options_panel;
+	let graph_opts, tree_opts, linkedlist_opts;
 
 	function dropdownItemSelected(event) {
 		if (event.target.hasAttribute('dsinputtypeoption')) {
@@ -31,63 +32,75 @@ import {
 		}
 	}
 
+	function parse_linkedlist_options() {
+		tree_opts.classList.toggle('hide-opts-panel', true);
+		graph_opts.classList.toggle('hide-opts-panel', true);
+		linkedlist_opts.classList.toggle('hide-opts-panel', false);
+
+		input_options_panel.show();
+
+		let doubly_switch = document.getElementById('doubly_switch');
+		InputOptions.linkedlist.doubly = doubly_switch.checked;
+	}
+
+	function parse_tree_options() {
+		graph_opts.classList.toggle('hide-opts-panel', true);
+		linkedlist_opts.classList.toggle('hide-opts-panel', true);
+		tree_opts.classList.toggle('hide-opts-panel', false);
+
+		input_options_panel.show();
+
+		setTimeout(() => {
+			let bst_switch = document.getElementById('bst_switch');
+			let nary_switch = document.getElementById('nary-switch');
+			let nulls_switch = document.getElementById('nulls-switch');
+			InputOptions.binary_tree.bst = bst_switch.checked;
+			InputOptions.binary_tree.nulls = nulls_switch.checked;
+			InputOptions.binary_tree.nary = nary_switch.checked;
+		}, 200);
+	}
+
+	function parse_graph_options() {
+		tree_opts.classList.toggle('hide-opts-panel', true);
+		linkedlist_opts.classList.toggle('hide-opts-panel', true);
+		graph_opts.classList.toggle('hide-opts-panel', false);
+
+		input_options_panel.show();
+
+		let weighted_switch = document.getElementById('weighted_switch');
+		let directed_switch = document.getElementById('directed-switch');
+
+		InputOptions.graph.weighted = weighted_switch.checked;
+		InputOptions.graph.directed = directed_switch.checked;
+	}
+
 	function parse_input_options() {
-		if (['graph', 'tree', 'linkedlist'].includes(dstype)) {
-			let graph_opts = document.getElementById('graph-options-panel');
-			let tree_opts = document.getElementById('tree-options-panel');
-			let linkedlist_opts = document.getElementById('linkedlist-options-panel');
+		switch (dstype) {
+			case 'graph':
+				parse_graph_options();
 
-			switch (dstype) {
-				case 'graph':
-					tree_opts.classList.toggle('hide-opts-panel', true);
-					linkedlist_opts.classList.toggle('hide-opts-panel', true);
-					graph_opts.classList.toggle('hide-opts-panel', false);
-
-					input_options_panel.show();
-
-					let weighted_switch = document.getElementById('weighted_switch');
-					let directed_switch = document.getElementById('directed-switch');
-
-					InputOptions.graph.weighted = weighted_switch.checked;
-					InputOptions.graph.directed = directed_switch.checked;
-
-					if (inputtype == 'adjacency_list') {
-						if (weighted_switch.checked) {
-							return InputTypes.graph.weighted_adjacency_list.placeholder;
-						} else {
-							return InputTypes.graph.adjacency_list.placeholder;
-						}
+				if (inputtype == 'adjacency_list') {
+					if (weighted_switch.checked) {
+						return InputTypes.graph.adjacency_list.placeholder2;
+					} else {
+						return InputTypes.graph.adjacency_list.placeholder;
 					}
-					break;
-				case 'tree':
-					graph_opts.classList.toggle('hide-opts-panel', true);
-					linkedlist_opts.classList.toggle('hide-opts-panel', true);
-					tree_opts.classList.toggle('hide-opts-panel', false);
-
-					input_options_panel.show();
-
-					setTimeout(() => {
-						let bst_switch = document.getElementById('bst_switch');
-						let nary_switch = document.getElementById('nary-switch');
-						let nulls_switch = document.getElementById('nulls-switch');
-						InputOptions.binary_tree.bst = bst_switch.checked;
-						InputOptions.binary_tree.nulls = nulls_switch.checked;
-						InputOptions.binary_tree.nary = nary_switch.checked;
-					}, 200);
-					break;
-				case 'linkedlist':
-					tree_opts.classList.toggle('hide-opts-panel', true);
-					graph_opts.classList.toggle('hide-opts-panel', true);
-					linkedlist_opts.classList.toggle('hide-opts-panel', false);
-
-					input_options_panel.show();
-
-					let doubly_switch = document.getElementById('doubly_switch');
-					InputOptions.linkedlist.doubly = doubly_switch.checked;
-					break;
-				default:
-					break;
-			}
+				}
+				break;
+			case 'tree':
+				parse_tree_options();
+				break;
+			case 'stack':
+				input_options_panel.hide();
+				break;
+			case 'queue':
+				input_options_panel.hide();
+				break;
+			case 'linkedlist':
+				parse_linkedlist_options();
+				break;
+			default:
+				break;
 		}
 
 		return InputTypes[dstype][inputtype].placeholder;
@@ -103,7 +116,12 @@ import {
 		let input = document.querySelector('#dataset-textarea').value;
 
 		if (Parser.validate_input(input)) {
-			let parsed_input = Parser.parse_input(input, dstype, inputtype);
+			let parsed_input = Parser.parse_input(
+				input,
+				dstype,
+				inputtype,
+				InputOptions
+			);
 			if (parsed_input == null) {
 				// do nothing
 			} else {
@@ -115,9 +133,8 @@ import {
 					case null:
 						return;
 					case InputTypes.graph.adjacency_list.name:
-					case InputTypes.graph.weighted_adjacency_list.name:
 					case InputTypes.graph.adjacency_matrix.name:
-						ds = new Graph(ctx, canvas);
+						ds = new Graph(ctx, canvas, InputOptions);
 						break;
 					default:
 						return;
@@ -168,15 +185,19 @@ import {
 			toggle: false
 		});
 
+		graph_opts = document.getElementById('graph-options-panel');
+		tree_opts = document.getElementById('tree-options-panel');
+		linkedlist_opts = document.getElementById('linkedlist-options-panel');
+
 		let weighted_switch = document.getElementById('weighted_switch');
 		weighted_switch.addEventListener('click', (event) => {
 			if (inputtype != 'adjacency_list') return;
 			let textarea = document.getElementById('dataset-textarea');
-
-			if (event.target.checked) {
+			InputOptions.graph.weighted = event.target.checked;
+			if (InputOptions.graph.weighted) {
 				textarea.setAttribute(
 					'placeholder',
-					InputTypes.graph.weighted_adjacency_list.placeholder
+					InputTypes.graph.adjacency_list.placeholder2
 				);
 			} else {
 				textarea.setAttribute(

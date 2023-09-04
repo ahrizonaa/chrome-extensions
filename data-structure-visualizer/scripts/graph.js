@@ -3,7 +3,7 @@ import { Maths } from './math-functions.js';
 import { InputTypes } from './constants.js';
 
 class Graph extends DataStructure {
-	constructor(ctx, canvas) {
+	constructor(ctx, canvas, InputOptions) {
 		super();
 		this.ctx = ctx;
 		this.canvas = canvas;
@@ -23,6 +23,7 @@ class Graph extends DataStructure {
 		this.steps = 50;
 		this.current_edge = 0;
 		this.animation_frame_id = NaN;
+		this.InputOptions = InputOptions;
 	}
 
 	parse(input_dataset, dstype, inputtype) {
@@ -31,10 +32,11 @@ class Graph extends DataStructure {
 		this.inputtype = inputtype;
 		switch (this.inputtype) {
 			case InputTypes.graph.adjacency_list.name:
-				this.parse_adjacency_list();
-				break;
-			case InputTypes.graph.weighted_adjacency_list.name:
-				this.parse_weighted_adjacency_list();
+				if (this.InputOptions.graph.weighted) {
+					this.parse_weighted_adjacency_list();
+				} else {
+					this.parse_adjacency_list();
+				}
 				break;
 			case InputTypes.graph.adjacency_matrix.name:
 				this.parse_undirected_unweighted_adjacency_matrix();
@@ -62,7 +64,6 @@ class Graph extends DataStructure {
 					.map((node) => new TreeNode(node))
 			);
 		}
-		console.log(this.matrix);
 	}
 
 	parse_weighted_adjacency_list() {
@@ -126,10 +127,11 @@ class Graph extends DataStructure {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		switch (this.inputtype) {
 			case InputTypes.graph.adjacency_list.name:
-				this.plotUnweightedUndirectedGraph();
-				break;
-			case InputTypes.graph.weighted_adjacency_list.name:
-				this.plotWeightedUndirectedGraph();
+				if (this.InputOptions.graph.weighted) {
+					this.plotWeightedUndirectedGraph();
+				} else {
+					this.plotUnweightedUndirectedGraph();
+				}
 				break;
 			case InputTypes.graph.adjacency_matrix.name:
 				this.plotUnweightedUndirectedGraph();
@@ -166,7 +168,6 @@ class Graph extends DataStructure {
 				this.ctx.closePath();
 			}
 		}
-		console.log(this.matrix);
 	}
 
 	plotUnweightedUndirectedGraph() {

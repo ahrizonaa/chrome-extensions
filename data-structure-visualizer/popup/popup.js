@@ -85,6 +85,8 @@ import {
 					} else {
 						return InputTypes.graph.adjacency_list.placeholder;
 					}
+				} else if (inputtype == 'adjacency_matrix') {
+					return InputOptions.graph.adjacency_matrix.placeholder;
 				}
 				break;
 			case 'tree':

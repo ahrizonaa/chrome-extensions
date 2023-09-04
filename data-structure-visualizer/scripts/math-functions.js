@@ -1,7 +1,64 @@
 class RelativeCoordinate {
-	constructor(x, y) {
-		this.x = x;
-		this.y = y;
+	constructor(x = 0, y = 0, w = undefined, h = undefined) {
+		if (w && h) {
+			this.euclidian_to_relative(x, y, w, h);
+		} else {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	euclidian_to_relative(xe, ye, w, h) {
+		this.x = w / 2 + xe;
+		this.y = h / 2 - ye;
+		this.w = w;
+		this.h = h;
+	}
+
+	E() {
+		return this.relative_to_euclidian();
+	}
+	relative_to_euclidian() {
+		if (!this.w || !this.h) {
+			console.error(
+				'Cannot convert Relative coordiante to Euclidian coordiate without plane dimensions'
+			);
+			return;
+		} else {
+			return new EuclidianCoordinate(this.x, this.y, this.w, this.h);
+		}
+	}
+}
+
+class EuclidianCoordinate {
+	constructor(x = 0, y = 0, w = undefined, h = undefined) {
+		if (w && h) {
+			this.relative_to_euclidian(x, y, w, h);
+		} else {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	relative_to_euclidian(xr, yr, w, h) {
+		this.x = (w / 2 - xr) * -1;
+		this.y = h / 2 - yr;
+		this.w = w;
+		this.h = h;
+	}
+
+	R() {
+		return this.euclidian_to_relative();
+	}
+	euclidian_to_relative() {
+		if (!this.w || !this.h) {
+			console.error(
+				'Cannot convert Euclidian coordiante to Relative coordiate without plane dimensions'
+			);
+			return;
+		} else {
+			return new RelativeCoordinate(this.x, this.y, this.w, this.h);
+		}
 	}
 }
 
@@ -44,4 +101,4 @@ const Maths = {
 	calc_dist_ratio: calc_dist_ratio,
 	calc_midpoint: calc_midpoint
 };
-export { RelativeCoordinate, Maths };
+export { RelativeCoordinate, EuclidianCoordinate, Maths };

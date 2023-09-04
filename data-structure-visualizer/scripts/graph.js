@@ -100,8 +100,6 @@ class Graph extends DataStructure {
 		);
 		this.unique_nodes = new Set(this.node_list);
 
-		console.log(this.unique_nodes, this.node_list);
-
 		this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
 
 		for (let row = 0; row < this.dataset.length; row++) {
@@ -111,7 +109,6 @@ class Graph extends DataStructure {
 				}
 			}
 		}
-		console.log(this.edgelist);
 
 		for (let i = 0; i < this.grid_size; i++) {
 			this.matrix.push(
@@ -279,10 +276,13 @@ class Graph extends DataStructure {
 			this.ctx.closePath();
 			this.current_edge += 1;
 
-			if (this.current_edge < this.edges.length)
+			if (this.current_edge < this.edges.length) {
 				this.animation_frame_id = requestAnimationFrame(
 					this.animate_edges.bind(this)
 				);
+			} else {
+				// calc and draw lines to make arrow
+			}
 			return;
 		}
 

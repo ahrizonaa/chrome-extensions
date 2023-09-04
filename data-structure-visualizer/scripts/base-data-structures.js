@@ -27,7 +27,7 @@ function* Edge(arr) {
 			i: curr
 		};
 	}
-	return { value: null, done: true };
+	return { value: this.edge[this.edge.length - 1], done: true };
 }
 
 class DataStructure {

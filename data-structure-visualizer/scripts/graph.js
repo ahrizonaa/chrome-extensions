@@ -4,7 +4,7 @@ import {
 	Maths,
 	RelativeCoordinate
 } from './math-functions.js';
-import { InputTypes } from './constants.js';
+import { InputTypes, ArrowheadSize } from './constants.js';
 
 class Graph extends DataStructure {
 	constructor(ctx, canvas, InputOptions) {
@@ -246,7 +246,7 @@ class Graph extends DataStructure {
 
 			let edge_label = this.format_edge_label(key_to, key_from);
 
-			let slope = Maths.calc_slope(node1.point, node2.point);
+			let slope = Maths.calc_relative_slope(node1.point, node2.point);
 
 			let [label_x_offset, label_y_offset] = this.calc_label_offsets(
 				slope,
@@ -306,20 +306,128 @@ class Graph extends DataStructure {
 	}
 
 	animate_edges() {
-		let { value: p, done } = this.edges[this.current_edge].next();
-		if (done == true) {
+		let res = this.edges[this.current_edge].next();
+		let pr = res.value;
+		if (res.done == true) {
+			let { p: pr, slope, from, to } = res.value;
+			console.log({ from, to });
 			cancelAnimationFrame(this.animation_frame_id);
 			this.ctx.closePath();
 			this.current_edge += 1;
+
+			let pe = pr.ToE();
+
+			let a = 150;
+
+			let xe2 =
+				pe.x + ArrowheadSize * Math.cos(Math.atan(slope) - a * (Math.PI / 180));
+			let ye2 =
+				pe.y + ArrowheadSize * Math.sin(Math.atan(slope) - a * (Math.PI / 180));
+
+			console.group('euclid');
+			console.log(xe2, ye2);
+
+			let pr2 = RelativeCoordinate.from_euclidian(
+				xe2,
+				ye2,
+				this.canvas.width,
+				this.canvas.height
+			);
+
+			console.log(pr2.x, pr2.y);
+			console.groupEnd();
+
+			let xe3 =
+				pe.x + ArrowheadSize * Math.cos(Math.atan(slope) + a * (Math.PI / 180));
+			let ye3 =
+				pe.y + ArrowheadSize * Math.sin(Math.atan(slope) + a * (Math.PI / 180));
+
+			let pr3 = RelativeCoordinate.from_euclidian(
+				xe3,
+				ye3,
+				this.canvas.width,
+				this.canvas.height
+			);
+
+			let dist_ratio = Maths.calc_dist_ratio(ArrowheadSize, pr, pr2);
+
+			let pr1_edge = Maths.calc_point_on_line(pr, pr2, dist_ratio);
+
+			let pr2_edge = Maths.calc_point_on_line(pr, pr3, dist_ratio);
+
+			let log = {
+				dr: dist_ratio,
+				edge: this.current_edge,
+				slope: slope,
+				p1: { x: pr.x, y: pr.y },
+				dest1: {
+					p2: { x: pr2.x, y: pr2.y },
+					p3: { x: pr3.x, y: pr3.y }
+				},
+				dest2: {
+					p2: { x: pr1_edge.x, y: pr1_edge.y },
+					p3: { x: pr2_edge.x, y: pr2_edge.y }
+				}
+			};
+
+			console.group('edge ' + this.current_edge);
+
+			console.log(log);
+
+			let dp1 = null,
+				dp2 = null;
+
+			if (to.y - from.y > 0) {
+				//downwards
+				console.log('down');
+				// want set of points with lesser y value
+				if (Math.min(pr2.y, pr3.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
+					console.log('chose original');
+					dp1 = pr2;
+					dp2 = pr3;
+				} else {
+					console.log('chose new');
+					dp1 = pr1_edge;
+					dp2 = pr2_edge;
+				}
+			} else if (to.y - from.y < 0) {
+				// upwards
+				console.log('up');
+				// want set of points with greater y value
+				if (Math.max(pr2.y, pr3.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
+					console.log('chose original');
+					dp1 = pr2;
+					dp2 = pr3;
+				} else {
+					console.log('chose new');
+					dp1 = pr1_edge;
+					dp2 = pr2_edge;
+				}
+			}
+
+			console.log(dp1, dp2);
+			console.groupEnd();
+
+			dp1 = pr2;
+			dp2 = pr3;
+
+			this.ctx.beginPath();
+			this.ctx.strokeStyle = this.edgeColor;
+			this.ctx.moveTo(pr.x, pr.y);
+			this.ctx.lineTo(dp1.x, dp1.y);
+			this.ctx.stroke();
+			this.ctx.closePath();
+
+			this.ctx.beginPath();
+			this.ctx.strokeStyle = this.edgeColor;
+			this.ctx.moveTo(pr.x, pr.y);
+			this.ctx.lineTo(dp2.x, dp2.y);
+			this.ctx.stroke();
 
 			if (this.current_edge < this.edges.length) {
 				this.animation_frame_id = requestAnimationFrame(
 					this.animate_edges.bind(this)
 				);
-			} else {
-				// calc and draw lines to make arrow
-				console.info('relative', p);
-				console.info('euclidian', new EuclidianCoordinate(p.x, p.y, p.w, p.h));
 			}
 			return;
 		}
@@ -330,8 +438,8 @@ class Graph extends DataStructure {
 
 		this.ctx.beginPath();
 		this.ctx.strokeStyle = this.edgeColor;
-		this.ctx.moveTo(p.p1.x, p.p1.y);
-		this.ctx.lineTo(p.p2.x, p.p2.y);
+		this.ctx.moveTo(pr.p1.x, pr.p1.y);
+		this.ctx.lineTo(pr.p2.x, pr.p2.y);
 		this.ctx.stroke();
 	}
 }

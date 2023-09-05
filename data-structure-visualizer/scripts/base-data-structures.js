@@ -6,6 +6,7 @@ import {
 	NodeFontFamily,
 	NodeFontColor
 } from './constants.js';
+import { Maths } from './math-functions.js';
 
 class TreeNode {
 	constructor(val) {
@@ -18,6 +19,9 @@ class TreeNode {
 
 function* Edge(arr) {
 	this.edge = arr;
+	this.from = arr[0];
+	this.to = arr[arr.length - 1];
+	this.slope = Maths.calc_euclidian_slope(this.from.ToE(), this.to.ToE());
 
 	for (let curr = 0; curr < this.edge.length - 1; curr++) {
 		yield {
@@ -26,7 +30,13 @@ function* Edge(arr) {
 			i: curr
 		};
 	}
-	return { value: this.edge[this.edge.length - 1], done: true };
+	return {
+		p: this.edge[this.edge.length - 1],
+		slope: this.slope,
+		from: this.from,
+		to: this.to,
+		done: true
+	};
 }
 
 class DataStructure {

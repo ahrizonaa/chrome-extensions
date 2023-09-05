@@ -89,6 +89,7 @@ const NodeColor = '#141824';
 const NodeFontSize = '16px';
 const NodeFontFamily = 'monospace';
 const NodeFontColor = '#EEEEEE';
+const ArrowheadSize = 10;
 
 export {
 	InputTypes,
@@ -98,7 +99,8 @@ export {
 	NodeColor,
 	NodeFontSize,
 	NodeFontFamily,
-	NodeFontColor
+	NodeFontColor,
+	ArrowheadSize
 };
 
 // [[1,2],[3,4],[6,1]]

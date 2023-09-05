@@ -1,63 +1,76 @@
 class RelativeCoordinate {
-	constructor(x = 0, y = 0, w = undefined, h = undefined) {
-		if (w && h) {
-			this.euclidian_to_relative(x, y, w, h);
-		} else {
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	euclidian_to_relative(xe, ye, w, h) {
-		this.x = w / 2 + xe;
-		this.y = h / 2 - ye;
+	constructor(xr = 0, yr = 0, w = undefined, h = undefined) {
+		this.x = xr;
+		this.y = yr;
 		this.w = w;
 		this.h = h;
 	}
 
-	E() {
+	static from_euclidian(xe, ye, w, h) {
+		return RelativeCoordinate.euclidian_to_relative(xe, ye, w, h);
+	}
+
+	static euclidian_to_relative(xe, ye, w, h) {
+		if (!w || !h) {
+			console.error(
+				'Cannot convert Euclidian coordiante to Relative coordiate without plane dimensions'
+			);
+		}
+		let xr = w / 2 + xe;
+		let yr = h / 2 - ye;
+		return new RelativeCoordinate(xr, yr, w, h);
+	}
+
+	ToE() {
 		return this.relative_to_euclidian();
 	}
 	relative_to_euclidian() {
 		if (!this.w || !this.h) {
 			console.error(
-				'Cannot convert Relative coordiante to Euclidian coordiate without plane dimensions'
+				'Cannot convert Relative coordiante to Euclidian coordinate without plane dimensions'
 			);
 			return;
 		} else {
-			return new EuclidianCoordinate(this.x, this.y, this.w, this.h);
+			return EuclidianCoordinate.from_relative(this.x, this.y, this.w, this.h);
 		}
 	}
 }
 
 class EuclidianCoordinate {
-	constructor(x = 0, y = 0, w = undefined, h = undefined) {
-		if (w && h) {
-			this.relative_to_euclidian(x, y, w, h);
-		} else {
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	relative_to_euclidian(xr, yr, w, h) {
-		this.x = (w / 2 - xr) * -1;
-		this.y = h / 2 - yr;
+	constructor(xe = 0, ye = 0, w = undefined, h = undefined) {
+		this.x = xe;
+		this.y = ye;
 		this.w = w;
 		this.h = h;
 	}
 
-	R() {
+	static from_relative(xr, yr, w, h) {
+		return EuclidianCoordinate.relative_to_euclidian(xr, yr, w, h);
+	}
+
+	static relative_to_euclidian(xr, yr, w, h) {
+		if (!w || !h) {
+			console.error(
+				'Cannot convert Relative coordiante to Euclidian coordinate without plane dimensions'
+			);
+			return;
+		}
+		let xe = (w / 2 - xr) * -1;
+		let ye = h / 2 - yr;
+		return new EuclidianCoordinate(xe, ye, w, h);
+	}
+
+	ToR() {
 		return this.euclidian_to_relative();
 	}
 	euclidian_to_relative() {
 		if (!this.w || !this.h) {
 			console.error(
-				'Cannot convert Euclidian coordiante to Relative coordiate without plane dimensions'
+				'Cannot convert Euclidian coordiante to Relative coordinate without plane dimensions'
 			);
 			return;
 		} else {
-			return new RelativeCoordinate(this.x, this.y, this.w, this.h);
+			return RelativeCoordinate.from_euclidian(this.x, this.y, this.w, this.h);
 		}
 	}
 }
@@ -70,14 +83,16 @@ const calc_points_on_line = (from, to, steps) => {
 		vertices.push(
 			new RelativeCoordinate(
 				from.x + (dx * step) / steps,
-				from.y + (dy * step) / steps
+				from.y + (dy * step) / steps,
+				from.w,
+				from.h
 			)
 		);
 	}
 	return vertices;
 };
-const calc_slope = (p1, p2) => {
-	return Math.abs((p2.x - p1.x) / (p2.y - p1.y));
+const calc_slope = (pr1, pr2) => {
+	return Math.abs((pr2.x - pr1.x) / (pr2.y - pr1.y));
 };
 
 const calc_dist_ratio = (dist, p1, p2) => {
@@ -87,11 +102,16 @@ const calc_dist_ratio = (dist, p1, p2) => {
 const calc_point_on_line = (from, to, dist_ratio) => {
 	let x = (1 - dist_ratio) * from.x + dist_ratio * to.x;
 	let y = (1 - dist_ratio) * from.y + dist_ratio * to.y;
-	return new RelativeCoordinate(x, y);
+	return new RelativeCoordinate(x, y, from.w, from.h);
 };
 
-const calc_midpoint = (p1, p2) => {
-	return new RelativeCoordinate((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+const calc_midpoint = (pr1, pr2) => {
+	return new RelativeCoordinate(
+		(pr1.x + pr2.x) / 2,
+		(pr1.y + pr2.y) / 2,
+		pr1.w,
+		pr1.h
+	);
 };
 
 const Maths = {

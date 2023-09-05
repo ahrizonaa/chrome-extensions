@@ -8,11 +8,10 @@ import {
 } from './constants.js';
 
 class TreeNode {
-	constructor(val, x = 0, y = 0, r = 0) {
+	constructor(val) {
 		this.val = val;
-		this.x = x;
-		this.y = y;
-		this.r = r;
+		this.point = null;
+		this.r = NaN;
 		this.neighbors = [];
 	}
 }

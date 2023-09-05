@@ -1,5 +1,9 @@
 import { TreeNode, Edge, DataStructure } from './base-data-structures.js';
-import { Maths } from './math-functions.js';
+import {
+	EuclidianCoordinate,
+	Maths,
+	RelativeCoordinate
+} from './math-functions.js';
 import { InputTypes } from './constants.js';
 
 class Graph extends DataStructure {
@@ -143,17 +147,21 @@ class Graph extends DataStructure {
 			for (let col = 0; col < this.matrix[row].length; col++) {
 				let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
 				let offset_y = Math.floor(Math.random() * (10 - -10 + 1) + -10);
-				let x = this.cell_size * row + this.cell_size / 2 + offset_x;
-				let y = this.cell_size * col + this.cell_size / 2 + offset_y;
+				let xr = this.cell_size * row + this.cell_size / 2 + offset_x;
+				let yr = this.cell_size * col + this.cell_size / 2 + offset_y;
 
-				this.matrix[row][col].x = x;
-				this.matrix[row][col].y = y;
+				this.matrix[row][col].point = new RelativeCoordinate(
+					xr,
+					yr,
+					this.canvas.width,
+					this.canvas.height
+				);
 				this.matrix[row][col].r = this.radius;
 				this.graph[this.matrix[row][col].val] = this.matrix[row][col];
 
 				this.ctx.beginPath();
 				this.ctx.fillStyle = this.nodeColor;
-				this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI);
+				this.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
 				this.ctx.fill();
 				this.ctx.closePath();
 
@@ -161,7 +169,7 @@ class Graph extends DataStructure {
 				this.ctx.fillStyle = this.nodeFontColor;
 				this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
 				this.ctx.textAlign = 'center';
-				this.ctx.fillText(String(this.matrix[row][col].val), x, y + 3);
+				this.ctx.fillText(String(this.matrix[row][col].val), xr, yr + 3);
 				this.ctx.closePath();
 			}
 		}
@@ -171,16 +179,30 @@ class Graph extends DataStructure {
 		this.plot_nodes();
 
 		for (let [from, to] of this.edgelist) {
-			let p1 = this.graph[from];
-			let p2 = this.graph[to];
+			let node1 = this.graph[from];
+			let node2 = this.graph[to];
 
-			let dist_ratio = Maths.calc_dist_ratio(this.radius, p1, p2);
+			let dist_ratio = Maths.calc_dist_ratio(
+				this.radius,
+				node1.point,
+				node2.point
+			);
 
-			let p1_edge = Maths.calc_point_on_line(p1, p2, dist_ratio);
-			let p2_edge = Maths.calc_point_on_line(p2, p1, dist_ratio);
+			let pr1_edge = Maths.calc_point_on_line(
+				node1.point,
+				node2.point,
+				dist_ratio
+			);
+			let pr2_edge = Maths.calc_point_on_line(
+				node2.point,
+				node1.point,
+				dist_ratio
+			);
 
 			this.edges.push(
-				Edge.bind(this)(Maths.calc_points_on_line(p1_edge, p2_edge, this.steps))
+				Edge.bind(this)(
+					Maths.calc_points_on_line(pr1_edge, pr2_edge, this.steps)
+				)
 			);
 		}
 		this.animate_edges.bind(this);
@@ -191,8 +213,8 @@ class Graph extends DataStructure {
 		this.plot_nodes();
 
 		for (let [, from, to] of this.dataset) {
-			let p1 = this.graph[from];
-			let p2 = this.graph[to];
+			let node1 = this.graph[from];
+			let node2 = this.graph[to];
 			let key_to = from + '_' + to;
 			let key_from = to + '_' + from;
 
@@ -203,16 +225,28 @@ class Graph extends DataStructure {
 				continue;
 			}
 
-			let dist_ratio = Maths.calc_dist_ratio(this.radius, p1, p2);
+			let dist_ratio = Maths.calc_dist_ratio(
+				this.radius,
+				node1.point,
+				node2.point
+			);
 
-			let p1_edge = Maths.calc_point_on_line(p1, p2, dist_ratio);
-			let p2_edge = Maths.calc_point_on_line(p2, p1, dist_ratio);
+			let pr1_edge = Maths.calc_point_on_line(
+				node1.point,
+				node2.point,
+				dist_ratio
+			);
+			let pr2_edge = Maths.calc_point_on_line(
+				node2.point,
+				node1.point,
+				dist_ratio
+			);
 
-			let mid_point = Maths.calc_midpoint(p1, p2);
+			let mid_point = Maths.calc_midpoint(node1.point, node2.point);
 
 			let edge_label = this.format_edge_label(key_to, key_from);
 
-			let slope = Maths.calc_slope(p1, p2);
+			let slope = Maths.calc_slope(node1.point, node2.point);
 
 			let [label_x_offset, label_y_offset] = this.calc_label_offsets(
 				slope,
@@ -220,7 +254,9 @@ class Graph extends DataStructure {
 			);
 
 			this.edges.push(
-				Edge.bind(this)(Maths.calc_points_on_line(p1_edge, p2_edge, this.steps))
+				Edge.bind(this)(
+					Maths.calc_points_on_line(pr1_edge, pr2_edge, this.steps)
+				)
 			);
 
 			this.ctx.beginPath();
@@ -282,6 +318,8 @@ class Graph extends DataStructure {
 				);
 			} else {
 				// calc and draw lines to make arrow
+				console.info('relative', p);
+				console.info('euclidian', new EuclidianCoordinate(p.x, p.y, p.w, p.h));
 			}
 			return;
 		}

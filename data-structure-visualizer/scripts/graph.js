@@ -310,7 +310,6 @@ class Graph extends DataStructure {
 		let pr = res.value;
 		if (res.done == true) {
 			let { p: pr, slope, from, to } = res.value;
-			console.log({ from, to });
 			cancelAnimationFrame(this.animation_frame_id);
 			this.ctx.closePath();
 			this.current_edge += 1;
@@ -324,18 +323,12 @@ class Graph extends DataStructure {
 			let ye2 =
 				pe.y + ArrowheadSize * Math.sin(Math.atan(slope) - a * (Math.PI / 180));
 
-			console.group('euclid');
-			console.log(xe2, ye2);
-
 			let pr2 = RelativeCoordinate.from_euclidian(
 				xe2,
 				ye2,
 				this.canvas.width,
 				this.canvas.height
 			);
-
-			console.log(pr2.x, pr2.y);
-			console.groupEnd();
 
 			let xe3 =
 				pe.x + ArrowheadSize * Math.cos(Math.atan(slope) + a * (Math.PI / 180));
@@ -355,61 +348,52 @@ class Graph extends DataStructure {
 
 			let pr2_edge = Maths.calc_point_on_line(pr, pr3, dist_ratio);
 
-			let log = {
-				dr: dist_ratio,
-				edge: this.current_edge,
-				slope: slope,
-				p1: { x: pr.x, y: pr.y },
-				dest1: {
-					p2: { x: pr2.x, y: pr2.y },
-					p3: { x: pr3.x, y: pr3.y }
-				},
-				dest2: {
-					p2: { x: pr1_edge.x, y: pr1_edge.y },
-					p3: { x: pr2_edge.x, y: pr2_edge.y }
-				}
-			};
+			let vx = pe.x - pr1_edge.relative_to_euclidian().x;
+			let vy = pe.y - pr1_edge.relative_to_euclidian().y;
+			let len = Math.sqrt(vx * vx + vy * vy);
+			let cx = (vx / len) * ArrowheadSize + pe.x;
+			let cy = (vy / len) * ArrowheadSize + pe.y;
 
-			console.group('edge ' + this.current_edge);
-
-			console.log(log);
+			let vx2 = pe.x - pr2_edge.relative_to_euclidian().x;
+			let vy2 = pe.y - pr2_edge.relative_to_euclidian().y;
+			let len2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
+			let cx2 = (vx2 / len2) * ArrowheadSize + pe.x;
+			let cy2 = (vy2 / len2) * ArrowheadSize + pe.y;
+			let cr1 = RelativeCoordinate.from_euclidian(
+				cx,
+				cy,
+				this.canvas.width,
+				this.canvas.height
+			);
+			let cr2 = RelativeCoordinate.from_euclidian(
+				cx2,
+				cy2,
+				this.canvas.width,
+				this.canvas.height
+			);
 
 			let dp1 = null,
 				dp2 = null;
 
 			if (to.y - from.y > 0) {
 				//downwards
-				console.log('down');
-				// want set of points with lesser y value
-				if (Math.min(pr2.y, pr3.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
-					console.log('chose original');
-					dp1 = pr2;
-					dp2 = pr3;
+				if (Math.min(cr1.y, cr2.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
+					dp1 = cr1;
+					dp2 = cr2;
 				} else {
-					console.log('chose new');
 					dp1 = pr1_edge;
 					dp2 = pr2_edge;
 				}
 			} else if (to.y - from.y < 0) {
 				// upwards
-				console.log('up');
-				// want set of points with greater y value
-				if (Math.max(pr2.y, pr3.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
-					console.log('chose original');
-					dp1 = pr2;
-					dp2 = pr3;
+				if (Math.max(cr1.y, cr2.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
+					dp1 = cr1;
+					dp2 = cr2;
 				} else {
-					console.log('chose new');
 					dp1 = pr1_edge;
 					dp2 = pr2_edge;
 				}
 			}
-
-			console.log(dp1, dp2);
-			console.groupEnd();
-
-			dp1 = pr2;
-			dp2 = pr3;
 
 			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;

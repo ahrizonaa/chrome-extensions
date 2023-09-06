@@ -6,7 +6,33 @@ const d2 = '\u2082';
 const nsub = '\u2099';
 const msub = '\u208B';
 
-const InputTypes = {
+class DataStructureRepresentation {
+	name: string;
+	desc: string;
+	placeholder: string;
+	placeholder2?: string;
+}
+
+class DataStructureRepresentations {
+	graph: {
+		adjacency_list: DataStructureRepresentation;
+		adjacency_matrix: DataStructureRepresentation;
+	};
+	tree: {
+		tree_array: DataStructureRepresentation;
+	};
+	stack: {
+		stack_array: DataStructureRepresentation;
+	};
+	queue: {
+		queue_array: DataStructureRepresentation;
+	};
+	linkedlist: {
+		linkedlist_array: DataStructureRepresentation;
+	};
+}
+
+const Types: DataStructureRepresentations = {
 	graph: {
 		adjacency_list: {
 			name: 'adjacency_list',
@@ -66,13 +92,36 @@ const InputTypes = {
 	}
 };
 
-const InputOptions = {
+class GraphOptions {
+	directed: boolean;
+	weighted: boolean;
+}
+class TreeOptions {
+	binary: boolean;
+	nary: boolean;
+	nulls: boolean;
+}
+class StackOptions {}
+class QueueOptions {}
+class LinkedListOptions {
+	doubly: boolean;
+}
+
+class DataStructureOptions {
+	graph: GraphOptions;
+	tree: TreeOptions;
+	stack: StackOptions;
+	queue: QueueOptions;
+	linkedlist: LinkedListOptions;
+}
+
+const Options: DataStructureOptions = {
 	graph: {
 		directed: false,
 		weighted: false
 	},
-	binary_tree: {
-		bst: false,
+	tree: {
+		binary: false,
 		nary: false,
 		nulls: false
 	},
@@ -83,24 +132,26 @@ const InputOptions = {
 	}
 };
 
-const CanvasBgColor = '#212529';
-const EdgeColor = '#EEEEEE';
-const NodeColor = '#141824';
-const NodeFontSize = '16px';
-const NodeFontFamily = 'monospace';
-const NodeFontColor = '#EEEEEE';
-const ArrowheadSize = 10;
+const CanvasBgColor: string = '#212529';
+const EdgeColor: string = '#EEEEEE';
+const NodeColor: string = '#141824';
+const NodeFontSize: string = '16px';
+const NodeFontFamily: string = 'monospace';
+const NodeFontColor: string = '#EEEEEE';
+const ArrowheadSize: number = 10;
 
 export {
-	InputTypes,
-	InputOptions,
+	Types,
+	Options,
 	CanvasBgColor,
 	EdgeColor,
 	NodeColor,
 	NodeFontSize,
 	NodeFontFamily,
 	NodeFontColor,
-	ArrowheadSize
+	ArrowheadSize,
+	DataStructureOptions,
+	DataStructureRepresentations
 };
 
 // [[1,2],[3,4],[6,1]]

@@ -1,33 +1,56 @@
-import { TreeNode, Edge, DataStructure } from './base-data-structures.js';
 import {
-	EuclidianCoordinate,
+	TreeNode,
+	Edge,
+	DataStructure,
+	EdgeSegment
+} from './base-data-structures';
+import {
+	CartesianCoordinate,
+	CartesianPoint,
+	CartesianSlope,
 	Maths,
-	RelativeCoordinate
+	RelativePoint,
+	RelativeSlope
 } from './math-functions.js';
-import { InputTypes, ArrowheadSize } from './constants.js';
+import {
+	ArrowheadSize,
+	DataStructureOptions,
+	DataStructureRepresentations
+} from './options';
 
 class Graph extends DataStructure {
-	constructor(ctx, canvas, InputOptions) {
+	ctx: CanvasRenderingContext2D;
+	canvas: HTMLCanvasElement;
+	dstype: string = null;
+	inputtype: string = '';
+	dataset: any[] = [];
+	matrix: any[] = [];
+	graph: any = {};
+	weights: any[] = [];
+	edgelist: any[] = [];
+	unique_nodes: Set<number> = new Set();
+	node_list: number[] = [];
+	edges: any[] = [];
+	radius: number = NaN;
+	cell_size: number = NaN;
+	grid_size: number = NaN;
+	steps: number = 50;
+	current_edge: number = 0;
+	animation_frame_id: number = NaN;
+	options: DataStructureOptions;
+	input_types: DataStructureRepresentations;
+
+	constructor(
+		ctx: CanvasRenderingContext2D,
+		canvas: HTMLCanvasElement,
+		input_types: DataStructureRepresentations,
+		options: DataStructureOptions
+	) {
 		super();
 		this.ctx = ctx;
 		this.canvas = canvas;
-		this.dstype = null;
-		this.inputtype = '';
-		this.dataset = [];
-		this.matrix = [];
-		this.graph = {};
-		this.weights = [];
-		this.edgelist = [];
-		this.unique_nodes = new Set();
-		this.node_list = [];
-		this.edges = [];
-		this.radius = NaN;
-		this.cell_size = NaN;
-		this.grid_size = NaN;
-		this.steps = 50;
-		this.current_edge = 0;
-		this.animation_frame_id = NaN;
-		this.InputOptions = InputOptions;
+		this.options = options;
+		this.input_types = input_types;
 	}
 
 	parse(input_dataset, dstype, inputtype) {
@@ -35,14 +58,14 @@ class Graph extends DataStructure {
 		this.dstype = dstype;
 		this.inputtype = inputtype;
 		switch (this.inputtype) {
-			case InputTypes.graph.adjacency_list.name:
-				if (this.InputOptions.graph.weighted) {
+			case this.input_types.graph.adjacency_list.name:
+				if (this.options.graph.weighted) {
 					this.parse_weighted_adjacency_list();
 				} else {
 					this.parse_adjacency_list();
 				}
 				break;
-			case InputTypes.graph.adjacency_matrix.name:
+			case this.input_types.graph.adjacency_matrix.name:
 				this.parse_undirected_unweighted_adjacency_matrix();
 				break;
 			default:
@@ -127,14 +150,14 @@ class Graph extends DataStructure {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		switch (this.inputtype) {
-			case InputTypes.graph.adjacency_list.name:
-				if (this.InputOptions.graph.weighted) {
+			case this.input_types.graph.adjacency_list.name:
+				if (this.options.graph.weighted) {
 					this.plotWeightedUndirectedGraph();
 				} else {
 					this.plotUnweightedUndirectedGraph();
 				}
 				break;
-			case InputTypes.graph.adjacency_matrix.name:
+			case this.input_types.graph.adjacency_matrix.name:
 				this.plotUnweightedUndirectedGraph();
 				break;
 			default:
@@ -150,7 +173,7 @@ class Graph extends DataStructure {
 				let xr = this.cell_size * row + this.cell_size / 2 + offset_x;
 				let yr = this.cell_size * col + this.cell_size / 2 + offset_y;
 
-				this.matrix[row][col].point = new RelativeCoordinate(
+				this.matrix[row][col].point = new RelativePoint(
 					xr,
 					yr,
 					this.canvas.width,
@@ -182,27 +205,25 @@ class Graph extends DataStructure {
 			let node1 = this.graph[from];
 			let node2 = this.graph[to];
 
-			let dist_ratio = Maths.calc_dist_ratio(
+			let dist_ratio = Maths.DistanceRatio(
 				this.radius,
 				node1.point,
 				node2.point
 			);
 
-			let pr1_edge = Maths.calc_point_on_line(
+			let pr1_edge = Maths.FindPointOnLine(
 				node1.point,
 				node2.point,
 				dist_ratio
 			);
-			let pr2_edge = Maths.calc_point_on_line(
+			let pr2_edge = Maths.FindPointOnLine(
 				node2.point,
 				node1.point,
 				dist_ratio
 			);
 
 			this.edges.push(
-				Edge.bind(this)(
-					Maths.calc_points_on_line(pr1_edge, pr2_edge, this.steps)
-				)
+				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
 			);
 		}
 		this.animate_edges.bind(this);
@@ -225,28 +246,28 @@ class Graph extends DataStructure {
 				continue;
 			}
 
-			let dist_ratio = Maths.calc_dist_ratio(
+			let dist_ratio = Maths.DistanceRatio(
 				this.radius,
 				node1.point,
 				node2.point
 			);
 
-			let pr1_edge = Maths.calc_point_on_line(
+			let pr1_edge = Maths.FindPointOnLine(
 				node1.point,
 				node2.point,
 				dist_ratio
 			);
-			let pr2_edge = Maths.calc_point_on_line(
+			let pr2_edge = Maths.FindPointOnLine(
 				node2.point,
 				node1.point,
 				dist_ratio
 			);
 
-			let mid_point = Maths.calc_midpoint(node1.point, node2.point);
+			let mid_point = Maths.Midpoint(node1.point, node2.point);
 
 			let edge_label = this.format_edge_label(key_to, key_from);
 
-			let slope = Maths.calc_relative_slope(node1.point, node2.point);
+			let slope = Maths.RelativeSlope(node1.point, node2.point);
 
 			let [label_x_offset, label_y_offset] = this.calc_label_offsets(
 				slope,
@@ -254,9 +275,7 @@ class Graph extends DataStructure {
 			);
 
 			this.edges.push(
-				Edge.bind(this)(
-					Maths.calc_points_on_line(pr1_edge, pr2_edge, this.steps)
-				)
+				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
 			);
 
 			this.ctx.beginPath();
@@ -306,66 +325,101 @@ class Graph extends DataStructure {
 	}
 
 	animate_edges() {
-		let res = this.edges[this.current_edge].next();
-		let pr = res.value;
+		let res: { done: boolean; value: EdgeSegment } =
+			this.edges[this.current_edge].next();
+
+		if (res.done == false) {
+			let { curr, next } = res.value;
+			this.animation_frame_id = requestAnimationFrame(
+				this.animate_edges.bind(this)
+			);
+
+			this.ctx.beginPath();
+			this.ctx.strokeStyle = this.edgeColor;
+			this.ctx.moveTo(curr.x, curr.y);
+			this.ctx.lineTo(next.x, next.y);
+			this.ctx.stroke();
+		}
+
 		if (res.done == true) {
-			let { p: pr, slope, from, to } = res.value;
+			let { first, last } = res.value;
 			cancelAnimationFrame(this.animation_frame_id);
 			this.ctx.closePath();
 			this.current_edge += 1;
 
-			let pe = pr.ToE();
+			let centerPoint: CartesianPoint = last.ToCartesian();
 
-			let a = 150;
+			let a = 30;
 
-			let xe2 =
-				pe.x + ArrowheadSize * Math.cos(Math.atan(slope) - a * (Math.PI / 180));
-			let ye2 =
-				pe.y + ArrowheadSize * Math.sin(Math.atan(slope) - a * (Math.PI / 180));
-
-			let pr2 = RelativeCoordinate.from_euclidian(
-				xe2,
-				ye2,
-				this.canvas.width,
-				this.canvas.height
+			let slope: CartesianSlope = Maths.CartesianSlope(
+				first.ToCartesian(),
+				last.ToCartesian()
 			);
 
-			let xe3 =
-				pe.x + ArrowheadSize * Math.cos(Math.atan(slope) + a * (Math.PI / 180));
-			let ye3 =
-				pe.y + ArrowheadSize * Math.sin(Math.atan(slope) + a * (Math.PI / 180));
+			let xt1: CartesianCoordinate =
+				centerPoint.x +
+				ArrowheadSize * Math.cos(Math.atan(slope) - a * (Math.PI / 180));
+			let yt1: CartesianCoordinate =
+				centerPoint.y +
+				ArrowheadSize * Math.sin(Math.atan(slope) - a * (Math.PI / 180));
 
-			let pr3 = RelativeCoordinate.from_euclidian(
-				xe3,
-				ye3,
-				this.canvas.width,
-				this.canvas.height
+			let targetPoint1: RelativePoint = RelativePoint.FromCartesian(
+				xt1,
+				yt1,
+				last.w,
+				last.h
 			);
 
-			let dist_ratio = Maths.calc_dist_ratio(ArrowheadSize, pr, pr2);
+			let xt2: CartesianCoordinate =
+				centerPoint.x +
+				ArrowheadSize * Math.cos(Math.atan(slope) + a * (Math.PI / 180));
+			let yt2: CartesianCoordinate =
+				centerPoint.y +
+				ArrowheadSize * Math.sin(Math.atan(slope) + a * (Math.PI / 180));
 
-			let pr1_edge = Maths.calc_point_on_line(pr, pr2, dist_ratio);
+			let targetPoint2: RelativePoint = RelativePoint.FromCartesian(
+				xt2,
+				yt2,
+				last.w,
+				last.h
+			);
 
-			let pr2_edge = Maths.calc_point_on_line(pr, pr3, dist_ratio);
+			let distRatio: number = Maths.DistanceRatio(
+				ArrowheadSize,
+				last,
+				targetPoint1
+			);
 
-			let vx = pe.x - pr1_edge.relative_to_euclidian().x;
-			let vy = pe.y - pr1_edge.relative_to_euclidian().y;
+			let pr1_edge: RelativePoint = Maths.FindPointOnLine(
+				last,
+				targetPoint1,
+				distRatio
+			);
+
+			let pr2_edge: RelativePoint = Maths.FindPointOnLine(
+				last,
+				targetPoint2,
+				distRatio
+			);
+
+			let vx = centerPoint.x - pr1_edge.ToCartesian().x;
+			let vy = centerPoint.y - pr1_edge.ToCartesian().y;
 			let len = Math.sqrt(vx * vx + vy * vy);
-			let cx = (vx / len) * ArrowheadSize + pe.x;
-			let cy = (vy / len) * ArrowheadSize + pe.y;
+			let cx = (vx / len) * ArrowheadSize + centerPoint.x;
+			let cy = (vy / len) * ArrowheadSize + centerPoint.y;
 
-			let vx2 = pe.x - pr2_edge.relative_to_euclidian().x;
-			let vy2 = pe.y - pr2_edge.relative_to_euclidian().y;
+			let vx2 = centerPoint.x - pr2_edge.ToCartesian().x;
+			let vy2 = centerPoint.y - pr2_edge.ToCartesian().y;
 			let len2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
-			let cx2 = (vx2 / len2) * ArrowheadSize + pe.x;
-			let cy2 = (vy2 / len2) * ArrowheadSize + pe.y;
-			let cr1 = RelativeCoordinate.from_euclidian(
+			let cx2 = (vx2 / len2) * ArrowheadSize + centerPoint.x;
+			let cy2 = (vy2 / len2) * ArrowheadSize + centerPoint.y;
+			let cr1 = RelativePoint.FromCartesian(
 				cx,
 				cy,
 				this.canvas.width,
 				this.canvas.height
 			);
-			let cr2 = RelativeCoordinate.from_euclidian(
+			let cr2 = RelativePoint.FromCartesian(
 				cx2,
 				cy2,
 				this.canvas.width,
@@ -375,7 +429,7 @@ class Graph extends DataStructure {
 			let dp1 = null,
 				dp2 = null;
 
-			if (to.y - from.y > 0) {
+			if (last.y - first.y > 0) {
 				//downwards
 				if (Math.min(cr1.y, cr2.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
 					dp1 = cr1;
@@ -384,7 +438,7 @@ class Graph extends DataStructure {
 					dp1 = pr1_edge;
 					dp2 = pr2_edge;
 				}
-			} else if (to.y - from.y < 0) {
+			} else if (last.y - first.y < 0) {
 				// upwards
 				if (Math.max(cr1.y, cr2.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
 					dp1 = cr1;
@@ -397,14 +451,14 @@ class Graph extends DataStructure {
 
 			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
-			this.ctx.moveTo(pr.x, pr.y);
+			this.ctx.moveTo(last.x, last.y);
 			this.ctx.lineTo(dp1.x, dp1.y);
 			this.ctx.stroke();
 			this.ctx.closePath();
 
 			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
-			this.ctx.moveTo(pr.x, pr.y);
+			this.ctx.moveTo(last.x, last.y);
 			this.ctx.lineTo(dp2.x, dp2.y);
 			this.ctx.stroke();
 
@@ -415,16 +469,6 @@ class Graph extends DataStructure {
 			}
 			return;
 		}
-
-		this.animation_frame_id = requestAnimationFrame(
-			this.animate_edges.bind(this)
-		);
-
-		this.ctx.beginPath();
-		this.ctx.strokeStyle = this.edgeColor;
-		this.ctx.moveTo(pr.p1.x, pr.p1.y);
-		this.ctx.lineTo(pr.p2.x, pr.p2.y);
-		this.ctx.stroke();
 	}
 }
 

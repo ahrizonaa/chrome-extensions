@@ -12,14 +12,17 @@
 				<div class="dataset-form">
 					<div class="btn-group" role="group">
 						<button
-							class="btn btn-sm btn-secondary dropdown-toggle dataset-dropdown"
+							class="btn btn-sm bg-body-secondary dropdown-toggle dataset-dropdown"
 							type="button"
 							data-bs-toggle="dropdown"
 							aria-expanded="false">
 							<span class="dataset-dropdown-text">Select Input Format</span>
 						</button>
 						<ul class="dropdown-menu"></ul>
-						<button id="go-btn" class="btn btn-secondary btn-sm" type="button">
+						<button
+							id="go-btn"
+							class="btn bg-body-secondary btn-sm"
+							type="button">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -118,6 +121,8 @@
 				<div class="dataset-container">
 					<div class="textarea-container">
 						<textarea
+							autofocus="true"
+							name="textarea"
 							class="form-control"
 							placeholder=""
 							id="dataset-textarea"

@@ -1,5 +1,6 @@
+import { UI } from './userinput.service';
 class Parser {
-    static parse_input(input_dirty, dstype, inputtype, InputOptions) {
+    static parse_input(input_dirty) {
         let input_safe = this.sanitize_input(input_dirty);
         if (this.validate_input(input_safe)) {
             let obj = this.deserialize_input(input_safe);
@@ -10,7 +11,7 @@ class Parser {
                 msg = 'Malformed input data';
             }
             else {
-                if (dstype == 'graph') {
+                if (UI.dsa == 'graph') {
                     if (Array.isArray(obj) == false) {
                         msg = 'Input data is not a 2D array';
                     }
@@ -20,7 +21,7 @@ class Parser {
                             break;
                         }
                     }
-                    if (inputtype == 'adjacency_matrix') {
+                    if (UI.dsaFormat == 'adjacency_matrix') {
                         let height = obj.length;
                         for (let row of obj) {
                             if (row.length != height) {
@@ -30,8 +31,8 @@ class Parser {
                         }
                         return obj;
                     }
-                    if (inputtype == 'adjacency_list') {
-                        let rowsize = InputOptions.graph.weighted ? 3 : 2;
+                    if (UI.dsaFormat == 'adjacency_list') {
+                        let rowsize = UI.userOptions.graph.weighted ? 3 : 2;
                         for (let row of obj) {
                             if (row.length != rowsize) {
                                 msg = `Adjacency list is not N x ${rowsize}`;
@@ -75,4 +76,3 @@ class Parser {
     }
 }
 export { Parser };
-// [[1,1,2],[2,2,3],[3,4,5]]

@@ -1,0 +1,23 @@
+{
+	"name": "data-structure-visualizer",
+	"version": "1.0.0",
+	"description": "",
+	"main": "popup/popup.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ahrizonaa/chrome-extensions.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ahrizonaa/chrome-extensions/issues"
+	},
+	"homepage": "https://github.com/ahrizonaa/chrome-extensions#readme",
+	"devDependencies": {
+		"tailwindcss": "^3.3.3",
+		"typescript": "^5.2.2"
+	}
+}

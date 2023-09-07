@@ -1,11 +1,4 @@
-import {
-	CanvasBgColor,
-	EdgeColor,
-	NodeColor,
-	NodeFontSize,
-	NodeFontFamily,
-	NodeFontColor
-} from './options';
+import { Aesthetics } from './dsa-metadata';
 import { RelativePoint } from './math-functions';
 
 class TreeNode {
@@ -53,14 +46,14 @@ function* Edge(arr: RelativePoint[]): Generator<EdgeSegment> {
 }
 
 class DataStructure {
-	canvasBgColor = CanvasBgColor;
+	canvasBgColor = Aesthetics.CanvasBgColor;
 	maxCellSize = 50;
 	maxRadius = 50;
-	edgeColor = EdgeColor;
-	nodeColor = NodeColor;
-	nodeFontSize = NodeFontSize;
-	nodeFontFamily = NodeFontFamily;
-	nodeFontColor = NodeFontColor;
+	edgeColor = Aesthetics.EdgeColor;
+	nodeColor = Aesthetics.NodeColor;
+	nodeFontSize = Aesthetics.NodeFontSize;
+	nodeFontFamily = Aesthetics.NodeFontFamily;
+	nodeFontColor = Aesthetics.NodeFontColor;
 }
 
 export { TreeNode, Edge, DataStructure, EdgeSegment };

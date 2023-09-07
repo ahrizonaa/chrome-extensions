@@ -1,4 +1,4 @@
-import { CanvasBgColor, EdgeColor, NodeColor, NodeFontSize, NodeFontFamily, NodeFontColor } from './options';
+import { Aesthetics } from './dsa-metadata';
 class TreeNode {
     constructor(val) {
         this.val = val;
@@ -29,14 +29,14 @@ function* Edge(arr) {
 }
 class DataStructure {
     constructor() {
-        this.canvasBgColor = CanvasBgColor;
+        this.canvasBgColor = Aesthetics.CanvasBgColor;
         this.maxCellSize = 50;
         this.maxRadius = 50;
-        this.edgeColor = EdgeColor;
-        this.nodeColor = NodeColor;
-        this.nodeFontSize = NodeFontSize;
-        this.nodeFontFamily = NodeFontFamily;
-        this.nodeFontColor = NodeFontColor;
+        this.edgeColor = Aesthetics.EdgeColor;
+        this.nodeColor = Aesthetics.NodeColor;
+        this.nodeFontSize = Aesthetics.NodeFontSize;
+        this.nodeFontFamily = Aesthetics.NodeFontFamily;
+        this.nodeFontColor = Aesthetics.NodeFontColor;
     }
 }
 export { TreeNode, Edge, DataStructure, EdgeSegment };

@@ -1,11 +1,10 @@
 import { TreeNode, Edge, DataStructure } from './base-data-structures';
 import { Maths, RelativePoint } from './math-functions.js';
-import { ArrowheadSize } from './options';
+import { DSA, Aesthetics } from './dsa-metadata';
+import { UI } from './userinput.service';
 class Graph extends DataStructure {
-    constructor(ctx, canvas, input_types, options) {
+    constructor(ctx, canvas) {
         super();
-        this.dstype = null;
-        this.inputtype = '';
         this.dataset = [];
         this.matrix = [];
         this.graph = {};
@@ -22,23 +21,19 @@ class Graph extends DataStructure {
         this.animation_frame_id = NaN;
         this.ctx = ctx;
         this.canvas = canvas;
-        this.options = options;
-        this.input_types = input_types;
     }
-    parse(input_dataset, dstype, inputtype) {
+    parse(input_dataset) {
         this.dataset = input_dataset;
-        this.dstype = dstype;
-        this.inputtype = inputtype;
-        switch (this.inputtype) {
-            case this.input_types.graph.adjacency_list.name:
-                if (this.options.graph.weighted) {
+        switch (UI.dsaFormat) {
+            case DSA.graph.adjacency_list.name:
+                if (UI.userOptions.graph.weighted) {
                     this.parse_weighted_adjacency_list();
                 }
                 else {
                     this.parse_adjacency_list();
                 }
                 break;
-            case this.input_types.graph.adjacency_matrix.name:
+            case DSA.graph.adjacency_matrix.name:
                 this.parse_undirected_unweighted_adjacency_matrix();
                 break;
             default:
@@ -101,16 +96,16 @@ class Graph extends DataStructure {
     plot() {
         this.ctx.fillStyle = this.canvasBgColor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        switch (this.inputtype) {
-            case this.input_types.graph.adjacency_list.name:
-                if (this.options.graph.weighted) {
+        switch (UI.dsaFormat) {
+            case DSA.graph.adjacency_list.name:
+                if (UI.userOptions.graph.weighted) {
                     this.plotWeightedUndirectedGraph();
                 }
                 else {
                     this.plotUnweightedUndirectedGraph();
                 }
                 break;
-            case this.input_types.graph.adjacency_matrix.name:
+            case DSA.graph.adjacency_matrix.name:
                 this.plotUnweightedUndirectedGraph();
                 break;
             default:
@@ -234,28 +229,32 @@ class Graph extends DataStructure {
             let a = 30;
             let slope = Maths.CartesianSlope(first.ToCartesian(), last.ToCartesian());
             let xt1 = centerPoint.x +
-                ArrowheadSize * Math.cos(Math.atan(slope) - a * (Math.PI / 180));
+                Aesthetics.ArrowheadSize *
+                    Math.cos(Math.atan(slope) - a * (Math.PI / 180));
             let yt1 = centerPoint.y +
-                ArrowheadSize * Math.sin(Math.atan(slope) - a * (Math.PI / 180));
+                Aesthetics.ArrowheadSize *
+                    Math.sin(Math.atan(slope) - a * (Math.PI / 180));
             let targetPoint1 = RelativePoint.FromCartesian(xt1, yt1, last.w, last.h);
             let xt2 = centerPoint.x +
-                ArrowheadSize * Math.cos(Math.atan(slope) + a * (Math.PI / 180));
+                Aesthetics.ArrowheadSize *
+                    Math.cos(Math.atan(slope) + a * (Math.PI / 180));
             let yt2 = centerPoint.y +
-                ArrowheadSize * Math.sin(Math.atan(slope) + a * (Math.PI / 180));
+                Aesthetics.ArrowheadSize *
+                    Math.sin(Math.atan(slope) + a * (Math.PI / 180));
             let targetPoint2 = RelativePoint.FromCartesian(xt2, yt2, last.w, last.h);
-            let distRatio = Maths.DistanceRatio(ArrowheadSize, last, targetPoint1);
+            let distRatio = Maths.DistanceRatio(Aesthetics.ArrowheadSize, last, targetPoint1);
             let pr1_edge = Maths.FindPointOnLine(last, targetPoint1, distRatio);
             let pr2_edge = Maths.FindPointOnLine(last, targetPoint2, distRatio);
             let vx = centerPoint.x - pr1_edge.ToCartesian().x;
             let vy = centerPoint.y - pr1_edge.ToCartesian().y;
             let len = Math.sqrt(vx * vx + vy * vy);
-            let cx = (vx / len) * ArrowheadSize + centerPoint.x;
-            let cy = (vy / len) * ArrowheadSize + centerPoint.y;
+            let cx = (vx / len) * Aesthetics.ArrowheadSize + centerPoint.x;
+            let cy = (vy / len) * Aesthetics.ArrowheadSize + centerPoint.y;
             let vx2 = centerPoint.x - pr2_edge.ToCartesian().x;
             let vy2 = centerPoint.y - pr2_edge.ToCartesian().y;
             let len2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
-            let cx2 = (vx2 / len2) * ArrowheadSize + centerPoint.x;
-            let cy2 = (vy2 / len2) * ArrowheadSize + centerPoint.y;
+            let cx2 = (vx2 / len2) * Aesthetics.ArrowheadSize + centerPoint.x;
+            let cy2 = (vy2 / len2) * Aesthetics.ArrowheadSize + centerPoint.y;
             let cr1 = RelativePoint.FromCartesian(cx, cy, this.canvas.width, this.canvas.height);
             let cr2 = RelativePoint.FromCartesian(cx2, cy2, this.canvas.width, this.canvas.height);
             let dp1 = null, dp2 = null;

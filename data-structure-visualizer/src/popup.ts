@@ -3,6 +3,10 @@ import { Graph } from './graph';
 
 interface TailwindCollapse {}
 
+// import 'tw-elements';
+
+// twe.initTE({ Ripple: twe.Ripple });
+
 import { Aesthetics, DSA } from './dsa-metadata';
 import { UI } from './userinput.service';
 
@@ -12,11 +16,12 @@ let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 
 function goClicked(): void {
-	if (this.UI.dsaFormat) {
+	if (UI.dsaFormat) {
 		visualize();
 	}
 }
 
+let v = 'helo world';
 function visualize() {
 	let input = UI.textarea.value;
 

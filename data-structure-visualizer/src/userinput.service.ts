@@ -91,7 +91,7 @@ class UserInput {
 	bindForms(): void {
 		document
 			.querySelector('.dropdown-menu')!
-			.addEventListener('click', this.dropdownItemSelected);
+			.addEventListener('click', this.dropdownItemSelected.bind(this));
 
 		this.weightedSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.graph.weighted = event.target.checked;
@@ -136,8 +136,8 @@ class UserInput {
 				this.userOptions.graph.weighted
 			);
 
-			if (textarea) {
-				textarea.setAttribute('placeholder', placeholder);
+			if (this.textarea) {
+				this.textarea.setAttribute('placeholder', placeholder);
 			}
 		}
 	}

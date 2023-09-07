@@ -1,5 +1,7 @@
 import { Parser } from './parser';
 import { Graph } from './graph';
+// import 'tw-elements';
+// twe.initTE({ Ripple: twe.Ripple });
 import { Aesthetics, DSA } from './dsa-metadata';
 import { UI } from './userinput.service';
 let dstype = 'graph';
@@ -7,10 +9,11 @@ let dsinputtype = 'adjacency_list';
 let canvas;
 let ctx;
 function goClicked() {
-    if (this.UI.dsaFormat) {
+    if (UI.dsaFormat) {
         visualize();
     }
 }
+let v = 'helo world';
 function visualize() {
     let input = UI.textarea.value;
     if (Parser.validate_input(input)) {

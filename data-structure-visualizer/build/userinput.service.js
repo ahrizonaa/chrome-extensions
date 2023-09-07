@@ -39,7 +39,7 @@ class UserInput {
     bindForms() {
         document
             .querySelector('.dropdown-menu')
-            .addEventListener('click', this.dropdownItemSelected);
+            .addEventListener('click', this.dropdownItemSelected.bind(this));
         this.weightedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.weighted = event.target.checked;
         });
@@ -74,8 +74,8 @@ class UserInput {
                 UI.dsaSelectionText.innerText = event.target.innerText;
             }
             let placeholder = DSA[this.dsa][this.dsaFormat].findPlaceholder(this.userOptions.graph.weighted);
-            if (textarea) {
-                textarea.setAttribute('placeholder', placeholder);
+            if (this.textarea) {
+                this.textarea.setAttribute('placeholder', placeholder);
             }
         }
     }

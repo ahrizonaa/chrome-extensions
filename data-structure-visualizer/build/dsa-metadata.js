@@ -51,7 +51,7 @@ class DataStructureOptions {
 }
 class CanvasAesthetics {
     constructor() {
-        this.CanvasBgColor = '#212529';
+        this.CanvasBgColor = '#101010';
         this.EdgeColor = '#EEEEEE';
         this.NodeColor = '#141824';
         this.NodeFontSize = '16px';

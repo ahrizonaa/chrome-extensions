@@ -1,4 +1,5 @@
 import { DSA } from './dsa-metadata';
+import { Collapse } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 class UserInput {
     constructor() {
         this.setDefaultOptions();
@@ -24,11 +25,16 @@ class UserInput {
         };
     }
     getForms() {
+        this.controlsCollapse = document.getElementById('collapse-item');
+        this.dropdownMenu = document.querySelector('.dropdown-menu');
+        this.form = document.getElementById('textarea-form');
+        this.goBtn = document.getElementById('go-btn');
+        this.textareaWrapper = document.getElementById('textarea-validation-wrapper');
         this.textarea = document.getElementById('dataset-textarea');
         this.dsaSelectionText = document.querySelector('.dataset-dropdown-text');
-        this.graphControls = document.getElementById('graph-options-panel');
-        this.treeControls = document.getElementById('tree-options-panel');
-        this.linkedlistControls = document.getElementById('linkedlist-options-panel');
+        this.graphControls = document.getElementById('graph-controls');
+        this.treeControls = document.getElementById('tree-controls');
+        this.linkedlistControls = document.getElementById('linkedlist-controls');
         this.weightedSwitch = document.getElementById('weighted_switch');
         this.directedSwitch = document.getElementById('directed-switch');
         this.bstSwitch = document.getElementById('bst_switch');
@@ -37,9 +43,20 @@ class UserInput {
         this.doublySwitch = document.getElementById('doubly_switch');
     }
     bindForms() {
-        document
-            .querySelector('.dropdown-menu')
-            .addEventListener('click', this.dropdownItemSelected.bind(this));
+        this.controlsCollapse = new Collapse(document.getElementById('collapse-item'), {
+            toggle: true
+        });
+        this.form.addEventListener('changed.te.validation', (event) => {
+            if (this.textareaWrapper.dataset.teValidationState == 'valid') {
+                this.goBtn.removeAttribute('disabled');
+                this.goBtn.classList.toggle('pointer-events-none', false);
+            }
+            else {
+                this.goBtn.setAttribute('disabled', '');
+                this.goBtn.classList.toggle('pointer-events-none', true);
+            }
+        });
+        this.dropdownMenu.addEventListener('click', this.dropdownItemSelected.bind(this));
         this.weightedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.weighted = event.target.checked;
         });
@@ -60,20 +77,27 @@ class UserInput {
         let hideGraph = control != 'graph';
         let hideLL = control != 'linkedlist';
         let hideTree = control != 'tree';
-        this.graphControls.classList.toggle('hide-opts-panel', hideGraph);
-        this.linkedlistControls.classList.toggle('hide-opts-panel', hideLL);
-        this.treeControls.classList.toggle('hide-opts-panel', hideTree);
+        if (!hideGraph || !hideLL || !hideTree) {
+            this.controlsCollapse.show();
+            this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
+            this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
+            this.treeControls.classList.toggle('hide-switch-panel', hideTree);
+        }
+        else if (hideGraph && hideLL && hideTree) {
+            this.controlsCollapse.hide();
+        }
     }
     dropdownItemSelected(event) {
-        if (event.target.hasAttribute('dsinputtypeoption')) {
-            this.dsa = event.target.getAttribute('dstype');
-            this.dsaFormat = event.target.getAttribute('dsinputtype');
-            localStorage.setItem('dsa', this.dsa);
+        if (event.target.hasAttribute('dsa-option')) {
+            this.dsaType = event.target.getAttribute('dsa-type');
+            this.dsaFormat = event.target.getAttribute('dsa-format');
+            localStorage.setItem('dsa-type', this.dsaType);
             localStorage.setItem('dsa-format', this.dsaFormat);
             if (UI.dsaSelectionText) {
                 UI.dsaSelectionText.innerText = event.target.innerText;
             }
-            let placeholder = DSA[this.dsa][this.dsaFormat].findPlaceholder(this.userOptions.graph.weighted);
+            let placeholder = DSA[this.dsaType][this.dsaFormat].findPlaceholder(this.userOptions.graph.weighted);
+            this.toggleControls(this.dsaType);
             if (this.textarea) {
                 this.textarea.setAttribute('placeholder', placeholder);
             }

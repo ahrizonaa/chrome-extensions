@@ -1,4 +1,4 @@
-import { TreeNode, Edge, DataStructure } from './base-data-structures';
+import { TreeNode, Edge, DataStructure } from './base-datastructures';
 import { Maths, RelativePoint } from './math-functions.js';
 import { DSA, Aesthetics } from './dsa-metadata';
 import { UI } from './userinput.service';

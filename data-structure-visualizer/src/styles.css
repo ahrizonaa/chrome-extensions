@@ -23,7 +23,7 @@ body {
 
 canvas {
 	-webkit-font-smoothing: none !important;
-	/* background-color: #101010; */
+	background-color: #101010 !important;
 	height: 380px;
 	width: 380px;
 }
@@ -33,42 +33,30 @@ canvas {
 	height: -webkit-fill-available;
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: flex-start;
 	box-sizing: border-box;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	border: 2px solid #999;
+}
+
+.dropdown-menu {
+	width: 100%;
 }
 
 li > a.dropdown-item {
 	font-size: 12px !important;
 }
 
+.dropdown-header {
+	display: flex;
+	align-items: center;
+}
+
 .form-container {
-	height: 100%;
 	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: flex-start;
-	width: 187px !important;
-	max-width: 187px !important;
-	min-width: 187px !important;
-}
-
-.dataset-form {
-	height: fit-content;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	padding-bottom: 10px;
-	padding-top: 10px;
-}
-
-.dataset-form > .btn-group {
-	width: 100%;
+	padding: 10px 10px 0 10px;
+	height: -webkit-fill-available;
+	width: -webkit-fill-available;
 }
 
 .dataset-dropdown {
@@ -85,7 +73,6 @@ li > a.dropdown-item {
 	min-width: 17ch;
 	text-overflow: ellipsis;
 	overflow-x: hidden;
-	display: inline-block;
 }
 
 button#go-btn {
@@ -93,17 +80,9 @@ button#go-btn {
 	align-items: center;
 }
 
-.dataset-container {
-	height: -webkit-fill-available;
-	width: 100%;
-}
-
-.textarea-container {
-	height: 100%;
-}
-
 #dataset-textarea {
 	font-size: 14px !important;
+	height: 350px !important;
 }
 
 .dropdown-divider {
@@ -111,9 +90,8 @@ button#go-btn {
 	margin-right: 10px;
 }
 
-div#ds-collapse-panel {
+.collapse-panel {
 	width: 100%;
-	padding-top: 10px;
 }
 
 div.options-panel {
@@ -122,20 +100,36 @@ div.options-panel {
 	width: 100%;
 }
 
-label.form-check-label {
-	font-size: 12px !important;
-	padding-left: 10px;
-	padding-top: 1px;
-}
-
 .form-check.form-switch {
 	display: flex;
 	align-items: center;
 }
 
-.hide-opts-panel {
+.hide-panel {
+	display: none !important;
+}
+
+.textarea-layout-wrapper {
+	display: flex;
+	width: 100%;
+	align-items: flex-end;
+	flex-grow: 1;
+	margin-bottom: 32px;
+}
+
+form#textarea-form {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+#textarea-validation-wrapper {
+	width: -webkit-fill-available;
+}
+
+.hide-switch-panel {
 	max-height: 0px !important;
-	overflow: hidden !important;
-	user-select: none !important;
-	pointer-events: none !important;
+	overflow: hidden;
+	pointer-events: none;
+	position: relative;
 }

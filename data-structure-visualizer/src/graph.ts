@@ -3,7 +3,7 @@ import {
 	Edge,
 	DataStructure,
 	EdgeSegment
-} from './base-data-structures';
+} from './base-datastructures';
 import {
 	CartesianCoordinate,
 	CartesianPoint,

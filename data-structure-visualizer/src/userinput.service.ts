@@ -1,12 +1,10 @@
-import {
-	DataStructureOptions,
-	DataStructureRepresentations,
-	DSA
-} from './dsa-metadata';
+import { DataStructureOptions, DSA } from './dsa-metadata';
+
+import { Collapse } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 
 class UserInput {
 	textarea: HTMLTextAreaElement;
-	controlsCollapse: any;
+	controlsCollapse: Collapse;
 	graphControls: HTMLDivElement;
 	treeControls: HTMLDivElement;
 	linkedlistControls: HTMLDivElement;
@@ -17,9 +15,13 @@ class UserInput {
 	nullsSwitch: HTMLInputElement;
 	doublySwitch: HTMLInputElement;
 	dsaSelectionText: HTMLSpanElement;
+	textareaWrapper: HTMLDivElement;
 	userOptions: DataStructureOptions;
-	dsa: string;
+	dsaType: string;
 	dsaFormat: string;
+	goBtn: HTMLButtonElement;
+	form: HTMLFormElement;
+	dropdownMenu: HTMLUListElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -47,6 +49,18 @@ class UserInput {
 	}
 
 	getForms(): void {
+		this.controlsCollapse = document.getElementById(
+			'collapse-item'
+		) as HTMLDivElement;
+
+		this.dropdownMenu = document.querySelector(
+			'.dropdown-menu'
+		) as HTMLUListElement;
+		this.form = document.getElementById('textarea-form') as HTMLFormElement;
+		this.goBtn = document.getElementById('go-btn') as HTMLButtonElement;
+		this.textareaWrapper = document.getElementById(
+			'textarea-validation-wrapper'
+		) as HTMLDivElement;
 		this.textarea = document.getElementById(
 			'dataset-textarea'
 		) as HTMLTextAreaElement;
@@ -55,15 +69,15 @@ class UserInput {
 		) as HTMLSpanElement;
 
 		this.graphControls = document.getElementById(
-			'graph-options-panel'
+			'graph-controls'
 		) as HTMLDivElement;
 
 		this.treeControls = document.getElementById(
-			'tree-options-panel'
+			'tree-controls'
 		) as HTMLDivElement;
 
 		this.linkedlistControls = document.getElementById(
-			'linkedlist-options-panel'
+			'linkedlist-controls'
 		) as HTMLDivElement;
 
 		this.weightedSwitch = document.getElementById(
@@ -89,9 +103,27 @@ class UserInput {
 	}
 
 	bindForms(): void {
-		document
-			.querySelector('.dropdown-menu')!
-			.addEventListener('click', this.dropdownItemSelected.bind(this));
+		this.controlsCollapse = new Collapse(
+			document.getElementById('collapse-item'),
+			{
+				toggle: true
+			}
+		);
+
+		this.form.addEventListener('changed.te.validation', (event: any) => {
+			if (this.textareaWrapper.dataset.teValidationState == 'valid') {
+				this.goBtn.removeAttribute('disabled');
+				this.goBtn.classList.toggle('pointer-events-none', false);
+			} else {
+				this.goBtn.setAttribute('disabled', '');
+				this.goBtn.classList.toggle('pointer-events-none', true);
+			}
+		});
+
+		this.dropdownMenu.addEventListener(
+			'click',
+			this.dropdownItemSelected.bind(this)
+		);
 
 		this.weightedSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.graph.weighted = event.target.checked;
@@ -117,24 +149,32 @@ class UserInput {
 		let hideGraph = control != 'graph';
 		let hideLL = control != 'linkedlist';
 		let hideTree = control != 'tree';
-		this.graphControls.classList.toggle('hide-opts-panel', hideGraph);
-		this.linkedlistControls.classList.toggle('hide-opts-panel', hideLL);
-		this.treeControls.classList.toggle('hide-opts-panel', hideTree);
+		if (!hideGraph || !hideLL || !hideTree) {
+			this.controlsCollapse.show();
+			this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
+			this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
+			this.treeControls.classList.toggle('hide-switch-panel', hideTree);
+		} else if (hideGraph && hideLL && hideTree) {
+			this.controlsCollapse.hide();
+		}
 	}
 
 	dropdownItemSelected(event: any): void {
-		if (event.target.hasAttribute('dsinputtypeoption')) {
-			this.dsa = event.target.getAttribute('dstype');
-			this.dsaFormat = event.target.getAttribute('dsinputtype');
-			localStorage.setItem('dsa', this.dsa);
+		if (event.target.hasAttribute('dsa-option')) {
+			this.dsaType = event.target.getAttribute('dsa-type');
+			this.dsaFormat = event.target.getAttribute('dsa-format');
+
+			localStorage.setItem('dsa-type', this.dsaType);
 			localStorage.setItem('dsa-format', this.dsaFormat);
 			if (UI.dsaSelectionText) {
 				UI.dsaSelectionText.innerText = event.target.innerText;
 			}
 
-			let placeholder = DSA[this.dsa][this.dsaFormat].findPlaceholder(
+			let placeholder = DSA[this.dsaType][this.dsaFormat].findPlaceholder(
 				this.userOptions.graph.weighted
 			);
+
+			this.toggleControls(this.dsaType);
 
 			if (this.textarea) {
 				this.textarea.setAttribute('placeholder', placeholder);

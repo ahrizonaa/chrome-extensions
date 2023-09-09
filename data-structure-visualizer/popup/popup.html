@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html class="dark" lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,128 +14,159 @@
 	<body>
 		<div class="content container">
 			<div class="form-container">
-				<div class="dataset-form">
-					<div class="btn-group" role="group">
-						<button
-							class="btn btn-sm bg-body-secondary dropdown-toggle dataset-dropdown"
-							type="button"
-							data-bs-toggle="dropdown"
-							aria-expanded="false">
-							<span class="dataset-dropdown-text">Select Input Format</span>
-						</button>
-						<ul class="dropdown-menu"></ul>
+				<form
+					id="textarea-form"
+					data-te-validation-init
+					data-te-validated="false"
+					data-te-active-validation="true">
+					<div
+						class="inline-flex rounded-md shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
+						role="group">
+						<div class="relative" data-te-dropdown-ref>
+							<button
+								class="flex items-center whitespace-nowrap rounded-l bg-neutral-800 px-3 pb-2 pt-2.5 text-xs font-normal uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:bg-neutral-600 focus:bg-neutral-800 focus:outline-none focus:ring-0 active:bg-neutral-900 dark:bg-neutral-900 dark:hover:bg-neutral-900 dark:focus:bg-neutral-900 dark:active:bg-neutral-900"
+								type="button"
+								id="dropdownMenuButton1"
+								data-te-dropdown-toggle-ref
+								aria-expanded="false"
+								data-te-ripple-init
+								data-te-ripple-color="light">
+								<span class="dataset-dropdown-text">Select Format</span>
+								<span class="ml-2 w-2">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+										class="h-5 w-5">
+										<path
+											fill-rule="evenodd"
+											d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+											clip-rule="evenodd" />
+									</svg>
+								</span>
+							</button>
+							<ul
+								class="dropdown-menu absolute z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden rounded-b border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+								aria-labelledby="dropdownMenuButton1"
+								data-te-dropdown-menu-ref></ul>
+						</div>
 						<button
 							id="go-btn"
-							class="btn bg-body-secondary btn-sm"
-							type="button">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								fill="currentColor"
-								class="bi bi-arrow-repeat"
-								viewBox="0 0 16 16">
-								<path
-									d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-								<path
-									fill-rule="evenodd"
-									d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-							</svg>
+							form="textarea-form"
+							type="button"
+							data-te-submit-btn-ref
+							data-te-ripple-init
+							data-te-ripple-color="light"
+							class="inline-block rounded-r bg-neutral-800 px-3 pb-2 pt-2.5 text-xs font-normal uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:bg-neutral-600 focus:bg-neutral-800 focus:outline-none focus:ring-0 active:bg-neutral-900 dark:bg-neutral-900 dark:hover:bg-neutral-900 dark:focus:bg-neutral-900 dark:active:bg-neutral-900 disabled:opacity-70">
+							Go
 						</button>
 					</div>
-					<div class="collapse" id="ds-collapse-panel">
-						<div class="card card-body">
+					<div class="collapse collapse-panel py-2">
+						<div
+							class="!visible hidden"
+							id="collapse-item"
+							data-te-collapse-item>
 							<div
-								id="graph-options-panel"
-								class="btn-group btn-group-sm options-panel hide-opts-panel"
-								role="group">
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="weighted_switch" />
-									<label class="form-check-label" for="weighted_switch"
-										>Weighted</label
-									>
-								</div>
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="directed-switch" />
-									<label class="form-check-label" for="directed-switch"
-										>Directed</label
-									>
-								</div>
-							</div>
-							<div
-								id="tree-options-panel"
-								class="btn-group btn-group-sm options-panel hide-opts-panel"
-								role="group">
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="bst_switch" />
-									<label class="form-check-label" for="bst_switch"
-										>Binary Search Tree</label
-									>
-								</div>
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="nary-switch" />
-									<label class="form-check-label" for="nary-switch"
-										>N-ary Tree</label
-									>
-								</div>
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="nulls-switch" />
-									<label class="form-check-label" for="nulls-switch"
-										>Null Children</label
-									>
-								</div>
-							</div>
-							<div
-								id="linkedlist-options-panel"
-								class="btn-group btn-group-sm options-panel hide-opts-panel"
-								role="group">
-								<div class="form-check form-switch">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										id="doubly_switch" />
-									<label class="form-check-label" for="doubly_switch"
-										>Doubly Linked</label
-									>
+								class="block rounded bg-white p-3 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+								<div class="options-panel" role="group">
+									<div id="graph-controls">
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="weighted_switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="weighted_switch"
+												>Weighted</label
+											>
+										</div>
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="directed-switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="directed-switch"
+												>Directed</label
+											>
+										</div>
+									</div>
+									<div id="tree-controls" class="hide-switch-panel">
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="bst_switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="bst_switch"
+												>Binary Search Tree</label
+											>
+										</div>
+
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="nary-switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="nary-switch"
+												>N-ary Tree</label
+											>
+										</div>
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="nulls-switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="nulls-switch"
+												>Null Children</label
+											>
+										</div>
+									</div>
+									<div id="linkedlist-controls" class="hide-switch-panel">
+										<div class="form-check form-switch">
+											<input
+												class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+												type="checkbox"
+												role="switch"
+												id="doubly_switch" />
+											<label
+												class="inline-block text-xs align-middle mt-[0.3rem] pl-[0.15rem] hover:cursor-pointer"
+												for="doubly_switch"
+												>Doubly Linked</label
+											>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="dataset-container">
-					<div class="textarea-container">
-						<textarea
-							autofocus="true"
-							name="textarea"
-							class="form-control"
-							placeholder=""
-							id="dataset-textarea"
-							style="height: 100%"></textarea>
-						<div class="valid-feedback"></div>
-						<div class="invalid-feedback"></div>
+					<div class="textarea-layout-wrapper">
+						<div
+							id="textarea-validation-wrapper"
+							class="relative mb-3"
+							data-te-input-wrapper-init
+							data-te-validate="input"
+							data-te-validation-ruleset="isValid">
+							<textarea
+								autofocus="true"
+								class="min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-50 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+								id="dataset-textarea"
+								style="color: #cccccc !important"></textarea>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 			<div class="canvas-container">
 				<img
@@ -145,10 +176,6 @@
 				<canvas></canvas>
 			</div>
 		</div>
-		<script
-			type="module"
-			src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-
 		<script type="module" src="./popup.js"></script>
 	</body>
 </html>

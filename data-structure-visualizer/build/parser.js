@@ -1,78 +1,51 @@
 import { UI } from './userinput.service';
 class Parser {
-    static parse_input(input_dirty) {
-        let input_safe = this.sanitize_input(input_dirty);
-        if (this.validate_input(input_safe)) {
-            let obj = this.deserialize_input(input_safe);
-            let msg = '';
-            let invalid = document.querySelector('.dataset-container .invalid-feedback');
-            let textarea = document.querySelector('textarea#dataset-textarea');
-            if (obj == null) {
-                msg = 'Malformed input data';
-            }
-            else {
-                if (UI.dsa == 'graph') {
-                    if (Array.isArray(obj) == false) {
-                        msg = 'Input data is not a 2D array';
-                    }
-                    for (let row of obj) {
-                        if (Array.isArray(row) == false) {
-                            msg = 'Input data is not a 2D array';
-                            break;
-                        }
-                    }
-                    if (UI.dsaFormat == 'adjacency_matrix') {
-                        let height = obj.length;
-                        for (let row of obj) {
-                            if (row.length != height) {
-                                msg = 'Matrix is not square';
-                                break;
-                            }
-                        }
-                        return obj;
-                    }
-                    if (UI.dsaFormat == 'adjacency_list') {
-                        let rowsize = UI.userOptions.graph.weighted ? 3 : 2;
-                        for (let row of obj) {
-                            if (row.length != rowsize) {
-                                msg = `Adjacency list is not N x ${rowsize}`;
-                                break;
-                            }
-                        }
-                    }
+    static isValid(val, msg, str) {
+        let obj = Parser.deserialize(val);
+        if (obj == null) {
+            return 'Malformed input data.  Must be valid array.';
+        }
+        if (Array.isArray(obj) == false) {
+            return 'Input must be an array.';
+        }
+        if (UI.dsaType == 'graph' && UI.dsaFormat == 'adjacency_list') {
+            for (let row of obj) {
+                if (Array.isArray(row) == false) {
+                    return 'Input is not a 2D array';
                 }
             }
-            if (msg) {
-                invalid.innerText = msg;
-                textarea.classList.toggle('is-invalid', true);
-                textarea.classList.toggle('is-valid', false);
-                return null;
-            }
-            else {
-                invalid.innerText = '';
-                textarea.classList.toggle('is-invalid', false);
-                textarea.classList.toggle('is-valid', true);
-                return obj;
+            let rowsize = UI.userOptions.graph.weighted ? 3 : 2;
+            for (let row of obj) {
+                if (row.length != rowsize) {
+                    return `Input is not N x ${rowsize}`;
+                }
             }
         }
-    }
-    static validate_input(input) {
-        if (input == '')
-            return false;
+        else if (UI.dsaType == 'graph' && UI.dsaFormat == 'adjacency_matrix') {
+            for (let row of obj) {
+                if (Array.isArray(row) == false) {
+                    return 'Input is not a 2D array';
+                }
+            }
+            let rowsize = obj.length;
+            for (let row of obj) {
+                if (row.length != rowsize) {
+                    return 'Input is not a square matrix';
+                }
+            }
+        }
         return true;
     }
-    static sanitize_input(input_dirty) {
-        return input_dirty.replace(/[\n\t\s;]/g, '');
-    }
-    static deserialize_input(input) {
-        let result = null;
+    static deserialize(str) {
         try {
-            result = JSON.parse(input);
-            return result;
+            return JSON.parse(str);
         }
-        catch (ex) {
+        catch (_a) {
             return null;
         }
+    }
+    static stripInput(input_dirty) {
+        return input_dirty.replace(/[\n\t\s;]/g, '');
     }
 }
 export { Parser };

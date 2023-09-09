@@ -114,7 +114,7 @@ class DataStructureOptions {
 }
 
 class CanvasAesthetics {
-	CanvasBgColor: string = '#212529';
+	CanvasBgColor: string = '#101010';
 	EdgeColor: string = '#EEEEEE';
 	NodeColor: string = '#141824';
 	NodeFontSize: string = '16px';

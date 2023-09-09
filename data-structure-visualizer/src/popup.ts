@@ -3,17 +3,23 @@ import { Graph } from './graph';
 
 interface TailwindCollapse {}
 
-// import 'tw-elements';
-
-// twe.initTE({ Ripple: twe.Ripple });
-
+import {
+	Ripple,
+	Dropdown,
+	Input,
+	Validation,
+	Collapse,
+	initTE
+} from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+initTE({ Dropdown, Ripple, Input, Validation, Collapse });
 import { Aesthetics, DSA } from './dsa-metadata';
 import { UI } from './userinput.service';
+import { DatastructureDropdown } from './datastructure-dropdown';
 
-let dstype: string = 'graph';
-let dsinputtype: string = 'adjacency_list';
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
+let goBtn: HTMLButtonElement;
+let canvasOverlay: HTMLImageElement;
 
 function goClicked(): void {
 	if (UI.dsaFormat) {
@@ -21,101 +27,89 @@ function goClicked(): void {
 	}
 }
 
-let v = 'helo world';
 function visualize() {
 	let input = UI.textarea.value;
-
-	if (Parser.validate_input(input)) {
-		let parsed_input = Parser.parse_input(input);
-		if (parsed_input == null) {
-			// do nothing
-		} else {
-			// cache input
-			localStorage.setItem('dsa-input', input);
-
-			let canvas_overlay = document.getElementById('idle-canvas-overlay')!;
-			canvas_overlay.style.display = 'none';
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			let ds: any = null;
-			switch (dsinputtype) {
-				case null:
-					return;
-				case DSA.graph.adjacency_list.name:
-				case DSA.graph.adjacency_matrix.name:
-					ds = new Graph(ctx, canvas);
-					break;
-				default:
-					return;
-			}
-			ds.parse(parsed_input, dstype, dsinputtype);
-			ds.plot();
-		}
+	let parsed_input = JSON.parse(input);
+	localStorage.setItem('dsa-input', input);
+	canvasOverlay.style.display = 'none';
+	clearCanvas();
+	let ds: any = null;
+	switch (UI.dsaFormat) {
+		case null:
+			return;
+		case DSA.graph.adjacency_list.name:
+		case DSA.graph.adjacency_matrix.name:
+			ds = new Graph(ctx, canvas);
+			break;
+		default:
+			return;
 	}
+	ds.parse(parsed_input);
+	ds.plot();
 }
 
-function construct_dropdown_options() {
-	let elements: HTMLElement[] = [];
-
-	for (let datastructure in DSA) {
-		let header = document.createElement('li');
-		let h6 = document.createElement('h6');
-		h6.innerText =
-			datastructure.slice(0, 1).toUpperCase() + datastructure.slice(1);
-		h6.className = 'dropdown-header';
-		let hr = document.createElement('hr');
-		hr.className = 'dropdown-divider';
-		header.appendChild(h6);
-		elements.push(header);
-
-		for (let inputtype in DSA[datastructure]) {
-			let li = document.createElement('li');
-			let a = document.createElement('a');
-			a.className = 'dropdown-item';
-			a.href = '#';
-			a.innerText = DSA[datastructure][inputtype].desc;
-			a.setAttribute('dstype', datastructure);
-			a.setAttribute('dsinputtypeoption', '');
-			a.setAttribute('dsinputtype', inputtype);
-			li.appendChild(a);
-			elements.push(li);
-		}
-		elements.push(hr);
-	}
-
-	let dropdownMenu = document.querySelector('.dropdown-menu')!;
-	for (let item of elements) dropdownMenu.appendChild(item);
+function clearCanvas() {
+	ctx.fillStyle = Aesthetics.CanvasBgColor;
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function init() {
-	document.querySelector('#go-btn')!.addEventListener('click', goClicked);
-
-	construct_dropdown_options();
-
+function setupCanvas() {
 	let content = document.querySelector('.content')!;
 	let form = document.querySelector('.form-container')!;
 	canvas = document.querySelector('canvas');
 	canvas.width = content.clientWidth - form.clientWidth - 20;
 	canvas.height = canvas.width;
 	ctx = canvas.getContext('2d', { alpha: false });
-	ctx.fillStyle = Aesthetics.CanvasBgColor;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	clearCanvas();
+}
 
-	let cacheInput = localStorage.getItem('dsa-input');
-	let cache_dstype = localStorage.getItem('dsa');
-	let cache_dsinputtype = localStorage.getItem('dsa-format');
+function restoreCache() {
+	let cachedInput = localStorage.getItem('dsa-input');
+	let cachedType = localStorage.getItem('dsa-type');
+	let cachedFormat = localStorage.getItem('dsa-format');
 
-	if (cacheInput != null) {
-		UI.textarea.value = cacheInput;
-	}
-
-	if (cache_dstype != null && cache_dsinputtype != null) {
+	if (cachedType != null && cachedFormat != null) {
 		let opt = document.querySelector(
-			`a.dropdown-item[dstype=${cache_dstype}][dsinputtype=${cache_dsinputtype}]`
+			`a.dropdown-item[dsa-type=${cachedType}][dsa-format=${cachedFormat}]`
 		) as HTMLAnchorElement;
 		if (opt) {
 			opt.click();
 		}
 	}
+
+	if (cachedInput != null) {
+		UI.textarea.value = cachedInput;
+		UI.textarea.focus();
+		UI.textarea.classList.toggle('active', true);
+		UI.goBtn.click();
+	}
+}
+
+function setupFormValidation() {
+	let val = new Validation(UI.form, {
+		customErrorMessages: {
+			isValid: ''
+		},
+		customRules: {
+			isValid: Parser.isValid
+		}
+	});
+}
+
+function init() {
+	UI.goBtn.addEventListener('click', goClicked.bind(this));
+
+	canvasOverlay = document.getElementById(
+		'idle-canvas-overlay'
+	)! as HTMLImageElement;
+
+	DatastructureDropdown.Create();
+
+	setupFormValidation();
+
+	setupCanvas();
+
+	restoreCache();
 }
 
 let weighted_edges = [

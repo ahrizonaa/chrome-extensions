@@ -4,7 +4,11 @@
 	"description": "",
 	"main": "popup/popup.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"rollup": "rollup -c --watch",
+		"typescript": "npx tsc -w",
+		"tailwind": "npx tailwind -i ./src/styles.css -o popup/popup.css --watch --minify",
+		"dev": "npm-run-all --parallel --continue-on-error typescript tailwind rollup"
 	},
 	"repository": {
 		"type": "git",
@@ -17,6 +21,7 @@
 	},
 	"homepage": "https://github.com/ahrizonaa/chrome-extensions#readme",
 	"devDependencies": {
+		"rollup-plugin-bundle-size": "^1.0.3",
 		"tailwindcss": "^3.3.3",
 		"typescript": "^5.2.2"
 	},

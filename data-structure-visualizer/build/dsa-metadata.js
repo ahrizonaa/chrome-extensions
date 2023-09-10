@@ -38,16 +38,35 @@ class DataStructureRepresentations {
     }
 }
 class GraphOptions {
+    constructor() {
+        this.directed = false;
+        this.weighted = false;
+    }
 }
 class TreeOptions {
+    constructor() {
+        this.binary = false;
+        this.nary = false;
+        this.nulls = false;
+    }
 }
 class StackOptions {
 }
 class QueueOptions {
 }
 class LinkedListOptions {
+    constructor() {
+        this.doubly = false;
+    }
 }
 class DataStructureOptions {
+    constructor() {
+        this.graph = new GraphOptions();
+        this.tree = new TreeOptions();
+        this.stack = new StackOptions();
+        this.queue = new QueueOptions();
+        this.linkedlist = new LinkedListOptions();
+    }
 }
 class CanvasAesthetics {
     constructor() {
@@ -60,7 +79,14 @@ class CanvasAesthetics {
         this.ArrowheadSize = 10;
     }
 }
+class DataStructureSelection {
+    constructor() {
+        this.dsaType = '';
+        this.dsaFormat = '';
+    }
+}
 const DSA = new DataStructureRepresentations();
 const Aesthetics = new CanvasAesthetics();
-export { DSA, Aesthetics, DataStructureOptions, DataStructureRepresentations };
-// [[1,2],[3,4],[6,1]]
+const UserSelection = new DataStructureSelection();
+const UserOptions = new DataStructureOptions();
+export { DSA, Aesthetics, DataStructureOptions, DataStructureSelection, DataStructureRepresentations, UserSelection, UserOptions };

@@ -1,4 +1,4 @@
-import { DSA } from './dsa-metadata';
+import { DSA, UserOptions, UserSelection } from './dsa-metadata';
 import { Collapse } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 class UserInput {
     constructor() {
@@ -7,22 +7,8 @@ class UserInput {
         this.bindForms();
     }
     setDefaultOptions() {
-        this.userOptions = {
-            graph: {
-                directed: false,
-                weighted: false
-            },
-            tree: {
-                binary: false,
-                nary: false,
-                nulls: false
-            },
-            stack: {},
-            queue: {},
-            linkedlist: {
-                doubly: false
-            }
-        };
+        this.userSelection = UserSelection;
+        this.userOptions = UserOptions;
     }
     getForms() {
         this.controlsCollapse = document.getElementById('collapse-item');
@@ -42,6 +28,9 @@ class UserInput {
         this.nullsSwitch = document.getElementById('nulls-switch');
         this.doublySwitch = document.getElementById('doubly_switch');
     }
+    cache(val, key = 'user-options') {
+        localStorage.setItem(key, val);
+    }
     bindForms() {
         this.controlsCollapse = new Collapse(document.getElementById('collapse-item'), {
             toggle: true
@@ -59,18 +48,23 @@ class UserInput {
         this.dropdownMenu.addEventListener('click', this.dropdownItemSelected.bind(this));
         this.weightedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.weighted = event.target.checked;
+            this.cache(this.userOptions);
         });
         this.directedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.directed = event.target.checked;
+            this.cache(this.userOptions);
         });
         this.bstSwitch.addEventListener('change', (event) => {
             this.userOptions.tree.binary = event.target.checked;
+            this.cache(this.userOptions);
         });
         this.narySwitch.addEventListener('change', (event) => {
             this.userOptions.tree.nary = event.target.checked;
+            this.cache(this.userOptions);
         });
         this.nullsSwitch.addEventListener('change', (event) => {
             this.userOptions.tree.nulls = event.target.checked;
+            this.cache(this.userOptions);
         });
     }
     toggleControls(control) {

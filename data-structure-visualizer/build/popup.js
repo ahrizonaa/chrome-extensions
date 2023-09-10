@@ -3,7 +3,7 @@ import { Graph } from './graph';
 import { Ripple, Dropdown, Input, Validation, Collapse, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 initTE({ Dropdown, Ripple, Input, Validation, Collapse });
 import { Aesthetics, DSA } from './dsa-metadata';
-import { UI } from './userinput.service';
+import { UI } from './ui.service';
 import { DatastructureDropdown } from './datastructure-dropdown';
 let canvas;
 let ctx;
@@ -82,20 +82,4 @@ function init() {
     setupCanvas();
     restoreCache();
 }
-let weighted_edges = [
-    [3, 1, 2],
-    [3, 2, 3],
-    [1, 1, 3],
-    [1, 2, 4],
-    [1, 1, 2],
-    [2, 3, 4]
-];
-let adjacency_list = [
-    [0, 1],
-    [1, 2],
-    [2, 3],
-    [2, 4],
-    [5, 6],
-    [5, 7]
-];
 init();

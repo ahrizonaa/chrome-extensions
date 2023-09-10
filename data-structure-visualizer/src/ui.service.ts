@@ -1,4 +1,10 @@
-import { DataStructureOptions, DSA } from './dsa-metadata';
+import {
+	DataStructureOptions,
+	DataStructureSelection,
+	DSA,
+	UserOptions,
+	UserSelection
+} from './dsa-metadata';
 
 import { Collapse } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 
@@ -17,6 +23,7 @@ class UserInput {
 	dsaSelectionText: HTMLSpanElement;
 	textareaWrapper: HTMLDivElement;
 	userOptions: DataStructureOptions;
+	userSelection: DataStructureSelection;
 	dsaType: string;
 	dsaFormat: string;
 	goBtn: HTMLButtonElement;
@@ -30,22 +37,8 @@ class UserInput {
 	}
 
 	setDefaultOptions(): void {
-		this.userOptions = {
-			graph: {
-				directed: false,
-				weighted: false
-			},
-			tree: {
-				binary: false,
-				nary: false,
-				nulls: false
-			},
-			stack: {},
-			queue: {},
-			linkedlist: {
-				doubly: false
-			}
-		};
+		this.userSelection = UserSelection;
+		this.userOptions = UserOptions;
 	}
 
 	getForms(): void {
@@ -102,6 +95,10 @@ class UserInput {
 		) as HTMLInputElement;
 	}
 
+	cache(val: any, key: string = 'user-options'): void {
+		localStorage.setItem(key, val);
+	}
+
 	bindForms(): void {
 		this.controlsCollapse = new Collapse(
 			document.getElementById('collapse-item'),
@@ -127,21 +124,26 @@ class UserInput {
 
 		this.weightedSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.graph.weighted = event.target.checked;
+			this.cache(this.userOptions);
 		});
 
 		this.directedSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.graph.directed = event.target.checked;
+			this.cache(this.userOptions);
 		});
 		this.bstSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.tree.binary = event.target.checked;
+			this.cache(this.userOptions);
 		});
 
 		this.narySwitch.addEventListener('change', (event: any) => {
 			this.userOptions.tree.nary = event.target.checked;
+			this.cache(this.userOptions);
 		});
 
 		this.nullsSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.tree.nulls = event.target.checked;
+			this.cache(this.userOptions);
 		});
 	}
 

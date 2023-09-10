@@ -91,18 +91,18 @@ class DataStructureRepresentations {
 }
 
 class GraphOptions {
-	directed: boolean;
-	weighted: boolean;
+	directed: boolean = false;
+	weighted: boolean = false;
 }
 class TreeOptions {
-	binary: boolean;
-	nary: boolean;
-	nulls: boolean;
+	binary: boolean = false;
+	nary: boolean = false;
+	nulls: boolean = false;
 }
 class StackOptions {}
 class QueueOptions {}
 class LinkedListOptions {
-	doubly: boolean;
+	doubly: boolean = false;
 }
 
 class DataStructureOptions {
@@ -111,6 +111,14 @@ class DataStructureOptions {
 	stack: StackOptions;
 	queue: QueueOptions;
 	linkedlist: LinkedListOptions;
+
+	constructor() {
+		this.graph = new GraphOptions();
+		this.tree = new TreeOptions();
+		this.stack = new StackOptions();
+		this.queue = new QueueOptions();
+		this.linkedlist = new LinkedListOptions();
+	}
 }
 
 class CanvasAesthetics {
@@ -125,9 +133,22 @@ class CanvasAesthetics {
 	constructor() {}
 }
 
+class DataStructureSelection {
+	dsaType: string = '';
+	dsaFormat: string = '';
+}
+
 const DSA: DataStructureRepresentations = new DataStructureRepresentations();
 const Aesthetics: CanvasAesthetics = new CanvasAesthetics();
+const UserSelection = new DataStructureSelection();
+const UserOptions = new DataStructureOptions();
 
-export { DSA, Aesthetics, DataStructureOptions, DataStructureRepresentations };
-
-// [[1,2],[3,4],[6,1]]
+export {
+	DSA,
+	Aesthetics,
+	DataStructureOptions,
+	DataStructureSelection,
+	DataStructureRepresentations,
+	UserSelection,
+	UserOptions
+};

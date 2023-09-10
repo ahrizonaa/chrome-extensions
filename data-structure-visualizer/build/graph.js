@@ -1,7 +1,7 @@
 import { TreeNode, Edge, DataStructure } from './base-datastructures';
 import { Maths, RelativePoint } from './math-functions.js';
 import { DSA, Aesthetics } from './dsa-metadata';
-import { UI } from './userinput.service';
+import { UI } from './ui.service';
 class Graph extends DataStructure {
     constructor(ctx, canvas) {
         super();
@@ -112,7 +112,7 @@ class Graph extends DataStructure {
                 break;
         }
     }
-    plot_nodes() {
+    plotNodes() {
         for (let row = 0; row < this.matrix.length; row++) {
             for (let col = 0; col < this.matrix[row].length; col++) {
                 let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
@@ -136,8 +136,9 @@ class Graph extends DataStructure {
             }
         }
     }
+    plotEdges() { }
     plotUnweightedUndirectedGraph() {
-        this.plot_nodes();
+        this.plotNodes();
         for (let [from, to] of this.edgelist) {
             let node1 = this.graph[from];
             let node2 = this.graph[to];
@@ -150,7 +151,7 @@ class Graph extends DataStructure {
         this.animate_edges();
     }
     plotWeightedUndirectedGraph() {
-        this.plot_nodes();
+        this.plotNodes();
         for (let [, from, to] of this.dataset) {
             let node1 = this.graph[from];
             let node2 = this.graph[to];
@@ -220,82 +221,87 @@ class Graph extends DataStructure {
             this.ctx.lineTo(next.x, next.y);
             this.ctx.stroke();
         }
-        if (res.done == true) {
+        else if (res.done == true) {
             let { first, last } = res.value;
             cancelAnimationFrame(this.animation_frame_id);
             this.ctx.closePath();
             this.current_edge += 1;
-            let centerPoint = last.ToCartesian();
-            let a = 30;
-            let slope = Maths.CartesianSlope(first.ToCartesian(), last.ToCartesian());
-            let xt1 = centerPoint.x +
-                Aesthetics.ArrowheadSize *
-                    Math.cos(Math.atan(slope) - a * (Math.PI / 180));
-            let yt1 = centerPoint.y +
-                Aesthetics.ArrowheadSize *
-                    Math.sin(Math.atan(slope) - a * (Math.PI / 180));
-            let targetPoint1 = RelativePoint.FromCartesian(xt1, yt1, last.w, last.h);
-            let xt2 = centerPoint.x +
-                Aesthetics.ArrowheadSize *
-                    Math.cos(Math.atan(slope) + a * (Math.PI / 180));
-            let yt2 = centerPoint.y +
-                Aesthetics.ArrowheadSize *
-                    Math.sin(Math.atan(slope) + a * (Math.PI / 180));
-            let targetPoint2 = RelativePoint.FromCartesian(xt2, yt2, last.w, last.h);
-            let distRatio = Maths.DistanceRatio(Aesthetics.ArrowheadSize, last, targetPoint1);
-            let pr1_edge = Maths.FindPointOnLine(last, targetPoint1, distRatio);
-            let pr2_edge = Maths.FindPointOnLine(last, targetPoint2, distRatio);
-            let vx = centerPoint.x - pr1_edge.ToCartesian().x;
-            let vy = centerPoint.y - pr1_edge.ToCartesian().y;
-            let len = Math.sqrt(vx * vx + vy * vy);
-            let cx = (vx / len) * Aesthetics.ArrowheadSize + centerPoint.x;
-            let cy = (vy / len) * Aesthetics.ArrowheadSize + centerPoint.y;
-            let vx2 = centerPoint.x - pr2_edge.ToCartesian().x;
-            let vy2 = centerPoint.y - pr2_edge.ToCartesian().y;
-            let len2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
-            let cx2 = (vx2 / len2) * Aesthetics.ArrowheadSize + centerPoint.x;
-            let cy2 = (vy2 / len2) * Aesthetics.ArrowheadSize + centerPoint.y;
-            let cr1 = RelativePoint.FromCartesian(cx, cy, this.canvas.width, this.canvas.height);
-            let cr2 = RelativePoint.FromCartesian(cx2, cy2, this.canvas.width, this.canvas.height);
-            let dp1 = null, dp2 = null;
-            if (last.y - first.y > 0) {
-                //downwards
-                if (Math.min(cr1.y, cr2.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
-                    dp1 = cr1;
-                    dp2 = cr2;
-                }
-                else {
-                    dp1 = pr1_edge;
-                    dp2 = pr2_edge;
-                }
+            if (UI.userOptions.graph.directed) {
+                this.plotArrowHead(last, first);
             }
-            else if (last.y - first.y < 0) {
-                // upwards
-                if (Math.max(cr1.y, cr2.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
-                    dp1 = cr1;
-                    dp2 = cr2;
-                }
-                else {
-                    dp1 = pr1_edge;
-                    dp2 = pr2_edge;
-                }
-            }
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = this.edgeColor;
-            this.ctx.moveTo(last.x, last.y);
-            this.ctx.lineTo(dp1.x, dp1.y);
-            this.ctx.stroke();
-            this.ctx.closePath();
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = this.edgeColor;
-            this.ctx.moveTo(last.x, last.y);
-            this.ctx.lineTo(dp2.x, dp2.y);
-            this.ctx.stroke();
             if (this.current_edge < this.edges.length) {
                 this.animation_frame_id = requestAnimationFrame(this.animate_edges.bind(this));
             }
             return;
         }
+    }
+    plotArrowHead(last, first) {
+        let centerPoint = last.ToCartesian();
+        let a = 30;
+        let slope = Maths.CartesianSlope(first.ToCartesian(), last.ToCartesian());
+        let xt1 = centerPoint.x +
+            Aesthetics.ArrowheadSize *
+                Math.cos(Math.atan(slope) - a * (Math.PI / 180));
+        let yt1 = centerPoint.y +
+            Aesthetics.ArrowheadSize *
+                Math.sin(Math.atan(slope) - a * (Math.PI / 180));
+        let targetPoint1 = RelativePoint.FromCartesian(xt1, yt1, last.w, last.h);
+        let xt2 = centerPoint.x +
+            Aesthetics.ArrowheadSize *
+                Math.cos(Math.atan(slope) + a * (Math.PI / 180));
+        let yt2 = centerPoint.y +
+            Aesthetics.ArrowheadSize *
+                Math.sin(Math.atan(slope) + a * (Math.PI / 180));
+        let targetPoint2 = RelativePoint.FromCartesian(xt2, yt2, last.w, last.h);
+        let distRatio = Maths.DistanceRatio(Aesthetics.ArrowheadSize, last, targetPoint1);
+        let pr1_edge = Maths.FindPointOnLine(last, targetPoint1, distRatio);
+        let pr2_edge = Maths.FindPointOnLine(last, targetPoint2, distRatio);
+        let vx = centerPoint.x - pr1_edge.ToCartesian().x;
+        let vy = centerPoint.y - pr1_edge.ToCartesian().y;
+        let len = Math.sqrt(vx * vx + vy * vy);
+        let cx = (vx / len) * Aesthetics.ArrowheadSize + centerPoint.x;
+        let cy = (vy / len) * Aesthetics.ArrowheadSize + centerPoint.y;
+        let vx2 = centerPoint.x - pr2_edge.ToCartesian().x;
+        let vy2 = centerPoint.y - pr2_edge.ToCartesian().y;
+        let len2 = Math.sqrt(vx2 * vx2 + vy2 * vy2);
+        let cx2 = (vx2 / len2) * Aesthetics.ArrowheadSize + centerPoint.x;
+        let cy2 = (vy2 / len2) * Aesthetics.ArrowheadSize + centerPoint.y;
+        let cr1 = RelativePoint.FromCartesian(cx, cy, this.canvas.width, this.canvas.height);
+        let cr2 = RelativePoint.FromCartesian(cx2, cy2, this.canvas.width, this.canvas.height);
+        let dp1 = null, dp2 = null;
+        if (last.y - first.y > 0) {
+            //downwards
+            if (Math.min(cr1.y, cr2.y) < Math.min(pr1_edge.y, pr2_edge.y)) {
+                dp1 = cr1;
+                dp2 = cr2;
+            }
+            else {
+                dp1 = pr1_edge;
+                dp2 = pr2_edge;
+            }
+        }
+        else if (last.y - first.y < 0) {
+            // upwards
+            if (Math.max(cr1.y, cr2.y) > Math.max(pr1_edge.y, pr2_edge.y)) {
+                dp1 = cr1;
+                dp2 = cr2;
+            }
+            else {
+                dp1 = pr1_edge;
+                dp2 = pr2_edge;
+            }
+        }
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = this.edgeColor;
+        this.ctx.moveTo(last.x, last.y);
+        this.ctx.lineTo(dp1.x, dp1.y);
+        this.ctx.stroke();
+        this.ctx.closePath();
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = this.edgeColor;
+        this.ctx.moveTo(last.x, last.y);
+        this.ctx.lineTo(dp2.x, dp2.y);
+        this.ctx.stroke();
     }
 }
 export { Graph };

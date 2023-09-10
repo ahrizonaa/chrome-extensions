@@ -1,4 +1,4 @@
-import { UI } from './userinput.service';
+import { UI } from './ui.service';
 class Parser {
     static isValid(val, msg, str) {
         let obj = Parser.deserialize(val);

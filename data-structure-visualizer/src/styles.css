@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './animated-datastructure-icons/graph-svg.ts';
+@import './animated-datastructure-icons/tree-svg.ts';
+@import './animated-datastructure-icons/stack-svg.ts';
+@import './animated-datastructure-icons/queue-svg.ts';
+@import './animated-datastructure-icons/linkedlist-svg.ts';
+
 body {
 	height: 600px;
 	width: 600px;
@@ -32,7 +38,7 @@ canvas {
 	width: 100%;
 	height: -webkit-fill-available;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: flex-start;
 	align-items: flex-start;
 	box-sizing: border-box;
@@ -76,13 +82,15 @@ li > a.dropdown-item {
 }
 
 button#go-btn {
-	display: flex;
-	align-items: center;
+	/* display: flex;
+	align-items: center; */
+	width: auto;
+	height: fit-content;
 }
 
 #dataset-textarea {
 	font-size: 14px !important;
-	height: 350px !important;
+	height: 300px !important;
 }
 
 .dropdown-divider {
@@ -113,14 +121,16 @@ div.options-panel {
 	display: flex;
 	width: 100%;
 	align-items: flex-end;
-	flex-grow: 1;
-	margin-bottom: 32px;
+	/* flex-grow: 1;
+	position: absolute;
+	bottom: 0; */
 }
 
 form#textarea-form {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 #textarea-validation-wrapper {
@@ -132,4 +142,61 @@ form#textarea-form {
 	overflow: hidden;
 	pointer-events: none;
 	position: relative;
+}
+
+span[data-te-validation-feedback] {
+	font-size: 0.7rem !important;
+}
+
+.form-canvas-container {
+	height: -webkit-fill-available;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.icon-panel {
+	padding: 10px 0 0 0 !important;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.icon-panel > div[role='group'] {
+	padding: 0px !important;
+}
+
+.icon-panel > div > button > svg {
+	width: 48px !important;
+	height: 48px !important;
+	pointer-events: none;
+}
+
+button[dsa-option] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: transparent;
+}
+
+.lower-form-region {
+	height: fit-content;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	height: -webkit-fill-available;
+}
+
+div#collapse-item > div {
+	display: flex;
+	align-items: center;
+}
+
+div[data-te-popconfirm-popover] {
+	width: 165px !important;
+}
+
+div[data-te-popconfirm-body] {
+	/* backdrop-filter: blur(5px) !important; */
 }

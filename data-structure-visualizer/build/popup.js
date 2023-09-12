@@ -1,27 +1,25 @@
 import { Parser } from './parser';
 import { Graph } from './graph';
-import { Ripple, Dropdown, Input, Validation, Collapse, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
-initTE({ Dropdown, Ripple, Input, Validation, Collapse });
+import { Ripple, Dropdown, Input, Validation, Collapse, Popconfirm, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+initTE({ Dropdown, Ripple, Input, Validation, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './dsa-metadata';
 import { UI } from './ui.service';
-import { DatastructureDropdown } from './datastructure-dropdown';
 let canvas;
 let ctx;
-let goBtn;
 let canvasOverlay;
 function goClicked() {
-    if (UI.dsaFormat) {
+    if (UI.form.dataset.teValidated) {
         visualize();
     }
 }
 function visualize() {
     let input = UI.textarea.value;
     let parsed_input = JSON.parse(input);
-    localStorage.setItem('dsa-input', input);
+    localStorage.setItem('user-input', input);
     canvasOverlay.style.display = 'none';
     clearCanvas();
     let ds = null;
-    switch (UI.dsaFormat) {
+    switch (UI.userSelection.dsaFormat) {
         case null:
             return;
         case DSA.graph.adjacency_list.name:
@@ -48,21 +46,19 @@ function setupCanvas() {
     clearCanvas();
 }
 function restoreCache() {
-    let cachedInput = localStorage.getItem('dsa-input');
-    let cachedType = localStorage.getItem('dsa-type');
-    let cachedFormat = localStorage.getItem('dsa-format');
-    if (cachedType != null && cachedFormat != null) {
-        let opt = document.querySelector(`a.dropdown-item[dsa-type=${cachedType}][dsa-format=${cachedFormat}]`);
-        if (opt) {
-            opt.click();
-        }
+    let cachedInput = localStorage.getItem('user-input');
+    let userSelection = localStorage.getItem('user-selection');
+    let userOptions = localStorage.getItem('user-options');
+    if (userSelection) {
+        UI.userSelection = JSON.parse(userSelection);
+    }
+    if (userOptions) {
+        UI.userOptions = JSON.parse(userOptions);
     }
     if (cachedInput != null) {
         UI.textarea.value = cachedInput;
-        UI.textarea.focus();
-        UI.textarea.classList.toggle('active', true);
-        UI.goBtn.click();
     }
+    UI.toggleAll();
 }
 function setupFormValidation() {
     let val = new Validation(UI.form, {
@@ -77,9 +73,9 @@ function setupFormValidation() {
 function init() {
     UI.goBtn.addEventListener('click', goClicked.bind(this));
     canvasOverlay = document.getElementById('idle-canvas-overlay');
-    DatastructureDropdown.Create();
     setupFormValidation();
     setupCanvas();
+    UI.createRadio();
     restoreCache();
 }
 init();

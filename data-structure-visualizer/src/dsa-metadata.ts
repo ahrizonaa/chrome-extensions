@@ -8,6 +8,8 @@ import {
 	t_a
 } from './dsa-input-description';
 
+import { Popconfirm } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+
 class DataStructureRepresentation {
 	name: string;
 	desc: string;
@@ -55,6 +57,10 @@ class DataStructureRepresentations {
 
 	constructor() {
 		this.setDefaults();
+	}
+
+	findPlaceholder(dsaType: string, dsaFormat: string, opts: any): string {
+		return this[dsaType][dsaFormat].findPlaceholder(opts.weighted);
 	}
 
 	setDefaults(): void {
@@ -138,6 +144,13 @@ class DataStructureSelection {
 	dsaFormat: string = '';
 }
 
+class DataStructureRadioOption {
+	name: string;
+	node?: ChildNode;
+	popconfirm?: Popconfirm;
+	formats?: { text: string; value: string }[];
+}
+
 const DSA: DataStructureRepresentations = new DataStructureRepresentations();
 const Aesthetics: CanvasAesthetics = new CanvasAesthetics();
 const UserSelection = new DataStructureSelection();
@@ -149,6 +162,7 @@ export {
 	DataStructureOptions,
 	DataStructureSelection,
 	DataStructureRepresentations,
+	DataStructureRadioOption,
 	UserSelection,
 	UserOptions
 };

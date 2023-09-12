@@ -41,7 +41,7 @@ class Graph extends DataStructure {
 
 	parse(input_dataset) {
 		this.dataset = input_dataset;
-		switch (UI.dsaFormat) {
+		switch (UI.userSelection.dsaFormat) {
 			case DSA.graph.adjacency_list.name:
 				if (UI.userOptions.graph.weighted) {
 					this.parse_weighted_adjacency_list();
@@ -133,20 +133,7 @@ class Graph extends DataStructure {
 	plot() {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		switch (UI.dsaFormat) {
-			case DSA.graph.adjacency_list.name:
-				if (UI.userOptions.graph.weighted) {
-					this.plotWeightedUndirectedGraph();
-				} else {
-					this.plotUnweightedUndirectedGraph();
-				}
-				break;
-			case DSA.graph.adjacency_matrix.name:
-				this.plotUnweightedUndirectedGraph();
-				break;
-			default:
-				break;
-		}
+		this.plotGraph();
 	}
 
 	plotNodes(): void {
@@ -182,50 +169,18 @@ class Graph extends DataStructure {
 		}
 	}
 
-	plotEdges() {}
-
-	plotUnweightedUndirectedGraph() {
-		this.plotNodes();
-
-		for (let [from, to] of this.edgelist) {
-			let node1 = this.graph[from];
-			let node2 = this.graph[to];
-
-			let dist_ratio = Maths.DistanceRatio(
-				this.radius,
-				node1.point,
-				node2.point
-			);
-
-			let pr1_edge = Maths.FindPointOnLine(
-				node1.point,
-				node2.point,
-				dist_ratio
-			);
-			let pr2_edge = Maths.FindPointOnLine(
-				node2.point,
-				node1.point,
-				dist_ratio
-			);
-
-			this.edges.push(
-				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
-			);
-		}
-		this.animate_edges.bind(this);
-		this.animate_edges();
-	}
-
-	plotWeightedUndirectedGraph() {
-		this.plotNodes();
-
-		for (let [, from, to] of this.dataset) {
+	plotEdges() {
+		let edgelist = UI.userOptions.graph.weighted
+			? this.dataset.map((edge) => edge.slice(1))
+			: this.dataset;
+		for (let [from, to] of edgelist) {
 			let node1 = this.graph[from];
 			let node2 = this.graph[to];
 			let key_to = from + '_' + to;
 			let key_from = to + '_' + from;
 
 			if (
+				UI.userOptions.graph.weighted &&
 				this.weights[key_to].length == 0 &&
 				this.weights[key_from].length == 0
 			) {
@@ -249,32 +204,48 @@ class Graph extends DataStructure {
 				dist_ratio
 			);
 
-			let mid_point = Maths.Midpoint(node1.point, node2.point);
-
-			let edge_label = this.format_edge_label(key_to, key_from);
-
-			let slope = Maths.RelativeSlope(node1.point, node2.point);
-
-			let [label_x_offset, label_y_offset] = this.calc_label_offsets(
-				slope,
-				edge_label
-			);
-
 			this.edges.push(
 				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
 			);
 
-			this.ctx.beginPath();
-			this.ctx.fillStyle = '#CCCCCC';
-			this.ctx.font = '10px monospace';
-			this.ctx.textAlign = 'center';
-			this.ctx.fillText(
-				edge_label,
-				mid_point.x + label_x_offset,
-				mid_point.y + label_y_offset
-			);
-			this.ctx.closePath();
+			if (UI.userOptions.graph.weighted) {
+				this.plotEdgeLabel(node1, node2, key_from, key_to);
+			}
 		}
+	}
+
+	plotEdgeLabel(
+		node1: TreeNode,
+		node2: TreeNode,
+		key_from: string,
+		key_to: string
+	): void {
+		let mid_point = Maths.Midpoint(node1.point, node2.point);
+
+		let edge_label = this.format_edge_label(key_to, key_from);
+
+		let slope = Maths.RelativeSlope(node1.point, node2.point);
+
+		let [label_x_offset, label_y_offset] = this.calc_label_offsets(
+			slope,
+			edge_label
+		);
+
+		this.ctx.beginPath();
+		this.ctx.fillStyle = '#CCCCCC';
+		this.ctx.font = '10px monospace';
+		this.ctx.textAlign = 'center';
+		this.ctx.fillText(
+			edge_label,
+			mid_point.x + label_x_offset,
+			mid_point.y + label_y_offset
+		);
+		this.ctx.closePath();
+	}
+
+	plotGraph() {
+		this.plotNodes();
+		this.plotEdges();
 		this.animate_edges.bind(this);
 		this.animate_edges();
 	}

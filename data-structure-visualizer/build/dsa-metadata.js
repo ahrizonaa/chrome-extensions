@@ -18,6 +18,9 @@ class DataStructureRepresentations {
     constructor() {
         this.setDefaults();
     }
+    findPlaceholder(dsaType, dsaFormat, opts) {
+        return this[dsaType][dsaFormat].findPlaceholder(opts.weighted);
+    }
     setDefaults() {
         this.graph = {
             adjacency_list: new DataStructureRepresentation('adjacency_list', 'Adjacency List', g_al_uw, g_al_w),
@@ -85,8 +88,10 @@ class DataStructureSelection {
         this.dsaFormat = '';
     }
 }
+class DataStructureRadioOption {
+}
 const DSA = new DataStructureRepresentations();
 const Aesthetics = new CanvasAesthetics();
 const UserSelection = new DataStructureSelection();
 const UserOptions = new DataStructureOptions();
-export { DSA, Aesthetics, DataStructureOptions, DataStructureSelection, DataStructureRepresentations, UserSelection, UserOptions };
+export { DSA, Aesthetics, DataStructureOptions, DataStructureSelection, DataStructureRepresentations, DataStructureRadioOption, UserSelection, UserOptions };

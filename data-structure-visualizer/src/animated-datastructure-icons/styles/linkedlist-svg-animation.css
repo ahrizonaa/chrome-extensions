@@ -1,0 +1,566 @@
+@-webkit-keyframes animate-linkedlist-fill-1 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-1 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-1 {
+	-webkit-animation: animate-linkedlist-fill-1 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0s both;
+	animation: animate-linkedlist-fill-1 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-2 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-2 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-2 {
+	-webkit-animation: animate-linkedlist-fill-2 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.1s both;
+	animation: animate-linkedlist-fill-2 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.1s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-3 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-3 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-3 {
+	-webkit-animation: animate-linkedlist-fill-3 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.2s both;
+	animation: animate-linkedlist-fill-3 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.2s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-4 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-4 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-4 {
+	-webkit-animation: animate-linkedlist-fill-4 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.30000000000000004s both;
+	animation: animate-linkedlist-fill-4 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.30000000000000004s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-5 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-5 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-5 {
+	-webkit-animation: animate-linkedlist-fill-5 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.4s both;
+	animation: animate-linkedlist-fill-5 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.4s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-6 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-6 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-6 {
+	-webkit-animation: animate-linkedlist-fill-6 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.5s both;
+	animation: animate-linkedlist-fill-6 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.5s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-7 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-7 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-7 {
+	-webkit-animation: animate-linkedlist-fill-7 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.6000000000000001s both;
+	animation: animate-linkedlist-fill-7 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.6000000000000001s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-8 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-8 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-8 {
+	-webkit-animation: animate-linkedlist-fill-8 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.7000000000000001s both;
+	animation: animate-linkedlist-fill-8 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.7000000000000001s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-9 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-9 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-9 {
+	-webkit-animation: animate-linkedlist-fill-9 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.8s both;
+	animation: animate-linkedlist-fill-9 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.8s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-10 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-10 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-10 {
+	-webkit-animation: animate-linkedlist-fill-10 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 0.9s both;
+	animation: animate-linkedlist-fill-10 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		0.9s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-11 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-11 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-11 {
+	-webkit-animation: animate-linkedlist-fill-11 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1s both;
+	animation: animate-linkedlist-fill-11 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-12 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-12 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-12 {
+	-webkit-animation: animate-linkedlist-fill-12 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.1s both;
+	animation: animate-linkedlist-fill-12 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.1s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-13 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-13 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-13 {
+	-webkit-animation: animate-linkedlist-fill-13 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.2000000000000002s both;
+	animation: animate-linkedlist-fill-13 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.2000000000000002s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-14 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+@keyframes animate-linkedlist-fill-14 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(0, 0, 0);
+	}
+}
+
+.linkedlist-svg-14 {
+	-webkit-animation: animate-linkedlist-fill-14 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.3s both;
+	animation: animate-linkedlist-fill-14 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.3s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-15 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-15 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-15 {
+	-webkit-animation: animate-linkedlist-fill-15 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.4000000000000001s both;
+	animation: animate-linkedlist-fill-15 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.4000000000000001s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-16 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-16 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-16 {
+	-webkit-animation: animate-linkedlist-fill-16 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.5s both;
+	animation: animate-linkedlist-fill-16 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.5s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-17 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-17 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-17 {
+	-webkit-animation: animate-linkedlist-fill-17 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.6s both;
+	animation: animate-linkedlist-fill-17 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.6s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-18 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-18 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-18 {
+	-webkit-animation: animate-linkedlist-fill-18 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.7000000000000002s both;
+	animation: animate-linkedlist-fill-18 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.7000000000000002s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-19 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-19 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-19 {
+	-webkit-animation: animate-linkedlist-fill-19 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.8s both;
+	animation: animate-linkedlist-fill-19 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.8s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-20 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-20 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-20 {
+	-webkit-animation: animate-linkedlist-fill-20 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 1.9000000000000001s both;
+	animation: animate-linkedlist-fill-20 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		1.9000000000000001s both;
+}
+
+@-webkit-keyframes animate-linkedlist-fill-21 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+@keyframes animate-linkedlist-fill-21 {
+	0% {
+		fill: transparent;
+	}
+
+	100% {
+		fill: rgb(114, 162, 141);
+	}
+}
+
+.linkedlist-svg-21 {
+	-webkit-animation: animate-linkedlist-fill-21 0.3s
+		cubic-bezier(0.47, 0, 0.745, 0.715) 2s both;
+	animation: animate-linkedlist-fill-21 0.3s cubic-bezier(0.47, 0, 0.745, 0.715)
+		2s both;
+}

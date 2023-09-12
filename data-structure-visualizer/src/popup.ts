@@ -1,28 +1,25 @@
 import { Parser } from './parser';
 import { Graph } from './graph';
 
-interface TailwindCollapse {}
-
 import {
 	Ripple,
 	Dropdown,
 	Input,
 	Validation,
 	Collapse,
+	Popconfirm,
 	initTE
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
-initTE({ Dropdown, Ripple, Input, Validation, Collapse });
+initTE({ Dropdown, Ripple, Input, Validation, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './dsa-metadata';
 import { UI } from './ui.service';
-import { DatastructureDropdown } from './datastructure-dropdown';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
-let goBtn: HTMLButtonElement;
 let canvasOverlay: HTMLImageElement;
 
 function goClicked(): void {
-	if (UI.dsaFormat) {
+	if (UI.form.dataset.teValidated) {
 		visualize();
 	}
 }
@@ -30,11 +27,11 @@ function goClicked(): void {
 function visualize() {
 	let input = UI.textarea.value;
 	let parsed_input = JSON.parse(input);
-	localStorage.setItem('dsa-input', input);
+	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
 	let ds: any = null;
-	switch (UI.dsaFormat) {
+	switch (UI.userSelection.dsaFormat) {
 		case null:
 			return;
 		case DSA.graph.adjacency_list.name:
@@ -64,25 +61,21 @@ function setupCanvas() {
 }
 
 function restoreCache() {
-	let cachedInput = localStorage.getItem('dsa-input');
-	let cachedType = localStorage.getItem('dsa-type');
-	let cachedFormat = localStorage.getItem('dsa-format');
-
-	if (cachedType != null && cachedFormat != null) {
-		let opt = document.querySelector(
-			`a.dropdown-item[dsa-type=${cachedType}][dsa-format=${cachedFormat}]`
-		) as HTMLAnchorElement;
-		if (opt) {
-			opt.click();
-		}
+	let cachedInput = localStorage.getItem('user-input');
+	let userSelection = localStorage.getItem('user-selection');
+	let userOptions = localStorage.getItem('user-options');
+	if (userSelection) {
+		UI.userSelection = JSON.parse(userSelection);
+	}
+	if (userOptions) {
+		UI.userOptions = JSON.parse(userOptions);
 	}
 
 	if (cachedInput != null) {
 		UI.textarea.value = cachedInput;
-		UI.textarea.focus();
-		UI.textarea.classList.toggle('active', true);
-		UI.goBtn.click();
 	}
+
+	UI.toggleAll();
 }
 
 function setupFormValidation() {
@@ -103,11 +96,11 @@ function init() {
 		'idle-canvas-overlay'
 	)! as HTMLImageElement;
 
-	DatastructureDropdown.Create();
-
 	setupFormValidation();
 
 	setupCanvas();
+
+	UI.createRadio();
 
 	restoreCache();
 }

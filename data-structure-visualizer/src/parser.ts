@@ -10,7 +10,10 @@ class Parser {
 			return 'Input must be an array.';
 		}
 
-		if (UI.dsaType == 'graph' && UI.dsaFormat == 'adjacency_list') {
+		if (
+			UI.userSelection.dsaType == 'graph' &&
+			UI.userSelection.dsaFormat == 'adjacency_list'
+		) {
 			for (let row of obj) {
 				if (Array.isArray(row) == false) {
 					return 'Input is not a 2D array';
@@ -22,7 +25,10 @@ class Parser {
 					return `Input is not N x ${rowsize}`;
 				}
 			}
-		} else if (UI.dsaType == 'graph' && UI.dsaFormat == 'adjacency_matrix') {
+		} else if (
+			UI.userSelection.dsaType == 'graph' &&
+			UI.userSelection.dsaFormat == 'adjacency_matrix'
+		) {
 			for (let row of obj) {
 				if (Array.isArray(row) == false) {
 					return 'Input is not a 2D array';

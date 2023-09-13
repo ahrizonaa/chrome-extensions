@@ -7,6 +7,9 @@ import { PopDiv } from './dsa-radio-btn-group/pop-div';
 import { fromEvent, debounceTime } from '../node_modules/rxjs/dist/esm/index.js';
 import { distinct, map } from 'rxjs';
 import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
+import { SwitchPanel } from './switch-panel/switch-panel';
+import { DrawButton } from './draw-button/draw-button';
+import { TextAreaClasses } from './textarea/textarea';
 class UserInput {
     constructor() {
         this.setDefaultOptions();
@@ -40,11 +43,14 @@ class UserInput {
         ];
     }
     getForms() {
+        document.querySelector('switch-panel').innerHTML = SwitchPanel;
         this.controlsCollapse = document.getElementById('collapse-item');
         this.form = document.getElementById('textarea-form');
+        document.querySelector('draw-button').innerHTML = DrawButton;
         this.goBtn = document.getElementById('go-btn');
         this.textareaWrapper = document.getElementById('textarea-validation-wrapper');
         this.textarea = document.getElementById('dataset-textarea');
+        this.textarea.setAttribute('class', TextAreaClasses);
         this.dsaSelectionText = document.querySelector('.dataset-dropdown-text');
         this.graphControls = document.getElementById('graph-controls');
         this.treeControls = document.getElementById('tree-controls');
@@ -176,7 +182,7 @@ class UserInput {
     }
     createRadio() {
         let btnGroup = document.querySelector('radio-group');
-        btnGroup.outerHTML = RadioGroup;
+        btnGroup.innerHTML = RadioGroup;
         btnGroup = document.querySelector('div#radio-group');
         this.typeOptions.forEach((option, i) => {
             let radioBtn = RadioBtn.cloneNode();

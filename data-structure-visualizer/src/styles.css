@@ -64,11 +64,6 @@ button#go-btn {
 	height: 250px !important;
 }
 
-.dropdown-divider {
-	width: -webkit-fill-available;
-	margin-right: 10px;
-}
-
 .collapse-panel {
 	width: 100%;
 }
@@ -134,11 +129,11 @@ span[data-te-validation-feedback] {
 	justify-content: center;
 }
 
-.icon-panel > div[role='group'] {
+.icon-panel div[role='group'] {
 	padding: 0px !important;
 }
 
-.icon-panel > div > button > svg {
+.icon-panel svg {
 	width: 48px !important;
 	height: 48px !important;
 	pointer-events: none;
@@ -171,4 +166,10 @@ div[data-te-popconfirm-popover] {
 
 div[data-te-popconfirm-body] {
 	/* backdrop-filter: blur(5px) !important; */
+}
+
+draw-button,
+radio-group,
+switch-panel {
+	display: contents !important;
 }

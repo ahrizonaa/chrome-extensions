@@ -3,3 +3,4 @@ class Tree {
         this.arr = arr;
     }
 }
+//# sourceMappingURL=tree.js.map

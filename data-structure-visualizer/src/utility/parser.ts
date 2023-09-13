@@ -1,4 +1,4 @@
-import { UI } from './ui.service';
+import { UI } from '../ui.service';
 
 class Parser {
 	static isValid(val, msg, str) {

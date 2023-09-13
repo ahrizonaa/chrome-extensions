@@ -1,5 +1,5 @@
-import { Aesthetics } from './dsa-metadata';
-import { RelativePoint } from './math-functions';
+import { Aesthetics } from '../utility/dsa-metadata';
+import { RelativePoint } from '../utility/math-functions';
 
 class TreeNode {
 	val: number;

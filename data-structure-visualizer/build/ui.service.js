@@ -1,9 +1,12 @@
-import { DSA, UserOptions, UserSelection } from './dsa-metadata';
+import { DSA, UserOptions, UserSelection } from './utility/dsa-metadata';
 import { Collapse, Popconfirm } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 import { svgs } from './animated-datastructure-icons/svg-icons';
 import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
 import { ListBtn } from './dsa-radio-btn-group/list-btn';
 import { PopDiv } from './dsa-radio-btn-group/pop-div';
+import { fromEvent, debounceTime } from '../node_modules/rxjs/dist/esm/index.js';
+import { distinct, map } from 'rxjs';
+import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
 class UserInput {
     constructor() {
         this.setDefaultOptions();
@@ -58,11 +61,15 @@ class UserInput {
     }
     bindForms() {
         this.controlsCollapse = new Collapse(document.getElementById('collapse-item'), {
-            toggle: true
+            toggle: false
         });
+        const input = fromEvent(this.textarea, 'input');
+        const result = input.pipe(map((e) => e.target.value), distinct(), debounceTime(1000));
+        result.subscribe((res) => { });
         this.form.addEventListener('valid.te.validation', (event) => {
             this.goBtn.removeAttribute('disabled');
             this.goBtn.classList.toggle('pointer-events-none', false);
+            this.cacheObj(this.textarea.value, 'user-input');
         });
         this.form.addEventListener('invalid.te.validation', (event) => {
             this.goBtn.setAttribute('disabled', '');
@@ -97,8 +104,8 @@ class UserInput {
         this.toggleSwitches();
         if (UI.userSelection.dsaType) {
             UI.toggleTypeRadio();
-            UI.toggleSwitchVisibility();
         }
+        UI.toggleSwitchVisibility();
         if (UI.userSelection.dsaFormat) {
             UI.toggleFormatSelection();
         }
@@ -117,10 +124,10 @@ class UserInput {
         UI.nullsSwitch.checked = UI.userOptions.tree.nulls;
         UI.doublySwitch.checked = UI.userOptions.linkedlist.doubly;
     }
-    toggleSwitchVisibility(control = UI.userSelection.dsaType) {
-        let hideGraph = control != 'graph';
-        let hideLL = control != 'linkedlist';
-        let hideTree = control != 'tree';
+    toggleSwitchVisibility() {
+        let hideGraph = UI.userSelection.dsaType != 'graph';
+        let hideLL = UI.userSelection.dsaType != 'linkedlist';
+        let hideTree = UI.userSelection.dsaType != 'tree';
         if (!hideGraph || !hideLL || !hideTree) {
             this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
             this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
@@ -168,7 +175,9 @@ class UserInput {
         });
     }
     createRadio() {
-        let btnGroup = document.querySelector('.icon-panel > div[role=group]');
+        let btnGroup = document.querySelector('radio-group');
+        btnGroup.outerHTML = RadioGroup;
+        btnGroup = document.querySelector('div#radio-group');
         this.typeOptions.forEach((option, i) => {
             let radioBtn = RadioBtn.cloneNode();
             radioBtn.textContent = option.name;
@@ -194,9 +203,10 @@ class UserInput {
                 listBtn.addEventListener('click', (event) => {
                     let evtBtn = event.target;
                     UI.userSelection.dsaFormat = evtBtn.dataset.dsaFormat;
+                    this.cacheObj(UI.userSelection, 'user-selection');
                     [...evtBtn.parentElement.childNodes]
-                        .filter((e) => e.type == 'button')
-                        .forEach((lstBtn, j) => {
+                        .filter((e) => e.tagName == 'BUTTON')
+                        .forEach((lstBtn) => {
                         lstBtn.classList.toggle('bg-neutral-700', lstBtn.dataset.dsaFormat == UI.userSelection.dsaFormat);
                     });
                     let pop = this.typeOptions
@@ -220,6 +230,7 @@ class UserInput {
                         .filter((o) => o.name == UI.userSelection.dsaType)
                         .pop().formats[0].value;
                 }
+                this.cacheObj(UI.userSelection, 'user-selection');
                 this.toggleTypeRadio();
                 this.toggleFormatSelection();
                 this.toggleSwitchVisibility();
@@ -237,3 +248,4 @@ class UserInput {
 }
 const UI = new UserInput();
 export { UI };
+//# sourceMappingURL=ui.service.js.map

@@ -1,4 +1,4 @@
-import { UI } from './ui.service';
+import { UI } from '../ui.service';
 class Parser {
     static isValid(val, msg, str) {
         let obj = Parser.deserialize(val);
@@ -51,3 +51,4 @@ class Parser {
     }
 }
 export { Parser };
+//# sourceMappingURL=parser.js.map

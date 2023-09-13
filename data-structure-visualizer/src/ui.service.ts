@@ -5,16 +5,25 @@ import {
 	DSA,
 	UserOptions,
 	UserSelection
-} from './dsa-metadata';
+} from './utility/dsa-metadata';
 
 import {
 	Collapse,
-	Popconfirm
+	Popconfirm,
+	Validation
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 import { svgs } from './animated-datastructure-icons/svg-icons';
 import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
 import { ListBtn } from './dsa-radio-btn-group/list-btn';
 import { PopDiv } from './dsa-radio-btn-group/pop-div';
+
+import {
+	fromEvent,
+	Observable,
+	debounceTime
+} from '../node_modules/rxjs/dist/esm/index.js';
+import { distinct, map } from 'rxjs';
+import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
 
 class UserInput {
 	textarea: HTMLTextAreaElement;
@@ -35,6 +44,7 @@ class UserInput {
 	goBtn: HTMLButtonElement;
 	form: HTMLFormElement;
 	typeOptions: DataStructureRadioOption[];
+	validator: Validation;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -128,13 +138,23 @@ class UserInput {
 		this.controlsCollapse = new Collapse(
 			document.getElementById('collapse-item'),
 			{
-				toggle: true
+				toggle: false
 			}
 		);
+
+		const input: Observable<Event> = fromEvent(this.textarea, 'input');
+
+		const result = input.pipe(
+			map((e: any) => e.target.value),
+			distinct(),
+			debounceTime(1000)
+		);
+		result.subscribe((res) => {});
 
 		this.form.addEventListener('valid.te.validation', (event: any) => {
 			this.goBtn.removeAttribute('disabled');
 			this.goBtn.classList.toggle('pointer-events-none', false);
+			this.cacheObj(this.textarea.value, 'user-input');
 		});
 
 		this.form.addEventListener('invalid.te.validation', (event: any) => {
@@ -177,8 +197,8 @@ class UserInput {
 
 		if (UI.userSelection.dsaType) {
 			UI.toggleTypeRadio();
-			UI.toggleSwitchVisibility();
 		}
+		UI.toggleSwitchVisibility();
 		if (UI.userSelection.dsaFormat) {
 			UI.toggleFormatSelection();
 		}
@@ -201,10 +221,10 @@ class UserInput {
 		UI.doublySwitch.checked = UI.userOptions.linkedlist.doubly;
 	}
 
-	toggleSwitchVisibility(control = UI.userSelection.dsaType) {
-		let hideGraph = control != 'graph';
-		let hideLL = control != 'linkedlist';
-		let hideTree = control != 'tree';
+	toggleSwitchVisibility() {
+		let hideGraph = UI.userSelection.dsaType != 'graph';
+		let hideLL = UI.userSelection.dsaType != 'linkedlist';
+		let hideTree = UI.userSelection.dsaType != 'tree';
 		if (!hideGraph || !hideLL || !hideTree) {
 			this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
 			this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
@@ -260,7 +280,10 @@ class UserInput {
 	}
 
 	createRadio(): void {
-		let btnGroup = document.querySelector('.icon-panel > div[role=group]');
+		let btnGroup = document.querySelector('radio-group');
+
+		btnGroup.outerHTML = RadioGroup;
+		btnGroup = document.querySelector('div#radio-group');
 
 		this.typeOptions.forEach((option: DataStructureRadioOption, i: number) => {
 			let radioBtn = RadioBtn.cloneNode() as HTMLButtonElement;
@@ -289,9 +312,10 @@ class UserInput {
 				listBtn.addEventListener('click', (event: any) => {
 					let evtBtn = event.target as HTMLButtonElement;
 					UI.userSelection.dsaFormat = evtBtn.dataset.dsaFormat;
+					this.cacheObj(UI.userSelection, 'user-selection');
 					[...(evtBtn.parentElement.childNodes as any)]
-						.filter((e) => e.type == 'button')
-						.forEach((lstBtn: HTMLButtonElement, j: number) => {
+						.filter((e) => e.tagName == 'BUTTON')
+						.forEach((lstBtn: HTMLButtonElement) => {
 							lstBtn.classList.toggle(
 								'bg-neutral-700',
 								lstBtn.dataset.dsaFormat == UI.userSelection.dsaFormat
@@ -321,6 +345,8 @@ class UserInput {
 						.filter((o) => o.name == UI.userSelection.dsaType)
 						.pop().formats[0].value;
 				}
+				this.cacheObj(UI.userSelection, 'user-selection');
+
 				this.toggleTypeRadio();
 				this.toggleFormatSelection();
 				this.toggleSwitchVisibility();

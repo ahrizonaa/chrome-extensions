@@ -11,3 +11,4 @@ export let svgs = [
     domParser.parseFromString(queueSVG, 'text/html').body.firstChild,
     domParser.parseFromString(linkedlistSVG, 'text/html').body.firstChild
 ];
+//# sourceMappingURL=svg-icons.js.map

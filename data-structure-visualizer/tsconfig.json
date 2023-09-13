@@ -5,7 +5,8 @@
     "outDir": "../data-structure-visualizer/build",
     "target": "ES6",
     "typeRoots": ["src/index.d.ts"],
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "sourceMap": true
   },
   "include": ["src/**/*.ts"]
 }

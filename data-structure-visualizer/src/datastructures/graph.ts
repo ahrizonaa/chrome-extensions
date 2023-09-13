@@ -11,9 +11,9 @@ import {
 	Maths,
 	RelativePoint,
 	RelativeSlope
-} from './math-functions.js';
-import { DSA, Aesthetics } from './dsa-metadata';
-import { UI } from './ui.service';
+} from '../utility/math-functions.js';
+import { DSA, Aesthetics } from '../utility/dsa-metadata';
+import { UI } from '../ui.service';
 
 class Graph extends DataStructure {
 	ctx: CanvasRenderingContext2D;

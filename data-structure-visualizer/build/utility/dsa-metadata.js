@@ -95,3 +95,4 @@ const Aesthetics = new CanvasAesthetics();
 const UserSelection = new DataStructureSelection();
 const UserOptions = new DataStructureOptions();
 export { DSA, Aesthetics, DataStructureOptions, DataStructureSelection, DataStructureRepresentations, DataStructureRadioOption, UserSelection, UserOptions };
+//# sourceMappingURL=dsa-metadata.js.map

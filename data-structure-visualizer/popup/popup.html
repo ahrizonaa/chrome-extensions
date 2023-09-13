@@ -14,9 +14,7 @@
 	<body>
 		<div class="content container">
 			<div class="icon-panel">
-				<div
-					role="group"
-					class="inline-flex rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"></div>
+				<radio-group></radio-group>
 			</div>
 
 			<div class="form-canvas-container">
@@ -26,14 +24,13 @@
 						data-te-validated="false"
 						data-te-active-validation="true">
 						<div class="lower-form-region">
-							<div class="format-container"></div>
 							<div class="collapse collapse-panel py-2">
 								<div
 									class="!visible hidden"
 									id="collapse-item"
 									data-te-collapse-item>
 									<div
-										class="block rounded bg-white p-3 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+										class="block rounded p-3 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-neutral-800 dark:bg-neutral-900">
 										<div class="options-panel" role="group">
 											<div id="graph-controls" class="hide-switch-panel">
 												<div class="form-check form-switch">
@@ -115,23 +112,23 @@
 												</div>
 											</div>
 										</div>
-										<button
-											id="go-btn"
-											form="textarea-form"
-											type="button"
-											data-te-submit-btn-ref
-											data-te-ripple-init
-											data-te-ripple-color="light"
-											class="inline-block rounded px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 disabled:opacity-70">
-											Go
-										</button>
 									</div>
 								</div>
 							</div>
-							<div class="textarea-layout-wrapper">
+							<button
+								id="go-btn"
+								form="textarea-form"
+								type="button"
+								data-te-submit-btn-ref
+								data-te-ripple-init
+								data-te-ripple-color="light"
+								class="inline-block rounded px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 disabled:opacity-70">
+								Draw
+							</button>
+							<div class="textarea-layout-wrapper mt-3">
 								<div
 									id="textarea-validation-wrapper"
-									class="relative mb-3"
+									class="relative"
 									data-te-input-wrapper-init
 									data-te-validate="input"
 									data-te-validation-ruleset="isValid">

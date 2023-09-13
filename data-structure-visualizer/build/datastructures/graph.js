@@ -1,7 +1,7 @@
 import { TreeNode, Edge, DataStructure } from './base-datastructures';
-import { Maths, RelativePoint } from './math-functions.js';
-import { DSA, Aesthetics } from './dsa-metadata';
-import { UI } from './ui.service';
+import { Maths, RelativePoint } from '../utility/math-functions.js';
+import { DSA, Aesthetics } from '../utility/dsa-metadata';
+import { UI } from '../ui.service';
 class Graph extends DataStructure {
     constructor(ctx, canvas) {
         super();
@@ -289,3 +289,4 @@ class Graph extends DataStructure {
     }
 }
 export { Graph };
+//# sourceMappingURL=graph.js.map

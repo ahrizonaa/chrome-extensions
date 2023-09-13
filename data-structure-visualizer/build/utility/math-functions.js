@@ -104,3 +104,4 @@ Maths.RelativeDirection = (slope) => {
     }
 };
 export { RelativePoint, CartesianPoint, Maths };
+//# sourceMappingURL=math-functions.js.map

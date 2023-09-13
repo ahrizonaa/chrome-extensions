@@ -1,4 +1,4 @@
-import { Aesthetics } from './dsa-metadata';
+import { Aesthetics } from '../utility/dsa-metadata';
 class TreeNode {
     constructor(val) {
         this.val = val;
@@ -40,3 +40,4 @@ class DataStructure {
     }
 }
 export { TreeNode, Edge, DataStructure, EdgeSegment };
+//# sourceMappingURL=base-datastructures.js.map

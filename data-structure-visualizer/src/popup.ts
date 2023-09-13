@@ -1,5 +1,5 @@
-import { Parser } from './parser';
-import { Graph } from './graph';
+import { Parser } from './utility/parser';
+import { Graph } from './datastructures/graph';
 
 import {
 	Ripple,
@@ -11,7 +11,7 @@ import {
 	initTE
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 initTE({ Dropdown, Ripple, Input, Validation, Collapse, Popconfirm });
-import { Aesthetics, DSA } from './dsa-metadata';
+import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 
 let canvas: HTMLCanvasElement;
@@ -79,7 +79,7 @@ function restoreCache() {
 }
 
 function setupFormValidation() {
-	let val = new Validation(UI.form, {
+	UI.validator = new Validation(UI.form, {
 		customErrorMessages: {
 			isValid: ''
 		},

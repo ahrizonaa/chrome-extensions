@@ -8,7 +8,7 @@ import {
 	t_a
 } from './dsa-input-description';
 
-import { Popconfirm } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+import { Popconfirm, Ripple } from 'tw-elements/dist/js/tw-elements.es.min';
 
 class DataStructureRepresentation {
 	name: string;
@@ -149,6 +149,7 @@ class DataStructureRadioOption {
 	node?: ChildNode;
 	popconfirm?: Popconfirm;
 	formats?: { text: string; value: string }[];
+	ripple?: Ripple;
 }
 
 const DSA: DataStructureRepresentations = new DataStructureRepresentations();

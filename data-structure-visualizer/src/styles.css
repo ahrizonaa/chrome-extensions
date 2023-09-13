@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './animated-datastructure-icons/graph-svg.ts';
-@import './animated-datastructure-icons/tree-svg.ts';
-@import './animated-datastructure-icons/stack-svg.ts';
-@import './animated-datastructure-icons/queue-svg.ts';
-@import './animated-datastructure-icons/linkedlist-svg.ts';
+@import './animated-datastructure-icons/styles/graph-svg-animation.css';
+@import './animated-datastructure-icons/styles/tree-svg-animation.css';
+@import './animated-datastructure-icons/styles/stack-svg-animation.css';
+@import './animated-datastructure-icons/styles/queue-svg-animation.css';
+@import './animated-datastructure-icons/styles/linkedlist-svg-animation.css';
 
 body {
 	height: 600px;
@@ -45,40 +45,11 @@ canvas {
 	border: 2px solid #999;
 }
 
-.dropdown-menu {
-	width: 100%;
-}
-
-li > a.dropdown-item {
-	font-size: 12px !important;
-}
-
-.dropdown-header {
-	display: flex;
-	align-items: center;
-}
-
 .form-container {
 	box-sizing: border-box;
-	padding: 10px 10px 0 10px;
+	padding: 10px 10px 0px 10px;
 	height: -webkit-fill-available;
 	width: -webkit-fill-available;
-}
-
-.dataset-dropdown {
-	width: 154px;
-
-	display: flex !important;
-	align-items: center !important;
-	border-top-right-radius: 0 !important;
-	border-bottom-right-radius: 0 !important;
-}
-
-.dataset-dropdown-text {
-	max-width: 17ch;
-	min-width: 17ch;
-	text-overflow: ellipsis;
-	overflow-x: hidden;
 }
 
 button#go-btn {
@@ -90,7 +61,7 @@ button#go-btn {
 
 #dataset-textarea {
 	font-size: 14px !important;
-	height: 300px !important;
+	height: 250px !important;
 }
 
 .dropdown-divider {
@@ -121,6 +92,7 @@ div.options-panel {
 	display: flex;
 	width: 100%;
 	align-items: flex-end;
+	/* margin-bottom: 50px !important; */
 	/* flex-grow: 1;
 	position: absolute;
 	bottom: 0; */

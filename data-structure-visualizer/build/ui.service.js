@@ -4,14 +4,14 @@ import { svgs } from './animated-datastructure-icons/svg-icons';
 import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
 import { ListBtn } from './dsa-radio-btn-group/list-btn';
 import { PopDiv } from './dsa-radio-btn-group/pop-div';
-import { fromEvent, debounceTime } from '../node_modules/rxjs/dist/esm/index.js';
-import { distinct, map } from 'rxjs';
+import { map, distinctUntilChanged, fromEvent, debounceTime } from 'rxjs';
 import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
 import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
 import { TextAreaClasses } from './textarea/textarea';
 class UserInput {
     constructor() {
+        this.formValid = false;
         this.setDefaultOptions();
         this.getForms();
         this.bindForms();
@@ -45,13 +45,10 @@ class UserInput {
     getForms() {
         document.querySelector('switch-panel').innerHTML = SwitchPanel;
         this.controlsCollapse = document.getElementById('collapse-item');
-        this.form = document.getElementById('textarea-form');
         document.querySelector('draw-button').innerHTML = DrawButton;
         this.goBtn = document.getElementById('go-btn');
-        this.textareaWrapper = document.getElementById('textarea-validation-wrapper');
         this.textarea = document.getElementById('dataset-textarea');
         this.textarea.setAttribute('class', TextAreaClasses);
-        this.dsaSelectionText = document.querySelector('.dataset-dropdown-text');
         this.graphControls = document.getElementById('graph-controls');
         this.treeControls = document.getElementById('tree-controls');
         this.linkedlistControls = document.getElementById('linkedlist-controls');
@@ -65,21 +62,20 @@ class UserInput {
     cacheObj(val, key = 'user-options') {
         localStorage.setItem(key, JSON.stringify(val));
     }
+    cache(val, key) {
+        localStorage.setItem(key, val);
+    }
     bindForms() {
         this.controlsCollapse = new Collapse(document.getElementById('collapse-item'), {
             toggle: false
         });
-        const input = fromEvent(this.textarea, 'input');
-        const result = input.pipe(map((e) => e.target.value), distinct(), debounceTime(1000));
-        result.subscribe((res) => { });
-        this.form.addEventListener('valid.te.validation', (event) => {
-            this.goBtn.removeAttribute('disabled');
-            this.goBtn.classList.toggle('pointer-events-none', false);
-            this.cacheObj(this.textarea.value, 'user-input');
-        });
-        this.form.addEventListener('invalid.te.validation', (event) => {
-            this.goBtn.setAttribute('disabled', '');
-            this.goBtn.classList.toggle('pointer-events-none', true);
+        fromEvent(this.textarea, 'input')
+            .pipe(map((e) => {
+            return e.target.value;
+        }), distinctUntilChanged(), debounceTime(1000))
+            .subscribe((input) => {
+            console.log(input);
+            this.triggerValidation();
         });
         this.weightedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.weighted = event.target.checked;
@@ -102,9 +98,20 @@ class UserInput {
             this.switchChanged();
         });
     }
+    validated() {
+        this.goBtn.removeAttribute('disabled');
+        this.goBtn.classList.toggle('pointer-events-none', false);
+        this.formValid = true;
+        this.cache(this.textarea.value, 'user-input');
+    }
+    invalidated() {
+        this.goBtn.setAttribute('disabled', '');
+        this.goBtn.classList.toggle('pointer-events-none', true);
+        this.formValid = false;
+    }
     switchChanged() {
         this.cacheObj(this.userOptions);
-        this.textarea.dispatchEvent(new Event('input'));
+        this.triggerValidation();
     }
     toggleAll() {
         this.toggleSwitches();
@@ -120,7 +127,9 @@ class UserInput {
         }
     }
     triggerValidation() {
-        UI.goBtn.dispatchEvent(new Event('click'));
+        this.goBtn.removeAttribute('disabled');
+        this.goBtn.dispatchEvent(new Event('click'));
+        // this.textarea.dispatchEvent(new Event('input'));
     }
     toggleSwitches() {
         UI.directedSwitch.checked = UI.userOptions.graph.directed;

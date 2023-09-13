@@ -9,20 +9,14 @@ import {
 
 import {
 	Collapse,
-	Popconfirm,
-	Validation
+	Popconfirm
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 import { svgs } from './animated-datastructure-icons/svg-icons';
 import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
 import { ListBtn } from './dsa-radio-btn-group/list-btn';
 import { PopDiv } from './dsa-radio-btn-group/pop-div';
 
-import {
-	fromEvent,
-	Observable,
-	debounceTime
-} from '../node_modules/rxjs/dist/esm/index.js';
-import { distinct, map } from 'rxjs';
+import { map, distinctUntilChanged, fromEvent, debounceTime } from 'rxjs';
 import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
 import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
@@ -40,14 +34,12 @@ class UserInput {
 	narySwitch: HTMLInputElement;
 	nullsSwitch: HTMLInputElement;
 	doublySwitch: HTMLInputElement;
-	dsaSelectionText: HTMLSpanElement;
 	textareaWrapper: HTMLDivElement;
 	userOptions: DataStructureOptions;
 	userSelection: DataStructureSelection;
 	goBtn: HTMLButtonElement;
-	form: HTMLFormElement;
 	typeOptions: DataStructureRadioOption[];
-	validator: Validation;
+	formValid: boolean = false;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -88,20 +80,13 @@ class UserInput {
 			'collapse-item'
 		) as HTMLDivElement;
 
-		this.form = document.getElementById('textarea-form') as HTMLFormElement;
 		document.querySelector('draw-button').innerHTML = DrawButton;
 		this.goBtn = document.getElementById('go-btn') as HTMLButtonElement;
 
-		this.textareaWrapper = document.getElementById(
-			'textarea-validation-wrapper'
-		) as HTMLDivElement;
 		this.textarea = document.getElementById(
 			'dataset-textarea'
 		) as HTMLTextAreaElement;
 		this.textarea.setAttribute('class', TextAreaClasses);
-		this.dsaSelectionText = document.querySelector(
-			'.dataset-dropdown-text'
-		) as HTMLSpanElement;
 
 		this.graphControls = document.getElementById(
 			'graph-controls'
@@ -141,6 +126,10 @@ class UserInput {
 		localStorage.setItem(key, JSON.stringify(val));
 	}
 
+	cache(val: string, key: string): void {
+		localStorage.setItem(key, val);
+	}
+
 	bindForms(): void {
 		this.controlsCollapse = new Collapse(
 			document.getElementById('collapse-item'),
@@ -149,25 +138,18 @@ class UserInput {
 			}
 		);
 
-		const input: Observable<Event> = fromEvent(this.textarea, 'input');
-
-		const result = input.pipe(
-			map((e: any) => e.target.value),
-			distinct(),
-			debounceTime(1000)
-		);
-		result.subscribe((res) => {});
-
-		this.form.addEventListener('valid.te.validation', (event: any) => {
-			this.goBtn.removeAttribute('disabled');
-			this.goBtn.classList.toggle('pointer-events-none', false);
-			this.cacheObj(this.textarea.value, 'user-input');
-		});
-
-		this.form.addEventListener('invalid.te.validation', (event: any) => {
-			this.goBtn.setAttribute('disabled', '');
-			this.goBtn.classList.toggle('pointer-events-none', true);
-		});
+		fromEvent(this.textarea, 'input')
+			.pipe(
+				map((e: any) => {
+					return e.target.value;
+				}),
+				distinctUntilChanged(),
+				debounceTime(1000)
+			)
+			.subscribe((input: string) => {
+				console.log(input);
+				this.triggerValidation();
+			});
 
 		this.weightedSwitch.addEventListener('change', (event: any) => {
 			this.userOptions.graph.weighted = event.target.checked;
@@ -194,9 +176,22 @@ class UserInput {
 		});
 	}
 
+	validated(): void {
+		this.goBtn.removeAttribute('disabled');
+		this.goBtn.classList.toggle('pointer-events-none', false);
+		this.formValid = true;
+		this.cache(this.textarea.value, 'user-input');
+	}
+
+	invalidated(): void {
+		this.goBtn.setAttribute('disabled', '');
+		this.goBtn.classList.toggle('pointer-events-none', true);
+		this.formValid = false;
+	}
+
 	switchChanged() {
 		this.cacheObj(this.userOptions);
-		this.textarea.dispatchEvent(new Event('input'));
+		this.triggerValidation();
 	}
 
 	toggleAll() {
@@ -216,7 +211,9 @@ class UserInput {
 	}
 
 	triggerValidation(): void {
-		UI.goBtn.dispatchEvent(new Event('click'));
+		this.goBtn.removeAttribute('disabled');
+		this.goBtn.dispatchEvent(new Event('click'));
+		// this.textarea.dispatchEvent(new Event('input'));
 	}
 
 	toggleSwitches(): void {

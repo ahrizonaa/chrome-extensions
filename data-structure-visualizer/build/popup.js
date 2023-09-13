@@ -1,14 +1,13 @@
-import { Parser } from './utility/parser';
 import { Graph } from './datastructures/graph';
-import { Ripple, Dropdown, Input, Validation, Collapse, Popconfirm, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
-initTE({ Dropdown, Ripple, Input, Validation, Collapse, Popconfirm });
+import { Ripple, Collapse, Popconfirm, Input, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+initTE({ Input, Ripple, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 let canvas;
 let ctx;
 let canvasOverlay;
 function goClicked() {
-    if (UI.form.dataset.teValidated) {
+    if (UI.formValid === true) {
         visualize();
     }
 }
@@ -37,8 +36,8 @@ function clearCanvas() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 function setupCanvas() {
-    let content = document.querySelector('.content');
-    let form = document.querySelector('.form-container');
+    let content = document.getElementById('content');
+    let form = document.getElementById('form-wrapper');
     canvas = document.querySelector('canvas');
     canvas.width = content.clientWidth - form.clientWidth - 20;
     canvas.height = canvas.width;
@@ -60,20 +59,9 @@ function restoreCache() {
     }
     UI.toggleAll();
 }
-function setupFormValidation() {
-    UI.validator = new Validation(UI.form, {
-        customErrorMessages: {
-            isValid: ''
-        },
-        customRules: {
-            isValid: Parser.isValid
-        }
-    });
-}
 function init() {
     UI.goBtn.addEventListener('click', goClicked.bind(this));
-    canvasOverlay = document.getElementById('idle-canvas-overlay');
-    setupFormValidation();
+    canvasOverlay = document.getElementById('canvas-overlay');
     setupCanvas();
     UI.createRadio();
     restoreCache();

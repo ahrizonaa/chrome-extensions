@@ -10,53 +10,59 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
 		<link href="./popup.css" rel="stylesheet" />
+		<link
+			rel="stylesheet"
+			href="../src/animated-datastructure-icons/styles/graph-svg-animation.css" />
+		<link
+			rel="stylesheet"
+			href="../src/animated-datastructure-icons/styles/tree-svg-animation.css" />
+		<link
+			rel="stylesheet"
+			href="../src/animated-datastructure-icons/styles/stack-svg-animation.css" />
+		<link
+			rel="stylesheet"
+			href="../src/animated-datastructure-icons/styles/queue-svg-animation.css" />
+		<link
+			rel="stylesheet"
+			href="../src/animated-datastructure-icons/styles/linkedlist-svg-animation.css" />
 	</head>
 	<body>
-		<div class="content container">
-			<div class="icon-panel">
+		<div
+			id="content"
+			class="w-full h-full flex flex-col justify-start items-start box-border border-2">
+			<div id="icon-panel" class="pt-4 w-full flex justify-center">
 				<radio-group></radio-group>
 			</div>
 
-			<div class="form-canvas-container">
-				<div class="form-container">
-					<form
-						id="textarea-form"
-						data-te-validated="false"
-						data-te-active-validation="true">
-						<div class="lower-form-region">
-							<div class="collapse collapse-panel py-2">
-								<div
-									class="!visible hidden"
-									id="collapse-item"
-									data-te-collapse-item>
-									<div
-										class="block rounded p-3 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-neutral-800 dark:bg-neutral-900">
-										<switch-panel></switch-panel>
-									</div>
-								</div>
-							</div>
-							<draw-button></draw-button>
-							<div class="textarea-layout-wrapper mt-3">
-								<div
-									id="textarea-validation-wrapper"
-									class="relative"
-									data-te-input-wrapper-init
-									data-te-validate="input"
-									data-te-validation-ruleset="isValid">
-									<textarea
-										autofocus="true"
-										id="dataset-textarea"
-										style="color: #cccccc !important"></textarea>
-								</div>
+			<div class="w-full flex flex-grow">
+				<div
+					id="form-wrapper"
+					class="h-full w-full p-4 flex flex-col justify-end">
+					<div class="collapse py-2 h-full w-full">
+						<div
+							class="!visible hidden"
+							id="collapse-item"
+							data-te-collapse-item>
+							<div
+								class="rounded p-3 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-neutral-800 dark:bg-neutral-900">
+								<switch-panel></switch-panel>
 							</div>
 						</div>
-					</form>
+					</div>
+					<div>
+						<draw-button></draw-button>
+						<div
+							class="relative pt-2 mb-3 font-light text-sm"
+							data-te-input-wrapper-init>
+							<textarea autofocus="true" id="dataset-textarea"></textarea>
+						</div>
+					</div>
 				</div>
-				<div class="canvas-container">
+				<div class="h-full flex justify-center items-center">
 					<img
-						id="idle-canvas-overlay"
+						id="canvas-overlay"
 						src="../icons/chart128.png"
-						style="position: absolute" />
+						class="absolute" />
 					<canvas></canvas>
 				</div>
 			</div>

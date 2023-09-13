@@ -47,7 +47,7 @@ class UserInput {
         this.controlsCollapse = document.getElementById('collapse-item');
         document.querySelector('draw-button').innerHTML = DrawButton;
         this.goBtn = document.getElementById('go-btn');
-        this.textarea = document.getElementById('dataset-textarea');
+        this.textarea = document.getElementById('textarea');
         this.textarea.setAttribute('class', TextAreaClasses);
         this.graphControls = document.getElementById('graph-controls');
         this.treeControls = document.getElementById('tree-controls');

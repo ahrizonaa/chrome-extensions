@@ -83,9 +83,7 @@ class UserInput {
 		document.querySelector('draw-button').innerHTML = DrawButton;
 		this.goBtn = document.getElementById('go-btn') as HTMLButtonElement;
 
-		this.textarea = document.getElementById(
-			'dataset-textarea'
-		) as HTMLTextAreaElement;
+		this.textarea = document.getElementById('textarea') as HTMLTextAreaElement;
 		this.textarea.setAttribute('class', TextAreaClasses);
 
 		this.graphControls = document.getElementById(

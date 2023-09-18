@@ -3,6 +3,7 @@ import { Ripple, Collapse, Popconfirm, Input, Validation, initTE } from '../node
 initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
+import { IdleSvg } from './idle-svg/idle-svg';
 let canvas;
 let ctx;
 let canvasOverlay;
@@ -43,6 +44,8 @@ function setupCanvas() {
     canvas.height = canvas.width;
     ctx = canvas.getContext('2d', { alpha: false });
     clearCanvas();
+    document.getElementById('idle-overlay').appendChild(IdleSvg);
+    canvasOverlay = document.querySelector('#idle-overlay > svg');
 }
 function restoreCache() {
     let cachedInput = localStorage.getItem('user-input');
@@ -61,7 +64,6 @@ function restoreCache() {
 }
 function init() {
     UI.submitBtn.addEventListener('click', goClicked.bind(this));
-    canvasOverlay = document.getElementById('canvas-overlay');
     setupCanvas();
     UI.createRadio();
     restoreCache();

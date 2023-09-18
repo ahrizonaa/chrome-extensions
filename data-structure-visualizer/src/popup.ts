@@ -12,6 +12,7 @@ import {
 initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
+import { IdleSvg } from './idle-svg/idle-svg';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -57,6 +58,11 @@ function setupCanvas() {
 	canvas.height = canvas.width;
 	ctx = canvas.getContext('2d', { alpha: false });
 	clearCanvas();
+
+	document.getElementById('idle-overlay').appendChild(IdleSvg);
+	canvasOverlay = document.querySelector(
+		'#idle-overlay > svg'
+	)! as HTMLImageElement;
 }
 
 function restoreCache() {
@@ -79,10 +85,6 @@ function restoreCache() {
 
 function init() {
 	UI.submitBtn.addEventListener('click', goClicked.bind(this));
-
-	canvasOverlay = document.getElementById(
-		'canvas-overlay'
-	)! as HTMLImageElement;
 
 	setupCanvas();
 

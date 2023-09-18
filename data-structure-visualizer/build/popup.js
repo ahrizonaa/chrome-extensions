@@ -1,6 +1,6 @@
 import { Graph } from './datastructures/graph';
-import { Ripple, Collapse, Popconfirm, Input, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
-initTE({ Input, Ripple, Collapse, Popconfirm });
+import { Ripple, Collapse, Popconfirm, Input, Validation, initTE } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 let canvas;
@@ -60,7 +60,7 @@ function restoreCache() {
     UI.toggleAll();
 }
 function init() {
-    UI.goBtn.addEventListener('click', goClicked.bind(this));
+    UI.submitBtn.addEventListener('click', goClicked.bind(this));
     canvasOverlay = document.getElementById('canvas-overlay');
     setupCanvas();
     UI.createRadio();

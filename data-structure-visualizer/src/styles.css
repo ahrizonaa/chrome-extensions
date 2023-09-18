@@ -7,7 +7,6 @@ radio-group,
 switch-panel {
 	display: contents !important;
 }
-
 body {
 	height: 600px;
 	width: 600px;
@@ -55,7 +54,7 @@ div.options-panel {
 	padding: 0px !important;
 }
 
-#icon-panel svg {
+#icon-panel > svg {
 	width: 48px !important;
 	height: 48px !important;
 	pointer-events: none;

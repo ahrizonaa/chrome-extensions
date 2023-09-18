@@ -4,10 +4,10 @@ class Parser {
 	static isValid(val, msg, str) {
 		let obj: any = Parser.deserialize(val);
 		if (obj == null) {
-			return 'Malformed input data.  Must be valid array.';
+			return 'Malformed JSON';
 		}
 		if (Array.isArray(obj) == false) {
-			return 'Input must be an array.';
+			return 'Expected JSON array';
 		}
 
 		if (
@@ -16,13 +16,13 @@ class Parser {
 		) {
 			for (let row of obj) {
 				if (Array.isArray(row) == false) {
-					return 'Input is not a 2D array';
+					return 'Expected 2D array';
 				}
 			}
 			let rowsize = UI.userOptions.graph.weighted ? 3 : 2;
 			for (let row of obj) {
 				if (row.length != rowsize) {
-					return `Input is not N x ${rowsize}`;
+					return `Expected N x ${rowsize} matrix`;
 				}
 			}
 		} else if (
@@ -31,13 +31,13 @@ class Parser {
 		) {
 			for (let row of obj) {
 				if (Array.isArray(row) == false) {
-					return 'Input is not a 2D array';
+					return 'Expected 2D array';
 				}
 			}
 			let rowsize = obj.length;
 			for (let row of obj) {
 				if (row.length != rowsize) {
-					return 'Input is not a square matrix';
+					return 'Expected N x N array';
 				}
 			}
 		}

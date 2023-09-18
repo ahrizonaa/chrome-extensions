@@ -1,7 +1,8 @@
 export let DrawButton: string = `<button
-								id="go-btn"
+								id="submit-btn"
 								type="button"
 								data-te-ripple-init
+								data-te-submit-btn-ref
 								data-te-ripple-color="light"
 								class="w-full flex justify-center rounded px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-500 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 disabled:opacity-70">
 								<svg

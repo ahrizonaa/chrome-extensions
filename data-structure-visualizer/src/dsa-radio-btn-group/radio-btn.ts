@@ -4,7 +4,7 @@ RadioBtn.dataset.teRippleInit = '';
 RadioBtn.dataset.teRippleColor = 'light';
 RadioBtn.setAttribute(
 	'class',
-	`inline-block flex-grow bg-primary px-6 pb-1.5 pt-1.5 text-xs uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-primary-600`
+	`relative flex-grow px-6 pb-1.5 pt-1.5 text-xs uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-neutral-800`
 );
 RadioBtn.setAttribute('dsa-option', '');
 

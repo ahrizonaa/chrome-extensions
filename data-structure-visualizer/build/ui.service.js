@@ -1,14 +1,15 @@
 import { DSA, UserOptions, UserSelection } from './utility/dsa-metadata';
-import { Collapse, Popconfirm } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
+import { Collapse, Popconfirm, Validation } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 import { svgs } from './animated-datastructure-icons/svg-icons';
 import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
 import { ListBtn } from './dsa-radio-btn-group/list-btn';
 import { PopDiv } from './dsa-radio-btn-group/pop-div';
-import { map, distinctUntilChanged, fromEvent, debounceTime } from 'rxjs';
+import { map, distinctUntilChanged, fromEvent, debounceTime, tap } from 'rxjs';
 import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
 import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
 import { TextAreaClasses } from './textarea/textarea';
+import { Parser } from './utility/parser';
 class UserInput {
     constructor() {
         this.formValid = false;
@@ -43,10 +44,10 @@ class UserInput {
         ];
     }
     getForms() {
+        this.form = document.getElementById('textarea-form');
         document.querySelector('switch-panel').innerHTML = SwitchPanel;
-        this.controlsCollapse = document.getElementById('collapse-item');
         document.querySelector('draw-button').innerHTML = DrawButton;
-        this.goBtn = document.getElementById('go-btn');
+        this.submitBtn = document.getElementById('submit-btn');
         this.textarea = document.getElementById('textarea');
         this.textarea.setAttribute('class', TextAreaClasses);
         this.graphControls = document.getElementById('graph-controls');
@@ -69,13 +70,25 @@ class UserInput {
         this.controlsCollapse = new Collapse(document.getElementById('collapse-item'), {
             toggle: false
         });
+        this.validator = new Validation(this.form, {
+            customRules: {
+                postValidation: this.postValidation.bind(this)
+            },
+            customErrorMessages: {
+                postValidation: ''
+            }
+        });
         fromEvent(this.textarea, 'input')
-            .pipe(map((e) => {
+            .pipe(tap((val) => {
+            this.submitBtn.classList.toggle('pointer-events-none', true);
+            this.submitBtn.classList.toggle('animate-[spin_0.75s_linear_infinite]', true);
+            this.submitBtn.setAttribute('disabled', '');
+        }), map((e) => {
             return e.target.value;
-        }), distinctUntilChanged(), debounceTime(1000))
+        }), distinctUntilChanged(), debounceTime(750))
             .subscribe((input) => {
-            console.log(input);
-            this.triggerValidation();
+            this.submitBtn.classList.toggle('animate-[spin_0.75s_linear_infinite]', false);
+            this.validate();
         });
         this.weightedSwitch.addEventListener('change', (event) => {
             this.userOptions.graph.weighted = event.target.checked;
@@ -98,51 +111,64 @@ class UserInput {
             this.switchChanged();
         });
     }
-    validated() {
-        this.goBtn.removeAttribute('disabled');
-        this.goBtn.classList.toggle('pointer-events-none', false);
-        this.formValid = true;
-        this.cache(this.textarea.value, 'user-input');
-    }
-    invalidated() {
-        this.goBtn.setAttribute('disabled', '');
-        this.goBtn.classList.toggle('pointer-events-none', true);
-        this.formValid = false;
-    }
     switchChanged() {
         this.cacheObj(this.userOptions);
-        this.triggerValidation();
+        this.validate();
     }
     toggleAll() {
         this.toggleSwitches();
-        if (UI.userSelection.dsaType) {
-            UI.toggleTypeRadio();
+        if (this.userSelection.dsaType) {
+            this.toggleTypeRadio();
         }
-        UI.toggleSwitchVisibility();
-        if (UI.userSelection.dsaFormat) {
-            UI.toggleFormatSelection();
+        this.toggleSwitchVisibility();
+        if (this.userSelection.dsaFormat) {
+            this.toggleFormatSelection();
         }
-        if (UI.textarea.value) {
-            this.triggerValidation();
+        if (this.textarea.value) {
+            this.validate();
         }
     }
-    triggerValidation() {
-        this.goBtn.removeAttribute('disabled');
-        this.goBtn.dispatchEvent(new Event('click'));
-        // this.textarea.dispatchEvent(new Event('input'));
+    validated() {
+        this.submitBtn.removeAttribute('disabled');
+        this.submitBtn.classList.toggle('pointer-events-none', false);
+        this.cache(this.textarea.value, 'user-input');
+    }
+    invalidated() {
+        this.submitBtn.setAttribute('disabled', '');
+        this.submitBtn.classList.toggle('pointer-events-none', true);
+    }
+    postValidation() {
+        if (this.formValid == false) {
+            return this.currFeedback;
+        }
+        return this.formValid;
+    }
+    validate() {
+        if (!this.textarea.value)
+            return;
+        this.currFeedback = Parser.isValid(this.textarea.value, '', '');
+        if (this.currFeedback === true) {
+            this.formValid = true;
+            this.validated();
+            this.submitBtn.dispatchEvent(new Event('click'));
+            return;
+        }
+        this.formValid = false;
+        this.invalidated();
+        this.submitBtn.dispatchEvent(new Event('click'));
     }
     toggleSwitches() {
-        UI.directedSwitch.checked = UI.userOptions.graph.directed;
-        UI.weightedSwitch.checked = UI.userOptions.graph.weighted;
-        UI.bstSwitch.checked = UI.userOptions.tree.binary;
-        UI.narySwitch.checked = UI.userOptions.tree.nary;
-        UI.nullsSwitch.checked = UI.userOptions.tree.nulls;
-        UI.doublySwitch.checked = UI.userOptions.linkedlist.doubly;
+        this.directedSwitch.checked = this.userOptions.graph.directed;
+        this.weightedSwitch.checked = this.userOptions.graph.weighted;
+        this.bstSwitch.checked = this.userOptions.tree.binary;
+        this.narySwitch.checked = this.userOptions.tree.nary;
+        this.nullsSwitch.checked = this.userOptions.tree.nulls;
+        this.doublySwitch.checked = this.userOptions.linkedlist.doubly;
     }
     toggleSwitchVisibility() {
-        let hideGraph = UI.userSelection.dsaType != 'graph';
-        let hideLL = UI.userSelection.dsaType != 'linkedlist';
-        let hideTree = UI.userSelection.dsaType != 'tree';
+        let hideGraph = this.userSelection.dsaType != 'graph';
+        let hideLL = this.userSelection.dsaType != 'linkedlist';
+        let hideTree = this.userSelection.dsaType != 'tree';
         if (!hideGraph || !hideLL || !hideTree) {
             this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
             this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
@@ -153,10 +179,10 @@ class UserInput {
             this.controlsCollapse.hide();
         }
     }
-    toggleTypeRadio(dsaType = UI.userSelection.dsaType) {
+    toggleTypeRadio(dsaType = this.userSelection.dsaType) {
         this.typeOptions.forEach((option) => {
             if (option.name == dsaType) {
-                UI.userSelection.dsaType = dsaType;
+                this.userSelection.dsaType = dsaType;
                 option.node.classList.add('!bg-neutral-800');
                 option.node.classList.add('!outline');
                 option.node.classList.add('!ring-0');
@@ -170,22 +196,29 @@ class UserInput {
     }
     toggleFormatSelection() {
         let opt = this.typeOptions
-            .filter((o) => o.name == UI.userSelection.dsaType)
+            .filter((o) => o.name == this.userSelection.dsaType)
             .pop();
         setTimeout(() => {
             try {
                 [...opt.popconfirm.popconfirmBody.firstChild.childNodes]
                     .filter((el) => el.tagName == 'BUTTON')
                     .forEach((btn) => {
-                    btn.classList.toggle('bg-neutral-700', btn.dataset.dsaFormat == UI.userSelection.dsaFormat);
+                    btn.classList.toggle('bg-neutral-700', btn.dataset.dsaFormat == this.userSelection.dsaFormat);
                 });
             }
             catch (ex) { }
-            UI.togglePlaceholder();
+            this.togglePlaceholder();
         }, 0);
+        let format = opt.formats
+            .filter((f) => f.value == this.userSelection.dsaFormat)
+            .pop();
+        opt.notch.children[0].innerText = format.text;
+        for (let op of this.typeOptions) {
+            op.notch.classList.toggle('hidden', op.name != opt.name);
+        }
     }
     togglePlaceholder() {
-        this.textarea.placeholder = DSA.findPlaceholder(UI.userSelection.dsaType, UI.userSelection.dsaFormat, {
+        this.textarea.placeholder = DSA.findPlaceholder(this.userSelection.dsaType, this.userSelection.dsaFormat, {
             weighted: this.userOptions.graph.weighted
         });
     }
@@ -217,18 +250,20 @@ class UserInput {
                 listBtn.innerText = format.text;
                 listBtn.addEventListener('click', (event) => {
                     let evtBtn = event.target;
-                    UI.userSelection.dsaFormat = evtBtn.dataset.dsaFormat;
-                    this.cacheObj(UI.userSelection, 'user-selection');
+                    this.userSelection.dsaFormat = evtBtn.dataset.dsaFormat;
+                    this.cacheObj(this.userSelection, 'user-selection');
                     [...evtBtn.parentElement.childNodes]
                         .filter((e) => e.tagName == 'BUTTON')
                         .forEach((lstBtn) => {
-                        lstBtn.classList.toggle('bg-neutral-700', lstBtn.dataset.dsaFormat == UI.userSelection.dsaFormat);
+                        lstBtn.classList.toggle('bg-neutral-700', lstBtn.dataset.dsaFormat == this.userSelection.dsaFormat);
                     });
                     let pop = this.typeOptions
-                        .filter((opt) => opt.name == UI.userSelection.dsaType)
+                        .filter((opt) => opt.name == this.userSelection.dsaType)
                         .pop();
                     pop.popconfirm._confirmButton.click();
+                    this.toggleFormatSelection();
                     this.togglePlaceholder();
+                    this.validate();
                 });
                 pop.appendChild(listBtn);
                 if (index < option.formats.length - 1) {
@@ -238,25 +273,35 @@ class UserInput {
                 }
             });
             radioBtn.addEventListener('click', (event) => {
-                UI.userSelection.dsaType = event.target.dataset.dsaType;
-                if (!UI.userSelection.dsaFormat ||
-                    DSA[UI.userSelection.dsaType][UI.userSelection.dsaFormat] == undefined) {
-                    UI.userSelection.dsaFormat = this.typeOptions
-                        .filter((o) => o.name == UI.userSelection.dsaType)
-                        .pop().formats[0].value;
-                }
-                this.cacheObj(UI.userSelection, 'user-selection');
-                this.toggleTypeRadio();
-                this.toggleFormatSelection();
-                this.toggleSwitchVisibility();
-                this.togglePlaceholder();
+                this.userSelection.dsaType = event.target.dataset.dsaType;
                 let btnOption = this.typeOptions
                     .filter((e) => e.name == event.target.dataset.dsaType)
                     .pop();
+                this.toggleTypeRadio();
+                if (this.userSelection.dsaFormat &&
+                    btnOption.formats.filter((f) => f.value == this.userSelection.dsaFormat).length) {
+                    this.toggleFormatSelection();
+                    this.togglePlaceholder();
+                }
+                this.toggleSwitchVisibility();
                 btnOption.popconfirm.popconfirmBody.replaceChildren(pop);
             });
             radioBtn.appendChild(svgs[i]);
             option.node = radioBtn;
+            let notch = document.createElement('div');
+            notch.setAttribute('class', 'hidden pointer-events-none absolute flex justify-center items-center normal-case right-0 bottom-0 w-full h-[15px] text-[10px]');
+            let notchText = document.createElement('span');
+            notchText.id = `format-btn-text-${option.name}`;
+            notchText.setAttribute('class', 'font-light subpixel-antialiased normal-case text-ellipsis text-slate-400');
+            let notchIcon = document.createElement('div');
+            notchIcon.setAttribute('class', 'text-primary absolute bottom-0 right-0 w-[15px] h-[15px]');
+            notchIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="!w-[15px] !h-[15px]pr-[5px] box-content">
+						<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
+					</svg>`;
+            notch.appendChild(notchText);
+            notch.appendChild(notchIcon);
+            option.notch = notch;
+            radioBtn.appendChild(notch);
             btnGroup.appendChild(radioBtn);
         });
     }

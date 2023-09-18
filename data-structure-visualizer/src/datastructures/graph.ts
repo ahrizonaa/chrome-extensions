@@ -43,14 +43,10 @@ class Graph extends DataStructure {
 		this.dataset = input_dataset;
 		switch (UI.userSelection.dsaFormat) {
 			case DSA.graph.adjacency_list.name:
-				if (UI.userOptions.graph.weighted) {
-					this.parse_weighted_adjacency_list();
-				} else {
-					this.parse_adjacency_list();
-				}
+				this.AdjacencyList();
 				break;
 			case DSA.graph.adjacency_matrix.name:
-				this.parse_undirected_unweighted_adjacency_matrix();
+				this.AdjacencyMatrix();
 				break;
 			default:
 				break;
@@ -60,25 +56,11 @@ class Graph extends DataStructure {
 		this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
 	}
 
-	parse_adjacency_list() {
-		this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge));
-		this.node_list = Array.from(this.unique_nodes.values()).sort(
-			(a, b) => a - b
+	AdjacencyList() {
+		this.edgelist = this.dataset.map((edge: number[]) =>
+			edge.slice(edge.length - 2)
 		);
-		this.edgelist = this.dataset;
-		this.grid_size = Math.ceil(Math.sqrt(this.unique_nodes.size));
-
-		for (let i = 0; i < this.grid_size; i++) {
-			this.matrix.push(
-				this.node_list
-					.slice(i * this.grid_size, i * this.grid_size + this.grid_size)
-					.map((node) => new TreeNode(node))
-			);
-		}
-	}
-
-	parse_weighted_adjacency_list() {
-		this.unique_nodes = new Set(this.dataset.flatMap((edge) => edge.slice(1)));
+		this.unique_nodes = new Set(this.edgelist.flat());
 		this.node_list = Array.from(this.unique_nodes.values()).sort(
 			(a, b) => a - b
 		);
@@ -92,20 +74,22 @@ class Graph extends DataStructure {
 			);
 		}
 
-		for (let edge of this.dataset) {
-			let key = edge[1] + '_' + edge[2];
-			let key_reverse = edge[2] + '_' + edge[1];
-			if (key in this.weights) {
-				this.weights[key].push(edge[0]);
-			} else if (key_reverse in this.weights) {
-				this.weights[key_reverse].push(edge[0]);
-			} else {
-				this.weights[key] = [edge[0]];
+		if (UI.userOptions.graph.weighted) {
+			for (let edge of this.dataset) {
+				let key = edge[1] + '_' + edge[2];
+				let key_reverse = edge[2] + '_' + edge[1];
+				if (key in this.weights) {
+					this.weights[key].push(edge[0]);
+				} else if (key_reverse in this.weights) {
+					this.weights[key_reverse].push(edge[0]);
+				} else {
+					this.weights[key] = [edge[0]];
+				}
 			}
 		}
 	}
 
-	parse_undirected_unweighted_adjacency_matrix() {
+	AdjacencyMatrix() {
 		this.node_list = Array.from(Array(this.dataset.length).keys()).map(
 			(n) => n + 1
 		);
@@ -115,8 +99,20 @@ class Graph extends DataStructure {
 
 		for (let row = 0; row < this.dataset.length; row++) {
 			for (let col = row + 1; col < this.dataset.length; col++) {
-				if (this.dataset[row][col] == 1) {
-					this.edgelist.push([row + 1, col + 1]);
+				if (this.dataset[row][col] != 0) {
+					let edge = [row + 1, col + 1];
+					this.edgelist.push(edge);
+					if (UI.userOptions.graph.weighted) {
+						let key = edge[0] + '_' + edge[1];
+						let key_reverse = edge[1] + '_' + edge[0];
+						if (key in this.weights) {
+							this.weights[key].push(this.dataset[row][col]);
+						} else if (key_reverse in this.weights) {
+							this.weights[key_reverse].push(this.dataset[row][col]);
+						} else {
+							this.weights[key] = [this.dataset[row][col]];
+						}
+					}
 				}
 			}
 		}
@@ -128,15 +124,18 @@ class Graph extends DataStructure {
 					.map((node) => new TreeNode(node))
 			);
 		}
+
+		console.log('edgelist', this.edgelist);
+		console.log('matrix', this.matrix);
 	}
 
 	plot() {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		this.plotGraph();
+		this.Draw();
 	}
 
-	plotNodes(): void {
+	DrawNodes(): void {
 		for (let row = 0; row < this.matrix.length; row++) {
 			for (let col = 0; col < this.matrix[row].length; col++) {
 				let offset_x = Math.floor(Math.random() * (10 - -10 + 1) + -10);
@@ -169,11 +168,8 @@ class Graph extends DataStructure {
 		}
 	}
 
-	plotEdges() {
-		let edgelist = UI.userOptions.graph.weighted
-			? this.dataset.map((edge) => edge.slice(1))
-			: this.dataset;
-		for (let [from, to] of edgelist) {
+	DrawEdges() {
+		for (let [from, to] of this.edgelist) {
 			let node1 = this.graph[from];
 			let node2 = this.graph[to];
 			let key_to = from + '_' + to;
@@ -243,9 +239,9 @@ class Graph extends DataStructure {
 		this.ctx.closePath();
 	}
 
-	plotGraph() {
-		this.plotNodes();
-		this.plotEdges();
+	Draw() {
+		this.DrawNodes();
+		this.DrawEdges();
 		this.animate_edges.bind(this);
 		this.animate_edges();
 	}

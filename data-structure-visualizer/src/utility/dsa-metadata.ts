@@ -150,6 +150,7 @@ class DataStructureRadioOption {
 	popconfirm?: Popconfirm;
 	formats?: { text: string; value: string }[];
 	ripple?: Ripple;
+	notch?: HTMLDivElement;
 }
 
 const DSA: DataStructureRepresentations = new DataStructureRepresentations();

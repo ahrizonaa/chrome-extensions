@@ -9,6 +9,8 @@ node_modules/
 /build
 /dist
 
+build/
+
 # ignore composer vendor directory
 /vendor
 

@@ -102,8 +102,8 @@ class GraphOptions {
 }
 class TreeOptions {
 	binary: boolean = false;
-	nary: boolean = false;
-	nulls: boolean = false;
+	maxHeap: boolean = false;
+	minHeap: boolean = false;
 }
 class StackOptions {}
 class QueueOptions {}

@@ -13,6 +13,7 @@ initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
 import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 import { IdleSvg } from './idle-svg/idle-svg';
+import { Tree } from './datastructures/tree';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -31,16 +32,21 @@ function visualize() {
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
 	let ds: any = null;
-	switch (UI.userSelection.dsaFormat) {
+	console.log(parsed_input);
+	console.log(UI);
+	switch (UI.userSelection.dsaType) {
 		case null:
 			return;
-		case DSA.graph.adjacency_list.name:
-		case DSA.graph.adjacency_matrix.name:
+		case 'graph':
 			ds = new Graph(ctx, canvas);
+			break;
+		case 'tree':
+			ds = new Tree(ctx, canvas);
 			break;
 		default:
 			return;
 	}
+
 	ds.parse(parsed_input);
 	ds.plot();
 }

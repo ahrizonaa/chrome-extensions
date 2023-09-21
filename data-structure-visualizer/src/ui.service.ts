@@ -34,8 +34,8 @@ class UserInput {
 	weightedSwitch: HTMLInputElement;
 	directedSwitch: HTMLInputElement;
 	bstSwitch: HTMLInputElement;
-	narySwitch: HTMLInputElement;
-	nullsSwitch: HTMLInputElement;
+	minHeapSwitch: HTMLInputElement;
+	maxHeapSwitch: HTMLInputElement;
 	doublySwitch: HTMLInputElement;
 	textareaWrapper: HTMLDivElement;
 	userOptions: DataStructureOptions;
@@ -111,12 +111,12 @@ class UserInput {
 
 		this.bstSwitch = document.getElementById('bst_switch') as HTMLInputElement;
 
-		this.narySwitch = document.getElementById(
-			'nary-switch'
+		this.minHeapSwitch = document.getElementById(
+			'min-heap-switch'
 		) as HTMLInputElement;
 
-		this.nullsSwitch = document.getElementById(
-			'nulls-switch'
+		this.maxHeapSwitch = document.getElementById(
+			'max-heap-switch'
 		) as HTMLInputElement;
 
 		this.doublySwitch = document.getElementById(
@@ -187,13 +187,13 @@ class UserInput {
 			this.switchChanged();
 		});
 
-		this.narySwitch.addEventListener('change', (event: any) => {
-			this.userOptions.tree.nary = event.target.checked;
+		this.minHeapSwitch.addEventListener('change', (event: any) => {
+			this.userOptions.tree.maxHeap = event.target.checked;
 			this.switchChanged();
 		});
 
-		this.nullsSwitch.addEventListener('change', (event: any) => {
-			this.userOptions.tree.nulls = event.target.checked;
+		this.maxHeapSwitch.addEventListener('change', (event: any) => {
+			this.userOptions.tree.minHeap = event.target.checked;
 			this.switchChanged();
 		});
 	}
@@ -255,8 +255,8 @@ class UserInput {
 		this.directedSwitch.checked = this.userOptions.graph.directed;
 		this.weightedSwitch.checked = this.userOptions.graph.weighted;
 		this.bstSwitch.checked = this.userOptions.tree.binary;
-		this.narySwitch.checked = this.userOptions.tree.nary;
-		this.nullsSwitch.checked = this.userOptions.tree.nulls;
+		this.minHeapSwitch.checked = this.userOptions.tree.maxHeap;
+		this.maxHeapSwitch.checked = this.userOptions.tree.minHeap;
 		this.doublySwitch.checked = this.userOptions.linkedlist.doubly;
 	}
 

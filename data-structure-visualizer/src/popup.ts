@@ -47,8 +47,8 @@ function visualize() {
 			return;
 	}
 
-	ds.parse(parsed_input);
-	ds.plot();
+	ds.Parse(parsed_input);
+	ds.Plot();
 }
 
 function clearCanvas() {

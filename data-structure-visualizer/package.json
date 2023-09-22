@@ -9,7 +9,7 @@
 		"typescript": "npx tsc -w",
 		"tailwind": "npx tailwind -i ./src/styles.css -o popup/popup.css --watch --minify",
 		"dev": "npm-run-all --parallel --continue-on-error typescript tailwind rollup",
-		"serve": "web-dev-server --node-resolve --open --watch --port 5400 --app-index=popup/popup.html"
+		"serve": "web-dev-server --node-resolve --open --watch --port 5200 --app-index=popup/popup.html"
 	},
 	"repository": {
 		"type": "git",

@@ -49,6 +49,7 @@ class DataStructure {
 	canvasBgColor = Aesthetics.CanvasBgColor;
 	maxCellSize = 50;
 	maxRadius = 50;
+	minRadius = 11;
 	edgeColor = Aesthetics.EdgeColor;
 	nodeColor = Aesthetics.NodeColor;
 	nodeFontSize = Aesthetics.NodeFontSize;

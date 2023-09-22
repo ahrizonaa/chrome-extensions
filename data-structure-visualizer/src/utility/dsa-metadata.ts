@@ -130,10 +130,10 @@ class DataStructureOptions {
 class CanvasAesthetics {
 	CanvasBgColor: string = '#101010';
 	EdgeColor: string = '#EEEEEE';
-	NodeColor: string = '#141824';
-	NodeFontSize: string = '16px';
+	NodeColor: string = '#d1d1d1';
+	NodeFontSize: string = '0.66rem';
 	NodeFontFamily: string = 'monospace';
-	NodeFontColor: string = '#EEEEEE';
+	NodeFontColor: string = '#212121';
 	ArrowheadSize: number = 10;
 
 	constructor() {}

@@ -38,7 +38,7 @@ class Graph extends DataStructure {
 		this.canvas = canvas;
 	}
 
-	parse(input_dataset) {
+	Parse(input_dataset) {
 		this.dataset = input_dataset;
 		switch (UI.userSelection.dsaFormat) {
 			case DSA.graph.adjacency_list.name:
@@ -125,7 +125,7 @@ class Graph extends DataStructure {
 		}
 	}
 
-	plot() {
+	Plot() {
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		this.Draw();

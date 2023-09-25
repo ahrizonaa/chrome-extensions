@@ -32,8 +32,6 @@ function visualize() {
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
 	let ds: any = null;
-	console.log(parsed_input);
-	console.log(UI);
 	switch (UI.userSelection.dsaType) {
 		case null:
 			return;

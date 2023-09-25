@@ -1,5 +1,10 @@
 import { Maths, RelativePoint } from '../utility/math-functions';
-import { DataStructure, Edge, EdgeSegment } from './base-datastructures';
+import {
+	BTreeNode,
+	DataStructure,
+	Edge,
+	EdgeSegment
+} from './base-datastructures';
 
 class Tree extends DataStructure {
 	ctx: CanvasRenderingContext2D;
@@ -15,6 +20,7 @@ class Tree extends DataStructure {
 	edges: any[] = [];
 	current_edge: number = 0;
 	animation_frame_id: number = NaN;
+	root: BTreeNode;
 
 	constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 		super();
@@ -33,6 +39,16 @@ class Tree extends DataStructure {
 			Math.min(this.maxRadius, this.cellSize * 0.25),
 			this.minRadius
 		);
+
+		for (let i = 0; i < this.dataset.length; i++) {
+			this.BFS(this.root, this.dataset[i]);
+		}
+	}
+
+	BFS(node: BTreeNode, val: number): void {
+		if (!node) {
+			node = new BTreeNode(val);
+		}
 	}
 
 	Plot() {
@@ -44,6 +60,7 @@ class Tree extends DataStructure {
 	Draw(): void {
 		this.DrawNodes();
 		this.DrawEdges();
+		console.log(this.edges, this.current_edge);
 		this.AnimateEdges.bind(this);
 		this.AnimateEdges();
 	}
@@ -58,8 +75,22 @@ class Tree extends DataStructure {
 			for (
 				let j = 0;
 				j < Math.pow(2, currDepth) && i < this.dataset.length;
-				j++
+				j++, i++
 			) {
+				if (this.dataset[i] == null) {
+					this.nodelist.push(null);
+					continue;
+				}
+
+				while (
+					this.dataset[Math.floor(i / 2)] == null &&
+					j + 1 < Math.pow(2, currDepth) &&
+					i + 1 < this.dataset.length
+				) {
+					i += 1;
+					j += 1;
+				}
+
 				// each x has to go halfway between its respective sector
 				let sector = this.canvas.width / Math.pow(2, currDepth);
 				let start = j * sector;
@@ -86,14 +117,20 @@ class Tree extends DataStructure {
 				this.ctx.textAlign = 'center';
 				this.ctx.fillText(String(this.dataset[i]), xr, yr + 3);
 				this.ctx.closePath();
-				i += 1;
 			}
 		}
 	}
 
 	DrawEdges(): void {
+		console.log({ len: this.nodelist.length });
 		for (let i = 0; i < this.nodelist.length; i++) {
-			if (2 * i + 1 < this.nodelist.length && this.nodelist[2 * i + 1]) {
+			if (this.nodelist[i] == null) {
+				continue;
+			}
+			if (
+				2 * i + 1 < this.nodelist.length &&
+				this.nodelist[2 * i + 1] != null
+			) {
 				// draw left child edge
 				let distRatio = Maths.DistanceRatio(
 					this.radius,
@@ -116,7 +153,10 @@ class Tree extends DataStructure {
 					Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
 				);
 			}
-			if (2 * i + 2 < this.nodelist.length && this.nodelist[2 * i + 2]) {
+			if (
+				2 * i + 2 < this.nodelist.length &&
+				this.nodelist[2 * i + 2] != null
+			) {
 				// draw right child edge
 				let distRatio = Maths.DistanceRatio(
 					this.radius,

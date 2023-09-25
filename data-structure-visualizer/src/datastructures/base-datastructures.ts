@@ -15,6 +15,18 @@ class TreeNode {
 	}
 }
 
+class BTreeNode {
+	val: number | null;
+	point: RelativePoint;
+	r: number;
+	left: BTreeNode | null;
+	right: BTreeNode | null;
+
+	constructor(val: number | null = null) {
+		this.val = val;
+	}
+}
+
 class EdgeSegment {
 	curr: RelativePoint;
 	next: RelativePoint;
@@ -57,4 +69,4 @@ class DataStructure {
 	nodeFontColor = Aesthetics.NodeFontColor;
 }
 
-export { TreeNode, Edge, DataStructure, EdgeSegment };
+export { TreeNode, BTreeNode, Edge, DataStructure, EdgeSegment };

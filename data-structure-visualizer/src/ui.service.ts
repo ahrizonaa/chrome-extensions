@@ -238,6 +238,7 @@ class UserInput {
 	}
 
 	validate() {
+		this.textarea.value = this.textarea.value.replace(/null/gi, 'null');
 		if (!this.textarea.value) return;
 		this.currFeedback = Parser.isValid(this.textarea.value, '', '');
 		if (this.currFeedback === true) {

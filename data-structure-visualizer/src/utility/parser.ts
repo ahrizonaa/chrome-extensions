@@ -44,7 +44,8 @@ class Parser {
 		return true;
 	}
 
-	static deserialize(str): any {
+	static deserialize(str: string): any {
+		str = str.replace(/null/gi, 'null');
 		try {
 			return JSON.parse(str);
 		} catch {

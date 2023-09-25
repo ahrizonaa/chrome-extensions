@@ -43,9 +43,15 @@ class Tree extends DataStructure {
 		for (let i = 0; i < this.dataset.length; i++) {
 			this.BFS(this.root, this.dataset[i]);
 		}
+
+		let queue = [];
+
+		for (let i = 0; i < queue.length; i++) {
+			this.AppendNode(this.root, queue.shift());
+		}
 	}
 
-	BFS(node: BTreeNode, val: number): void {
+	AppendNode(node: BTreeNode, val: number): void {
 		if (!node) {
 			node = new BTreeNode(val);
 		}

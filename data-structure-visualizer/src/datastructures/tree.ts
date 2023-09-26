@@ -12,7 +12,7 @@ class Tree extends DataStructure {
 	dataset: any[];
 	gridWidth: number;
 	gridHeight: number;
-	depthZeroIndexed: number;
+	depthZeroIndexed: number = 0;
 	cellSize: number;
 	steps: number = 25;
 	radius: number;
@@ -30,7 +30,19 @@ class Tree extends DataStructure {
 
 	Parse(input: any[]) {
 		this.dataset = input;
-		this.depthZeroIndexed = Math.floor(Math.log2(this.dataset.length));
+
+		if (this.dataset.length > 0) {
+			this.root = new BTreeNode(this.dataset[0]);
+		}
+
+		let i = 1;
+
+		while (i < this.dataset.length) {
+			let next = this.dataset[i];
+			this.AppendNode(next);
+			i += 1;
+		}
+
 		this.gridHeight = this.depthZeroIndexed + 1;
 		this.gridWidth = Math.pow(2, this.depthZeroIndexed);
 		this.cellSize = this.canvas.width / this.gridWidth;
@@ -39,21 +51,39 @@ class Tree extends DataStructure {
 			Math.min(this.maxRadius, this.cellSize * 0.25),
 			this.minRadius
 		);
-
-		for (let i = 0; i < this.dataset.length; i++) {
-			this.BFS(this.root, this.dataset[i]);
-		}
-
-		let queue = [];
-
-		for (let i = 0; i < queue.length; i++) {
-			this.AppendNode(this.root, queue.shift());
-		}
 	}
 
-	AppendNode(node: BTreeNode, val: number): void {
-		if (!node) {
-			node = new BTreeNode(val);
+	AppendNode(val: number): void {
+		let queue = [this.root];
+		let depth = 0;
+		while (queue.length) {
+			let size = queue.length;
+			for (let i = 0; i < size; i++) {
+				let node = queue.shift();
+				if (!node) {
+					continue;
+				}
+
+				if (node.left === undefined) {
+					if (val === null) node.left = null;
+					else {
+						node.left = new BTreeNode(val);
+						this.depthZeroIndexed = Math.max(depth + 1, this.depthZeroIndexed);
+					}
+					return;
+				}
+				if (node.right === undefined) {
+					if (val === null) node.right = null;
+					else {
+						node.right = new BTreeNode(val);
+						this.depthZeroIndexed = Math.max(depth + 1, this.depthZeroIndexed);
+					}
+					return;
+				}
+				queue.push(node.left);
+				queue.push(node.right);
+			}
+			depth += 1;
 		}
 	}
 
@@ -64,71 +94,60 @@ class Tree extends DataStructure {
 	}
 
 	Draw(): void {
-		this.DrawNodes();
+		this.DrawNodesBFS();
 		this.DrawEdges();
-		console.log(this.edges, this.current_edge);
 		this.AnimateEdges.bind(this);
 		this.AnimateEdges();
 	}
 
-	DrawNodes(): void {
-		let i = 0;
-		for (
-			let currDepth = 0;
-			currDepth <= this.depthZeroIndexed && i < this.dataset.length;
-			currDepth++
-		) {
-			for (
-				let j = 0;
-				j < Math.pow(2, currDepth) && i < this.dataset.length;
-				j++, i++
-			) {
-				if (this.dataset[i] == null) {
+	DrawNodesBFS() {
+		let queue = [this.root];
+		let depth = 0;
+		while (queue.length && depth <= this.depthZeroIndexed) {
+			let size = queue.length;
+			for (let j = 0; j < size; j++) {
+				let node = queue.shift();
+				if (node == null) {
 					this.nodelist.push(null);
-					continue;
+					queue.push(null);
+					queue.push(null);
+				} else {
+					queue.push(node.left);
+					queue.push(node.right);
+
+					// plot node
+					// each x has to go halfway between its respective sector
+					let cell = this.canvas.width / Math.pow(2, depth);
+					let start = j * cell;
+					let half = start + cell / 2;
+					let xr = half;
+					let yr =
+						this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
+
+					this.nodelist.push(
+						new RelativePoint(xr, yr, this.canvas.width, this.canvas.height)
+					);
+
+					this.ctx.beginPath();
+					this.ctx.fillStyle = this.nodeColor;
+					this.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
+					this.ctx.fill();
+					this.ctx.closePath();
+
+					this.ctx.beginPath();
+					this.ctx.fillStyle = this.nodeFontColor;
+					this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+					this.ctx.textAlign = 'center';
+					this.ctx.fillText(String(node.val), xr, yr + 3);
+					this.ctx.closePath();
 				}
-
-				while (
-					this.dataset[Math.floor(i / 2)] == null &&
-					j + 1 < Math.pow(2, currDepth) &&
-					i + 1 < this.dataset.length
-				) {
-					i += 1;
-					j += 1;
-				}
-
-				// each x has to go halfway between its respective sector
-				let sector = this.canvas.width / Math.pow(2, currDepth);
-				let start = j * sector;
-				let end = start + sector;
-				let half = start + (end - start) / 2;
-				let xr = half;
-				let yr =
-					this.cellSize / 2 +
-					(this.canvas.height / this.gridHeight) * currDepth;
-
-				this.nodelist.push(
-					new RelativePoint(xr, yr, this.canvas.width, this.canvas.height)
-				);
-
-				this.ctx.beginPath();
-				this.ctx.fillStyle = this.nodeColor;
-				this.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
-				this.ctx.fill();
-				this.ctx.closePath();
-
-				this.ctx.beginPath();
-				this.ctx.fillStyle = this.nodeFontColor;
-				this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-				this.ctx.textAlign = 'center';
-				this.ctx.fillText(String(this.dataset[i]), xr, yr + 3);
-				this.ctx.closePath();
 			}
+
+			depth += 1;
 		}
 	}
 
 	DrawEdges(): void {
-		console.log({ len: this.nodelist.length });
 		for (let i = 0; i < this.nodelist.length; i++) {
 			if (this.nodelist[i] == null) {
 				continue;

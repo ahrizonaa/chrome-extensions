@@ -29,6 +29,7 @@ class Tree extends DataStructure {
 	}
 
 	Parse(input: any[]) {
+		input = this.TrimNulls(input);
 		this.dataset = input;
 
 		if (this.dataset.length > 0) {
@@ -51,6 +52,19 @@ class Tree extends DataStructure {
 			Math.min(this.maxRadius, this.cellSize * 0.25),
 			this.minRadius
 		);
+	}
+
+	TrimNulls(input: number[]): number[] {
+		let i = 0;
+		while (input[i] === null && i < input.length) {
+			i += 1;
+		}
+
+		let j = input.length - 1;
+		while (input[j] === null && j >= 0) {
+			j--;
+		}
+		return input.slice(i, j + 1);
 	}
 
 	AppendNode(val: number): void {

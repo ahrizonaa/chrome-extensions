@@ -21,6 +21,8 @@ class BTreeNode {
 	r: number;
 	left: BTreeNode | null;
 	right: BTreeNode | null;
+	leftnodes: number = 0;
+	rightnodes: number = 0;
 
 	constructor(val: number | null = null) {
 		this.val = val;

@@ -109,7 +109,7 @@ class UserInput {
 			'directed-switch'
 		) as HTMLInputElement;
 
-		this.bstSwitch = document.getElementById('bst_switch') as HTMLInputElement;
+		this.bstSwitch = document.getElementById('bst-switch') as HTMLInputElement;
 
 		this.minHeapSwitch = document.getElementById(
 			'min-heap-switch'
@@ -183,19 +183,40 @@ class UserInput {
 			this.switchChanged();
 		});
 		this.bstSwitch.addEventListener('change', (event: any) => {
-			this.userOptions.tree.binary = event.target.checked;
+			if (!event.target.checked) {
+				this.userOptions.tree.binary = false;
+			} else {
+				this.toggleTreeSwitches(event.target.id);
+			}
 			this.switchChanged();
 		});
 
 		this.minHeapSwitch.addEventListener('change', (event: any) => {
-			this.userOptions.tree.maxHeap = event.target.checked;
+			if (!event.target.checked) {
+				this.userOptions.tree.minHeap = false;
+			} else {
+				this.toggleTreeSwitches(event.target.id);
+			}
 			this.switchChanged();
 		});
 
 		this.maxHeapSwitch.addEventListener('change', (event: any) => {
-			this.userOptions.tree.minHeap = event.target.checked;
+			if (!event.target.checked) {
+				this.userOptions.tree.maxHeap = false;
+			} else {
+				this.toggleTreeSwitches(event.target.id);
+			}
 			this.switchChanged();
 		});
+	}
+
+	toggleTreeSwitches(id: string) {
+		this.userOptions.tree.binary = id == 'bst-switch';
+		this.userOptions.tree.minHeap = id == 'min-heap-switch';
+		this.userOptions.tree.maxHeap = id == 'max-heap-switch';
+		this.bstSwitch.checked = id == 'bst-switch';
+		this.minHeapSwitch.checked = id == 'min-heap-switch';
+		this.maxHeapSwitch.checked = id == 'max-heap-switch';
 	}
 
 	switchChanged() {
@@ -256,8 +277,8 @@ class UserInput {
 		this.directedSwitch.checked = this.userOptions.graph.directed;
 		this.weightedSwitch.checked = this.userOptions.graph.weighted;
 		this.bstSwitch.checked = this.userOptions.tree.binary;
-		this.minHeapSwitch.checked = this.userOptions.tree.maxHeap;
-		this.maxHeapSwitch.checked = this.userOptions.tree.minHeap;
+		this.minHeapSwitch.checked = this.userOptions.tree.minHeap;
+		this.maxHeapSwitch.checked = this.userOptions.tree.maxHeap;
 		this.doublySwitch.checked = this.userOptions.linkedlist.doubly;
 	}
 

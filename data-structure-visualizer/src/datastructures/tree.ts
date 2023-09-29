@@ -1,3 +1,4 @@
+import { UI } from '../ui.service';
 import { Maths, RelativePoint } from '../utility/math-functions';
 import {
 	BTreeNode,
@@ -9,6 +10,7 @@ import {
 class Tree extends DataStructure {
 	ctx: CanvasRenderingContext2D;
 	canvas: HTMLCanvasElement;
+	datasetCache: any[];
 	dataset: any[];
 	gridWidth: number;
 	gridHeight: number;
@@ -28,20 +30,32 @@ class Tree extends DataStructure {
 		this.canvas = canvas;
 	}
 
+	Plot() {
+		this.ctx.fillStyle = this.canvasBgColor;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		this.Draw();
+	}
+
+	Draw(): void {
+		this.DrawNodesBFS();
+		this.DrawEdges();
+		this.AnimateEdges.bind(this);
+		this.AnimateEdges();
+	}
+
 	Parse(input: any[]) {
 		input = this.TrimNulls(input);
+		this.datasetCache = input;
 		this.dataset = input;
 
-		if (this.dataset.length > 0) {
-			this.root = new BTreeNode(this.dataset[0]);
-		}
+		this.root = this.ConstructTree(this.dataset);
 
-		let i = 1;
-
-		while (i < this.dataset.length) {
-			let next = this.dataset[i];
-			this.AppendNode(next);
-			i += 1;
+		if (UI.userOptions.tree.binary) {
+			this.root = this.ToBST([...input]);
+		} else if (UI.userOptions.tree.maxHeap) {
+			this.root = this.ToHeap([...input], 'MAX');
+		} else if (UI.userOptions.tree.minHeap) {
+			this.root = this.ToHeap([...input], 'MIN');
 		}
 
 		this.gridHeight = this.depthZeroIndexed + 1;
@@ -52,6 +66,121 @@ class Tree extends DataStructure {
 			Math.min(this.maxRadius, this.cellSize * 0.25),
 			this.minRadius
 		);
+	}
+
+	ConstructTree(input: number[]): BTreeNode {
+		let i = 1;
+
+		let root = new BTreeNode();
+
+		if (input.length > 0) {
+			root = new BTreeNode(input[0]);
+		}
+
+		while (i < input.length) {
+			let next = input[i];
+			this.AppendNode(next, root);
+			i += 1;
+		}
+
+		return root;
+	}
+
+	ToBST(input: number[]): BTreeNode {
+		this.CountSubtrees(this.root);
+
+		let nulls: number[];
+		[input, nulls] = this.DisplaceNulls(input);
+
+		input.sort((a, b) => a - b);
+
+		let clone = new BTreeNode();
+		this.CloneDFS(this.root, clone, [...input]);
+
+		input = this.ReplaceNulls(input, nulls);
+
+		return clone;
+	}
+
+	CloneDFS(root: BTreeNode, clone: BTreeNode, input: number[]) {
+		clone.val = input[root.leftnodes];
+		if (root.left === null) {
+			clone.left = null;
+		} else if (root.left) {
+			clone.left = new BTreeNode();
+			this.CloneDFS(root.left, clone.left, input.slice(0, root.leftnodes));
+		}
+
+		if (root.right === null) {
+			clone.right = null;
+		} else if (root.right) {
+			clone.right = new BTreeNode();
+			this.CloneDFS(root.right, clone.right, input.slice(root.leftnodes + 1));
+		}
+	}
+
+	ToHeap(input: number[], heap: string): BTreeNode {
+		let nulls: number[];
+		[input, nulls] = this.DisplaceNulls(input);
+
+		if (heap == 'MIN') {
+			input.sort((a, b) => a - b);
+		} else if (heap == 'MAX') {
+			input.sort((a, b) => b - a);
+		} else {
+			input.sort((a, b) => a - b);
+		}
+
+		input = this.ReplaceNulls(input, nulls);
+
+		return this.ConstructTree(input);
+	}
+
+	ReplaceNulls(input: number[], nulls: number[]): number[] {
+		let j = 0;
+
+		while (j < input.length && nulls.length) {
+			if (j == nulls[0]) {
+				input = input.slice(0, j).concat([null]).concat(input.slice(j));
+				nulls.shift();
+			}
+			j += 1;
+		}
+
+		return input;
+	}
+
+	DisplaceNulls(input: number[]): [number[], number[]] {
+		let nulls = [];
+
+		input.forEach((n, i) => {
+			if (n === null) nulls.push(i);
+		});
+
+		input = input.filter((n) => n != null);
+
+		return [input, nulls];
+	}
+
+	CountSubtrees(node: BTreeNode): number {
+		if (!node || node.val === null) {
+			return 0;
+		}
+
+		if (!node.left && !node.right) {
+			return 1;
+		}
+
+		let left = 0,
+			right = 0;
+
+		if (node.left) left = this.CountSubtrees(node.left);
+		if (node.right) right = this.CountSubtrees(node.right);
+
+		node.leftnodes = left;
+		node.rightnodes = right;
+
+		return left + 1 + right;
 	}
 
 	TrimNulls(input: number[]): number[] {
@@ -67,8 +196,8 @@ class Tree extends DataStructure {
 		return input.slice(i, j + 1);
 	}
 
-	AppendNode(val: number): void {
-		let queue = [this.root];
+	AppendNode(val: number, root: BTreeNode): void {
+		let queue = [root];
 		let depth = 0;
 		while (queue.length) {
 			let size = queue.length;
@@ -99,19 +228,6 @@ class Tree extends DataStructure {
 			}
 			depth += 1;
 		}
-	}
-
-	Plot() {
-		this.ctx.fillStyle = this.canvasBgColor;
-		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		this.Draw();
-	}
-
-	Draw(): void {
-		this.DrawNodesBFS();
-		this.DrawEdges();
-		this.AnimateEdges.bind(this);
-		this.AnimateEdges();
 	}
 
 	DrawNodesBFS() {

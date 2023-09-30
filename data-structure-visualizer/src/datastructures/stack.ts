@@ -24,7 +24,7 @@ class Stack extends DataStructure {
 	}
 
 	Parse(input: number[]) {
-		this.dataset = input;
+		this.dataset = input.slice(0, 6);
 
 		this.stackHeight = this.canvas.height - 100;
 		console.log('parsed');

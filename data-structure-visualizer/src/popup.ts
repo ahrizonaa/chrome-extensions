@@ -13,6 +13,7 @@ import { Aesthetics, DSA } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 import { IdleSvg } from './idle-svg/idle-svg';
 import { Tree } from './datastructures/tree';
+import { Stack } from './datastructures/stack';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -39,6 +40,9 @@ function visualize() {
 			break;
 		case 'tree':
 			ds = new Tree(ctx, canvas);
+			break;
+		case 'stack':
+			ds = new Stack(ctx, canvas);
 			break;
 		default:
 			return;

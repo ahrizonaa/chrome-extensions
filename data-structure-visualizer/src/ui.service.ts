@@ -24,12 +24,18 @@ import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
 import { TextAreaClasses } from './textarea/textarea';
 import { Parser } from './utility/parser';
+import { Graph } from './datastructures/graph';
+import { Stack } from './datastructures/stack';
+import { Tree } from './datastructures/tree';
 
 class UserInput {
+	ds: Graph | Tree | Stack | any = null;
 	textarea: HTMLTextAreaElement;
 	controlsCollapse: Collapse;
 	graphControls: HTMLDivElement;
 	treeControls: HTMLDivElement;
+	stackControls: HTMLDivElement;
+	queueControls: HTMLDivElement;
 	linkedlistControls: HTMLDivElement;
 	weightedSwitch: HTMLInputElement;
 	directedSwitch: HTMLInputElement;
@@ -46,6 +52,11 @@ class UserInput {
 	validator: Validation;
 	form: HTMLFormElement;
 	currFeedback: string | true;
+	controlsTitle: HTMLHeadingElement;
+	pushBtn: HTMLButtonElement;
+	popBtn: HTMLButtonElement;
+	enqueueBtn: HTMLButtonElement;
+	dequeueBtn: HTMLButtonElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -98,6 +109,14 @@ class UserInput {
 			'tree-controls'
 		) as HTMLDivElement;
 
+		this.stackControls = document.getElementById(
+			'stack-controls'
+		) as HTMLDivElement;
+
+		this.queueControls = document.getElementById(
+			'queue-controls'
+		) as HTMLDivElement;
+
 		this.linkedlistControls = document.getElementById(
 			'linkedlist-controls'
 		) as HTMLDivElement;
@@ -122,6 +141,19 @@ class UserInput {
 		this.doublySwitch = document.getElementById(
 			'doubly_switch'
 		) as HTMLInputElement;
+
+		this.controlsTitle = document.getElementById(
+			'controls-title'
+		) as HTMLHeadingElement;
+
+		this.pushBtn = document.getElementById('push-btn') as HTMLButtonElement;
+		this.popBtn = document.getElementById('pop-btn') as HTMLButtonElement;
+		this.enqueueBtn = document.getElementById(
+			'enqueue-btn'
+		) as HTMLButtonElement;
+		this.dequeueBtn = document.getElementById(
+			'dequeue-btn'
+		) as HTMLButtonElement;
 	}
 
 	cacheObj(val: any, key: string = 'user-options'): void {
@@ -208,6 +240,23 @@ class UserInput {
 			}
 			this.switchChanged();
 		});
+
+		this.pushBtn.addEventListener('click', (event: any) => {
+			console.log('push stack');
+			document.dispatchEvent(new Event('StackPush'));
+		});
+
+		this.popBtn.addEventListener('click', (event: any) => {
+			console.log('pop stack');
+		});
+
+		this.enqueueBtn.addEventListener('click', (event: any) => {
+			console.log('enqueue');
+		});
+
+		this.dequeueBtn.addEventListener('click', (event: any) => {
+			console.log('enqueue');
+		});
 	}
 
 	toggleTreeSwitches(id: string) {
@@ -286,12 +335,22 @@ class UserInput {
 		let hideGraph = this.userSelection.dsaType != 'graph';
 		let hideLL = this.userSelection.dsaType != 'linkedlist';
 		let hideTree = this.userSelection.dsaType != 'tree';
-		if (!hideGraph || !hideLL || !hideTree) {
+		let hideStack = this.userSelection.dsaType != 'stack';
+		let hideQueue = this.userSelection.dsaType != 'queue';
+		if (!hideGraph || !hideLL || !hideTree || !hideStack || !hideQueue) {
 			this.graphControls.classList.toggle('hide-switch-panel', hideGraph);
 			this.linkedlistControls.classList.toggle('hide-switch-panel', hideLL);
 			this.treeControls.classList.toggle('hide-switch-panel', hideTree);
+			this.stackControls.classList.toggle('hide-switch-panel', hideStack);
+			this.queueControls.classList.toggle('hide-switch-panel', hideQueue);
+
+			if (!hideStack || !hideQueue) {
+				this.controlsTitle.innerText = 'Operations';
+			} else {
+				this.controlsTitle.innerText = 'Variants';
+			}
 			this.controlsCollapse.show();
-		} else if (hideGraph && hideLL && hideTree) {
+		} else if (hideGraph && hideLL && hideTree && hideStack && hideQueue) {
 			this.controlsCollapse.hide();
 		}
 	}

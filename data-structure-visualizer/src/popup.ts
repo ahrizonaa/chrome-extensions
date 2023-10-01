@@ -19,6 +19,14 @@ let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let canvasOverlay: HTMLImageElement;
 
+let ds: Graph | Tree | Stack | any = null;
+
+document.addEventListener('StackPush', (event: any) => {
+	if (ds.dataset.length < 6) {
+		ds.Push();
+	}
+});
+
 function goClicked(): void {
 	if (UI.formValid === true) {
 		visualize();
@@ -31,7 +39,6 @@ function visualize() {
 	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
-	let ds: any = null;
 	switch (UI.userSelection.dsaType) {
 		case null:
 			return;

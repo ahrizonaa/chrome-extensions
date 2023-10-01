@@ -91,6 +91,42 @@ class Stack extends DataStructure {
 			this.edges.push(Edge.bind(this)(points));
 		}
 	}
+
+	Push() {
+		this.dataset.push('');
+
+		let i = this.dataset.length - 1;
+
+		let x = this.canvas.width / 2 - 45;
+		let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
+
+		let steps = 0.02;
+		let p0 = { x: 10, y: 10 };
+		let p1 = { x: this.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
+		let p2 = { x: this.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
+		let p3 = {
+			x: this.canvas.width / 2 - 45,
+			y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 2
+		};
+
+		let points: RelativePoint[] = [];
+
+		this.ctx.moveTo(p0.x, p0.y);
+		for (var j = 0; j < 1; j += steps) {
+			var p = this.Bezier(j, p0, p1, p2, p3);
+			points.push(
+				new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
+			);
+		}
+
+		this.edges.push(Edge.bind(this)(points));
+
+		this.AnimateStackPush();
+	}
+
+	Pop() {
+		this.dataset.pop();
+	}
 	AnimateStackPush() {
 		let res: { done: boolean; value: EdgeSegment } =
 			this.edges[this.current_edge].next();
@@ -122,7 +158,7 @@ class Stack extends DataStructure {
 				this.ctx.stroke();
 			}
 
-			this.ctx.fillStyle = 'lightgreen';
+			this.ctx.fillStyle = '#bad989';
 			this.ctx.fillRect(curr.x, curr.y, this.boxWidth, this.boxHeight);
 			this.prev = curr;
 
@@ -142,7 +178,7 @@ class Stack extends DataStructure {
 			);
 			this.prev = new RelativePoint(0, 0, 0, 0);
 
-			this.ctx.fillStyle = 'lightgreen';
+			this.ctx.fillStyle = '#bad989';
 			this.ctx.fillRect(last.x, last.y, this.boxWidth + 2, this.boxHeight + 2);
 
 			this.ctx.beginPath();

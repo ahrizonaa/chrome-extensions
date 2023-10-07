@@ -1,5 +1,22 @@
 import { RelativePoint } from '../utility/math-functions';
 import { DataStructure, Edge, EdgeSegment } from './base-datastructures';
+import { UI } from '../ui.service';
+
+class StackBox {
+	points: RelativePoint[];
+	curr: number = 0;
+	val: string;
+	push: boolean;
+	constructor(
+		points: RelativePoint[] = [],
+		val: string = '',
+		push: boolean = true
+	) {
+		this.points = points;
+		this.val = val;
+		this.push = push;
+	}
+}
 
 class Stack extends DataStructure {
 	ctx: CanvasRenderingContext2D;
@@ -10,12 +27,14 @@ class Stack extends DataStructure {
 	stackHeight: number;
 	boxWidth: number = 90;
 	boxHeight: number = 40;
-	steps: number = 25;
+	beizerSpeed: number = 0.05;
 	edges: any[] = [];
 	current_edge: number = 0;
-	animation_frame_id: number = NaN;
+	animation_frame_id: number = null;
 	maxHeight: number = 50;
 	prev: RelativePoint = new RelativePoint(0, 0, 0, 0);
+	animationQueue: StackBox[] = [];
+	boxes: StackBox[] = [];
 
 	constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 		super();
@@ -27,18 +46,15 @@ class Stack extends DataStructure {
 		this.dataset = input.slice(0, 6);
 
 		this.stackHeight = this.canvas.height - 100;
-		console.log('parsed');
 	}
 
 	Plot() {
-		console.log('plot');
 		this.ctx.fillStyle = this.canvasBgColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		this.Draw();
 	}
 
 	Draw() {
-		console.log('draw');
 		this.DrawStack();
 		this.DrawBoxes();
 		this.AnimateStackPush.bind(this);
@@ -69,26 +85,27 @@ class Stack extends DataStructure {
 			let x = this.canvas.width / 2 - 45;
 			let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
-			let steps = 0.02;
 			let p0 = { x: 10, y: 10 };
 			let p1 = { x: this.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
 			let p2 = { x: this.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
 			let p3 = {
 				x: this.canvas.width / 2 - 45,
-				y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 2
+				y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12
 			};
 
 			let points: RelativePoint[] = [];
 
 			this.ctx.moveTo(p0.x, p0.y);
-			for (var j = 0; j < 1; j += steps) {
+			for (var j = 0; j < 1; j += this.beizerSpeed) {
 				var p = this.Bezier(j, p0, p1, p2, p3);
 				points.push(
 					new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
 				);
 			}
 
-			this.edges.push(Edge.bind(this)(points));
+			let box = new StackBox(points, this.dataset[i]);
+
+			this.EnqueueAnimation(box);
 		}
 	}
 
@@ -97,109 +114,149 @@ class Stack extends DataStructure {
 
 		let i = this.dataset.length - 1;
 
-		let x = this.canvas.width / 2 - 45;
 		let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
-		let steps = 0.02;
 		let p0 = { x: 10, y: 10 };
 		let p1 = { x: this.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
 		let p2 = { x: this.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
 		let p3 = {
 			x: this.canvas.width / 2 - 45,
-			y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 2
+			y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12
 		};
 
 		let points: RelativePoint[] = [];
 
-		this.ctx.moveTo(p0.x, p0.y);
-		for (var j = 0; j < 1; j += steps) {
+		for (var j = 0; j < 1; j += this.beizerSpeed) {
 			var p = this.Bezier(j, p0, p1, p2, p3);
 			points.push(
 				new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
 			);
 		}
 
-		this.edges.push(Edge.bind(this)(points));
+		let box = new StackBox(points);
 
-		this.AnimateStackPush();
+		this.EnqueueAnimation(box);
 	}
 
 	Pop() {
-		this.dataset.pop();
-	}
-	AnimateStackPush() {
-		let res: { done: boolean; value: EdgeSegment } =
-			this.edges[this.current_edge].next();
+		if (this.dataset.length == 0) {
+			return;
+		}
+		let i = this.dataset.length - 1;
+		let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
-		if (res.done == false) {
-			let { curr, next } = res.value;
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateStackPush.bind(this)
+		let box = this.boxes.pop();
+
+		let p0 = { x: this.canvas.width - 10, y: 10 };
+		let p1 = { x: this.canvas.width / 2 + 45, y: 10 + (y - 10) / 4 };
+		let p2 = { x: this.canvas.width / 2 + 45, y: y - (y - 10) / 4 };
+		let p3 = {
+			x: box.points[box.points.length - 1].x,
+			y: box.points[box.points.length - 1].y
+		};
+
+		let points: RelativePoint[] = [];
+
+		for (var j = 0; j < 1; j += this.beizerSpeed) {
+			var p = this.Bezier(j, p3, p2, p1, p0);
+			points.push(
+				new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
 			);
+		}
 
+		this.dataset.pop();
+
+		box.points = points;
+		box.curr = 0;
+		box.push = false;
+
+		this.EnqueueAnimation(box);
+	}
+
+	EnqueueAnimation(box: StackBox) {
+		this.animationQueue.push(box);
+
+		if (this.animation_frame_id === null) {
+			this.animation_frame_id = requestAnimationFrame(
+				this.AnimateStackPush.bind(this, this.animationQueue.shift())
+			);
+		}
+	}
+	AnimateStackPush(box: StackBox = null) {
+		if (!box) {
+			return;
+		}
+		if (box.curr < box.points.length) {
 			this.ctx.beginPath();
 
 			this.ctx.fillStyle = this.canvasBgColor;
-			this.ctx.fillRect(
-				this.prev.x - 1,
-				this.prev.y - 1,
-				this.boxWidth + 2,
-				this.boxHeight + 2
-			);
+			if (box.curr > 0) {
+				this.ctx.fillRect(
+					box.points[box.curr - 1].x - 1,
+					box.points[box.curr - 1].y - 1,
+					this.boxWidth + 2,
+					this.boxHeight + 2
+				);
+			}
 
 			let x = this.canvas.width / 2 - 50;
 			let y = 50;
-			if (true) {
-				this.ctx.strokeStyle = '#CCC';
+			this.ctx.strokeStyle = '#CCC';
 
-				this.ctx.beginPath();
-				this.ctx.moveTo(x, y);
-				this.ctx.lineTo(x, this.stackHeight + 50);
-				this.ctx.stroke();
-			}
+			this.ctx.beginPath();
+			this.ctx.moveTo(x, y);
+			this.ctx.lineTo(x, this.stackHeight + 50);
+			this.ctx.moveTo(x + 100, y);
+			this.ctx.lineTo(x + 100, this.stackHeight + 50);
+			this.ctx.stroke();
 
 			this.ctx.fillStyle = '#bad989';
-			this.ctx.fillRect(curr.x, curr.y, this.boxWidth, this.boxHeight);
-			this.prev = curr;
-
-			this.ctx.closePath();
-		} else if (res.done == true) {
-			let { first, last } = res.value;
-			cancelAnimationFrame(this.animation_frame_id);
-			this.ctx.beginPath();
-			this.current_edge += 1;
-
-			this.ctx.fillStyle = this.canvasBgColor;
 			this.ctx.fillRect(
-				this.prev.x - 1,
-				this.prev.y - 1,
-				this.boxWidth + 2,
-				this.boxHeight + 2
+				box.points[box.curr].x,
+				box.points[box.curr].y,
+				this.boxWidth,
+				this.boxHeight
 			);
-			this.prev = new RelativePoint(0, 0, 0, 0);
-
-			this.ctx.fillStyle = '#bad989';
-			this.ctx.fillRect(last.x, last.y, this.boxWidth + 2, this.boxHeight + 2);
-
-			this.ctx.beginPath();
-			this.ctx.fillStyle = 'black';
-			this.ctx.font = '10px monospace';
-			this.ctx.textAlign = 'center';
-			this.ctx.fillText(
-				this.dataset[this.current_edge - 1],
-				last.x + this.boxWidth / 2 - 2,
-				last.y + this.boxHeight / 2 + 3
-			);
-			this.ctx.closePath();
 
 			this.ctx.closePath();
 
-			if (this.current_edge < this.edges.length) {
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateStackPush.bind(this)
+			box.curr += 1;
+
+			this.animation_frame_id = requestAnimationFrame(
+				this.AnimateStackPush.bind(this, box)
+			);
+		} else {
+			cancelAnimationFrame(this.animation_frame_id);
+			this.animation_frame_id = null;
+			if (box.push) this.boxes.push(box);
+
+			if (box.push) {
+				this.ctx.beginPath();
+				this.ctx.fillStyle = 'black';
+				this.ctx.font = '10px monospace';
+				this.ctx.textAlign = 'center';
+				this.ctx.fillText(
+					box.val,
+					box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
+					box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
+				);
+				this.ctx.closePath();
+			} else if (!box.push) {
+				this.ctx.fillStyle = this.canvasBgColor;
+				this.ctx.fillRect(
+					box.points[box.curr - 1].x - 1,
+					box.points[box.curr - 1].y - 1,
+					this.boxWidth + 2,
+					this.boxHeight + 2
 				);
 			}
-			return;
+
+			if (this.animationQueue.length) {
+				let next = this.animationQueue.shift();
+				this.animation_frame_id = requestAnimationFrame(
+					this.AnimateStackPush.bind(this, next)
+				);
+			}
 		}
 	}
 

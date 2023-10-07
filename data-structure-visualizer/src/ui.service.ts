@@ -242,12 +242,11 @@ class UserInput {
 		});
 
 		this.pushBtn.addEventListener('click', (event: any) => {
-			console.log('push stack');
 			document.dispatchEvent(new Event('StackPush'));
 		});
 
 		this.popBtn.addEventListener('click', (event: any) => {
-			console.log('pop stack');
+			document.dispatchEvent(new Event('StackPop'));
 		});
 
 		this.enqueueBtn.addEventListener('click', (event: any) => {

@@ -27,6 +27,12 @@ document.addEventListener('StackPush', (event: any) => {
 	}
 });
 
+document.addEventListener('StackPop', (event: any) => {
+	if (ds.dataset.length > 0) {
+		ds.Pop();
+	}
+});
+
 function goClicked(): void {
 	if (UI.formValid === true) {
 		visualize();

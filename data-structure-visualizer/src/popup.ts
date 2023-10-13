@@ -14,12 +14,13 @@ import { UI } from './ui.service';
 import { IdleSvg } from './idle-svg/idle-svg';
 import { Tree } from './datastructures/tree';
 import { Stack } from './datastructures/stack';
+import { Queue } from './datastructures/queue';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let canvasOverlay: HTMLImageElement;
 
-let ds: Graph | Tree | Stack | any = null;
+let ds: Graph | Tree | Stack | Queue | any = null;
 
 document.addEventListener('StackPush', (event: any) => {
 	if (ds.dataset.length < 6) {
@@ -30,6 +31,18 @@ document.addEventListener('StackPush', (event: any) => {
 document.addEventListener('StackPop', (event: any) => {
 	if (ds.dataset.length > 0) {
 		ds.Pop();
+	}
+});
+
+document.addEventListener('QueueEnqueue', (event: any) => {
+	if (ds.dataset.length < 6) {
+		ds.Enqueue();
+	}
+});
+
+document.addEventListener('QueueDequeue', (event: any) => {
+	if (ds.dataset.length > 0) {
+		ds.Dequeue();
 	}
 });
 
@@ -56,6 +69,10 @@ function visualize() {
 			break;
 		case 'stack':
 			ds = new Stack(ctx, canvas);
+			break;
+		case 'queue':
+			console.log('create QUEUE');
+			ds = new Queue(ctx, canvas);
 			break;
 		default:
 			return;

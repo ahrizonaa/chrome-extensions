@@ -250,11 +250,11 @@ class UserInput {
 		});
 
 		this.enqueueBtn.addEventListener('click', (event: any) => {
-			console.log('enqueue');
+			document.dispatchEvent(new Event('QueueEnqueue'));
 		});
 
 		this.dequeueBtn.addEventListener('click', (event: any) => {
-			console.log('enqueue');
+			document.dispatchEvent(new Event('QueueDequeue'));
 		});
 	}
 

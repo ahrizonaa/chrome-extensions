@@ -59,9 +59,6 @@ class Stack extends DataStructure {
 		this.DrawBoxes();
 		this.AnimateStackPush.bind(this);
 		this.AnimateStackPush();
-		// this.DrawEdges();
-		// this.AnimateEdges.bind(this);
-		// this.AnimateEdges();
 	}
 
 	DrawStack() {
@@ -95,7 +92,6 @@ class Stack extends DataStructure {
 
 			let points: RelativePoint[] = [];
 
-			this.ctx.moveTo(p0.x, p0.y);
 			for (var j = 0; j < 1; j += this.beizerSpeed) {
 				var p = this.Bezier(j, p0, p1, p2, p3);
 				points.push(

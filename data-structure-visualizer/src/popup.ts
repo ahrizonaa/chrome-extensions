@@ -9,18 +9,19 @@ import {
 	initTE
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
-import { Aesthetics, DSA } from './utility/dsa-metadata';
+import { Aesthetics } from './utility/dsa-metadata';
 import { UI } from './ui.service';
 import { IdleSvg } from './idle-svg/idle-svg';
 import { Tree } from './datastructures/tree';
 import { Stack } from './datastructures/stack';
 import { Queue } from './datastructures/queue';
+import { LinkedList } from './datastructures/linkedlist';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let canvasOverlay: HTMLImageElement;
 
-let ds: Graph | Tree | Stack | Queue | any = null;
+let ds: Graph | Tree | Stack | Queue | LinkedList | any = null;
 
 document.addEventListener('StackPush', (event: any) => {
 	if (ds.dataset.length < 6) {
@@ -58,6 +59,7 @@ function visualize() {
 	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
+	console.log(UI);
 	switch (UI.userSelection.dsaType) {
 		case null:
 			return;
@@ -71,8 +73,10 @@ function visualize() {
 			ds = new Stack(ctx, canvas);
 			break;
 		case 'queue':
-			console.log('create QUEUE');
 			ds = new Queue(ctx, canvas);
+			break;
+		case 'linkedlist':
+			ds = new LinkedList(ctx, canvas);
 			break;
 		default:
 			return;

@@ -114,6 +114,9 @@ class Queue extends DataStructure {
 		if (this.dataset.length >= 6) {
 			return;
 		}
+		if (this.animation_frame_id != null) {
+			return;
+		}
 		this.dataset.push('');
 
 		let i = this.dataset.length - 1;
@@ -141,6 +144,9 @@ class Queue extends DataStructure {
 		if (this.dataset.length == 0) {
 			return;
 		}
+		if (this.animation_frame_id != null) {
+			return;
+		}
 		let y = this.canvas.height / 2 - 45;
 		let box = this.boxes.shift();
 
@@ -166,7 +172,6 @@ class Queue extends DataStructure {
 	}
 
 	QueueShift(): void {
-		console.log(this.dataset, this.boxes);
 		for (let i = 0; i < this.dataset.length; i++) {
 			let x0 = 2.5 + i * (this.boxWidth + 2.5) + 50;
 			let y = this.canvas.height / 2 - 45;

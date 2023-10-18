@@ -139,7 +139,7 @@ class UserInput {
 		) as HTMLInputElement;
 
 		this.doublySwitch = document.getElementById(
-			'doubly_switch'
+			'doubly-switch'
 		) as HTMLInputElement;
 
 		this.controlsTitle = document.getElementById(
@@ -256,6 +256,11 @@ class UserInput {
 		this.dequeueBtn.addEventListener('click', (event: any) => {
 			document.dispatchEvent(new Event('QueueDequeue'));
 		});
+
+		this.doublySwitch.addEventListener('click', (event: any) => {
+			this.userOptions.linkedlist.doubly = event.target.checked;
+			this.switchChanged();
+		});
 	}
 
 	toggleTreeSwitches(id: string) {
@@ -318,7 +323,7 @@ class UserInput {
 		}
 		this.formValid = false;
 		this.invalidated();
-		this.submitBtn.dispatchEvent(new Event('click'));
+		// this.submitBtn.dispatchEvent(new Event('click'));
 	}
 
 	toggleSwitches(): void {

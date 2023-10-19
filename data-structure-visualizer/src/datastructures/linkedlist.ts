@@ -1,9 +1,7 @@
 import { UI } from '../ui.service';
-import { Aesthetics } from '../utility/dsa-metadata';
 import {
 	CartesianCoordinate,
 	CartesianPoint,
-	CartesianSlope,
 	Maths,
 	RelativePoint
 } from '../utility/math-functions';
@@ -16,9 +14,9 @@ class LinkedList extends DataStructure {
 	dataset: any[];
 	gridWidth: number;
 	gridHeight: number;
-	gridMaxWidth: number = 5;
+	gridMaxWidth: number = 4;
 	cellSize: number;
-	steps: number = 20;
+	steps: number = 15;
 	radius: number;
 	nodelist: RelativePoint[] = [];
 	edges: any[] = [];
@@ -189,7 +187,6 @@ class LinkedList extends DataStructure {
 			x2 = x1;
 			y2 = centerPoint.y - alen;
 		} else if (direction == 'down') {
-			console.log('point down');
 			x1 = centerPoint.x - alen;
 			y1 = centerPoint.y + blen;
 			x2 = centerPoint.x + alen;

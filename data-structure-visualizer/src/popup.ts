@@ -59,7 +59,6 @@ function visualize() {
 	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
-	console.log(UI);
 	switch (UI.userSelection.dsaType) {
 		case null:
 			return;

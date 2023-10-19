@@ -1,9 +1,4 @@
-import {
-	TreeNode,
-	Edge,
-	DataStructure,
-	EdgeSegment
-} from './base-datastructures';
+import { TreeNode, Edge, DataStructure, EdgeSegment } from './data-structure';
 import {
 	CartesianCoordinate,
 	CartesianPoint,
@@ -131,6 +126,13 @@ class Graph extends DataStructure {
 		this.Draw();
 	}
 
+	Draw() {
+		this.DrawNodes();
+		this.DrawEdges();
+		this.AnimateEdges.bind(this);
+		this.AnimateEdges();
+	}
+
 	DrawNodes(): void {
 		for (let row = 0; row < this.matrix.length; row++) {
 			for (let col = 0; col < this.matrix[row].length; col++) {
@@ -201,12 +203,12 @@ class Graph extends DataStructure {
 			);
 
 			if (UI.userOptions.graph.weighted) {
-				this.plotEdgeLabel(node1, node2, key_from, key_to);
+				this.PlotEdgeLabel(node1, node2, key_from, key_to);
 			}
 		}
 	}
 
-	plotEdgeLabel(
+	PlotEdgeLabel(
 		node1: TreeNode,
 		node2: TreeNode,
 		key_from: string,
@@ -214,11 +216,11 @@ class Graph extends DataStructure {
 	): void {
 		let mid_point = Maths.Midpoint(node1.point, node2.point);
 
-		let edge_label = this.format_edge_label(key_to, key_from);
+		let edge_label = this.FormatEdgeLabel(key_to, key_from);
 
 		let slope = Maths.RelativeSlope(node1.point, node2.point);
 
-		let [label_x_offset, label_y_offset] = this.calc_label_offsets(
+		let [label_x_offset, label_y_offset] = this.CalculateLabelOffsets(
 			slope,
 			edge_label
 		);
@@ -235,14 +237,7 @@ class Graph extends DataStructure {
 		this.ctx.closePath();
 	}
 
-	Draw() {
-		this.DrawNodes();
-		this.DrawEdges();
-		this.animate_edges.bind(this);
-		this.animate_edges();
-	}
-
-	format_edge_label(key_to, key_from) {
+	FormatEdgeLabel(key_to, key_from) {
 		let text = '';
 		if (this.weights[key_to] || this.weights[key_from]) {
 			if (this.weights[key_to].length) {
@@ -256,7 +251,7 @@ class Graph extends DataStructure {
 		return text;
 	}
 
-	calc_label_offsets(slope, edge_label) {
+	CalculateLabelOffsets(slope, edge_label) {
 		let text_x_offset = 0;
 		let text_y_offset = 0;
 		if (slope < 0.5) {
@@ -273,14 +268,14 @@ class Graph extends DataStructure {
 		return [text_x_offset, text_y_offset];
 	}
 
-	animate_edges() {
+	AnimateEdges() {
 		let res: { done: boolean; value: EdgeSegment } =
 			this.edges[this.current_edge].next();
 
 		if (res.done == false) {
 			let { curr, next } = res.value;
 			this.animation_frame_id = requestAnimationFrame(
-				this.animate_edges.bind(this)
+				this.AnimateEdges.bind(this)
 			);
 
 			this.ctx.beginPath();
@@ -295,19 +290,19 @@ class Graph extends DataStructure {
 			this.current_edge += 1;
 
 			if (UI.userOptions.graph.directed) {
-				this.plotArrowHead(last, first);
+				this.PlotArrowHead(last, first);
 			}
 
 			if (this.current_edge < this.edges.length) {
 				this.animation_frame_id = requestAnimationFrame(
-					this.animate_edges.bind(this)
+					this.AnimateEdges.bind(this)
 				);
 			}
 			return;
 		}
 	}
 
-	plotArrowHead(last: RelativePoint, first: RelativePoint) {
+	PlotArrowHead(last: RelativePoint, first: RelativePoint) {
 		let centerPoint: CartesianPoint = last.ToCartesian();
 
 		let a = 30;

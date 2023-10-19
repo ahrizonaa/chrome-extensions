@@ -1,5 +1,5 @@
 import { RelativePoint } from '../utility/math-functions';
-import { DataStructure, Edge, EdgeSegment } from './base-datastructures';
+import { DataStructure, Edge, EdgeSegment } from './data-structure';
 import { UI } from '../ui.service';
 
 class StackBox {

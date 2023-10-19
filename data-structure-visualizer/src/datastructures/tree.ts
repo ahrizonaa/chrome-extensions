@@ -1,11 +1,6 @@
 import { UI } from '../ui.service';
 import { Maths, RelativePoint } from '../utility/math-functions';
-import {
-	BTreeNode,
-	DataStructure,
-	Edge,
-	EdgeSegment
-} from './base-datastructures';
+import { BTreeNode, DataStructure, Edge, EdgeSegment } from './data-structure';
 
 class Tree extends DataStructure {
 	ctx: CanvasRenderingContext2D;

@@ -1,5 +1,5 @@
 import { Maths, RelativePoint } from '../utility/math-functions';
-import { DataStructure, Edge, EdgeSegment } from './base-datastructures';
+import { DataStructure, Edge, EdgeSegment } from './data-structure';
 
 class QueueBox {
 	points: RelativePoint[];

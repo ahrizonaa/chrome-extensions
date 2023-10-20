@@ -134,7 +134,6 @@ class LinkedList extends DataStructure {
 				this.AnimateEdges.bind(this)
 			);
 
-			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
 			this.ctx.moveTo(curr.x, curr.y);
 			this.ctx.lineTo(next.x, next.y);
@@ -240,7 +239,7 @@ class LinkedList extends DataStructure {
 				this.canvas.width,
 				this.canvas.height
 			);
-			this.ctx.beginPath();
+			// this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
 			this.ctx.moveTo(start.x, start.y);
 			this.ctx.lineTo(L.x, L.y);
@@ -249,13 +248,13 @@ class LinkedList extends DataStructure {
 			this.ctx.stroke();
 		}
 
-		this.ctx.beginPath();
 		this.ctx.strokeStyle = this.edgeColor;
 		this.ctx.moveTo(last.x, last.y);
 		this.ctx.lineTo(leftWingPoint.x, leftWingPoint.y);
 		this.ctx.moveTo(last.x, last.y);
 		this.ctx.lineTo(rightWingPoint.x, rightWingPoint.y);
 		this.ctx.stroke();
+		this.ctx.closePath();
 	}
 }
 

@@ -21,6 +21,7 @@ body {
 canvas {
 	height: 380px;
 	width: 380px;
+	object-fit: contain;
 }
 
 textarea {
@@ -74,4 +75,24 @@ div[data-te-popconfirm-popover] {
 
 div[data-te-popconfirm-body] {
 	/* backdrop-filter: blur(5px) !important; */
+}
+
+/* Firefox */
+* {
+	scrollbar-width: auto;
+	scrollbar-color: #2b2b2b #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+	width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #848484;
+	border-radius: 10px;
 }

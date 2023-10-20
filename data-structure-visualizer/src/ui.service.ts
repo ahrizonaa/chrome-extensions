@@ -14,12 +14,19 @@ import {
 	Input
 } from '../node_modules/tw-elements/dist/js/tw-elements.es.min.js';
 import { svgs } from './animated-datastructure-icons/svg-icons';
-import { RadioBtn } from './dsa-radio-btn-group/radio-btn';
-import { ListBtn } from './dsa-radio-btn-group/list-btn';
-import { PopDiv } from './dsa-radio-btn-group/pop-div';
+import { RadioBtn } from './radio-buttons/radio-btn';
+import { ListBtn } from './radio-buttons/list-btn';
+import { PopDiv } from './radio-buttons/pop-div';
 
-import { map, distinctUntilChanged, fromEvent, debounceTime, tap } from 'rxjs';
-import { RadioGroup } from './dsa-radio-btn-group/radio-group-div';
+import {
+	map,
+	distinctUntilChanged,
+	fromEvent,
+	debounceTime,
+	tap,
+	empty
+} from 'rxjs';
+import { RadioGroup } from './radio-buttons/radio-group-div';
 import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
 import { TextAreaClasses } from './textarea/textarea';
@@ -27,6 +34,8 @@ import { Parser } from './utility/parser';
 import { Graph } from './datastructures/graph';
 import { Stack } from './datastructures/stack';
 import { Tree } from './datastructures/tree';
+import { examples } from './utility/examples';
+import { btnInactive } from './examples-pane/btn-inactive';
 
 class UserInput {
 	ds: Graph | Tree | Stack | any = null;
@@ -57,6 +66,7 @@ class UserInput {
 	popBtn: HTMLButtonElement;
 	enqueueBtn: HTMLButtonElement;
 	dequeueBtn: HTMLButtonElement;
+	examplesList: HTMLDivElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -154,6 +164,10 @@ class UserInput {
 		this.dequeueBtn = document.getElementById(
 			'dequeue-btn'
 		) as HTMLButtonElement;
+
+		this.examplesList = document.getElementById(
+			'examples-list'
+		) as HTMLDivElement;
 	}
 
 	cacheObj(val: any, key: string = 'user-options'): void {
@@ -284,6 +298,7 @@ class UserInput {
 			this.toggleTypeRadio();
 		}
 		this.toggleSwitchVisibility();
+		this.toggleExamples();
 		if (this.userSelection.dsaFormat) {
 			this.toggleFormatSelection();
 		}
@@ -333,6 +348,39 @@ class UserInput {
 		this.minHeapSwitch.checked = this.userOptions.tree.minHeap;
 		this.maxHeapSwitch.checked = this.userOptions.tree.maxHeap;
 		this.doublySwitch.checked = this.userOptions.linkedlist.doubly;
+	}
+
+	toggleExamples(): void {
+		let btns = [];
+		for (let example of examples[this.userSelection.dsaType]) {
+			let btn = document.createElement('button');
+			btn.id = example.title.toLowerCase().replace(' ', '_');
+			btn.innerText = example.title;
+			btn.setAttribute('class', btnInactive);
+			btn.type = 'button';
+			btn.addEventListener('click', (event: any) => {
+				console.log(event);
+				this.textarea.value = JSON.stringify(example.dataset);
+				this.userOptions[this.userSelection.dsaType] = example.options;
+				this.toggleSwitches();
+				this.submitBtn.dispatchEvent(new Event('click'));
+			});
+
+			btns.push(btn);
+
+			// this.examplesList.appendChild(btn);
+		}
+		if (btns.length == 0) {
+			let emptyMsg = document.createElement('span');
+			emptyMsg.innerText = 'none';
+			emptyMsg.setAttribute(
+				'class',
+				'absolute w-fit h-fit top-0 bottom-0 left-0 right-0 m-auto'
+			);
+			this.examplesList.replaceChildren(emptyMsg);
+		} else {
+			this.examplesList.replaceChildren(...btns);
+		}
 	}
 
 	toggleSwitchVisibility() {
@@ -490,6 +538,7 @@ class UserInput {
 				}
 
 				this.toggleSwitchVisibility();
+				this.toggleExamples();
 				btnOption.popconfirm.popconfirmBody.replaceChildren(pop);
 			});
 

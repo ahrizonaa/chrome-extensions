@@ -11,7 +11,7 @@ import {
 initTE({ Input, Validation, Ripple, Collapse, Popconfirm });
 import { Aesthetics } from './utility/dsa-metadata';
 import { UI } from './ui.service';
-import { IdleSvg } from './idle-svg/idle-svg';
+import { IdleSvg } from './idle-animation/idle-svg';
 import { Tree } from './datastructures/tree';
 import { Stack } from './datastructures/stack';
 import { Queue } from './datastructures/queue';
@@ -55,7 +55,10 @@ function goClicked(): void {
 
 function visualize() {
 	let input = UI.textarea.value;
-	let parsed_input = JSON.parse(input);
+	let parsed_input = JSON.parse(input, function (k, v) {
+		return typeof v === 'object' || isNaN(v) ? v : parseInt(v, 10);
+	});
+	console.log(parsed_input);
 	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();

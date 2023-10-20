@@ -54,11 +54,10 @@ function goClicked(): void {
 }
 
 function visualize() {
-	let input = UI.textarea.value;
-	let parsed_input = JSON.parse(input, function (k, v) {
+	let rawInput = UI.textarea.value;
+	let input = JSON.parse(rawInput, function (k, v) {
 		return typeof v === 'object' || isNaN(v) ? v : parseInt(v, 10);
 	});
-	console.log(parsed_input);
 	localStorage.setItem('user-input', input);
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
@@ -84,7 +83,7 @@ function visualize() {
 			return;
 	}
 
-	ds.Parse(parsed_input);
+	ds.Parse(input);
 	ds.Plot();
 }
 

@@ -23,7 +23,7 @@ class Graph extends DataStructure {
 	radius: number = NaN;
 	cell_size: number = NaN;
 	grid_size: number = NaN;
-	steps: number = 50;
+	steps: number = 20;
 	current_edge: number = 0;
 	animation_frame_id: number = NaN;
 

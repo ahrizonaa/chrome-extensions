@@ -11,7 +11,7 @@ class Tree extends DataStructure {
 	gridHeight: number;
 	depthZeroIndexed: number = 0;
 	cellSize: number;
-	steps: number = 25;
+	steps: number = 20;
 	radius: number;
 	nodelist: RelativePoint[] = [];
 	edges: any[] = [];

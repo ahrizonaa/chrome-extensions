@@ -74,10 +74,8 @@ class Queue extends DataStructure {
 	}
 
 	DrawQueue() {
-		console.log('DRAW QUEUE');
 		let x = this.canvas.width - this.queueWidth - 50;
 		let y = this.canvas.height / 2 - this.queueHeight / 2;
-		console.log(x, y);
 		this.ctx.strokeStyle = '#CCC';
 
 		this.ctx.beginPath();

@@ -359,7 +359,6 @@ class UserInput {
 			btn.setAttribute('class', btnInactive);
 			btn.type = 'button';
 			btn.addEventListener('click', (event: any) => {
-				console.log(event);
 				this.textarea.value = JSON.stringify(example.dataset);
 				this.userOptions[this.userSelection.dsaType] = example.options;
 				this.toggleSwitches();

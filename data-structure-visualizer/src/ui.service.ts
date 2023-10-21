@@ -67,6 +67,7 @@ class UserInput {
 	enqueueBtn: HTMLButtonElement;
 	dequeueBtn: HTMLButtonElement;
 	examplesList: HTMLDivElement;
+	examplePane: HTMLDivElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -167,6 +168,10 @@ class UserInput {
 
 		this.examplesList = document.getElementById(
 			'examples-list'
+		) as HTMLDivElement;
+
+		this.examplePane = document.getElementById(
+			'example-pane'
 		) as HTMLDivElement;
 	}
 
@@ -338,7 +343,6 @@ class UserInput {
 		}
 		this.formValid = false;
 		this.invalidated();
-		// this.submitBtn.dispatchEvent(new Event('click'));
 	}
 
 	toggleSwitches(): void {
@@ -352,6 +356,11 @@ class UserInput {
 
 	toggleExamples(): void {
 		let btns = [];
+		if (!this.userSelection || !this.userSelection.dsaType) {
+			this.examplePane.style.display = 'none';
+			return;
+		}
+		this.examplePane.style.display = 'block';
 		for (let example of examples[this.userSelection.dsaType]) {
 			let btn = document.createElement('button');
 			btn.id = example.title.toLowerCase().replace(' ', '_');
@@ -361,8 +370,13 @@ class UserInput {
 			btn.addEventListener('click', (event: any) => {
 				this.textarea.value = JSON.stringify(example.dataset);
 				this.userOptions[this.userSelection.dsaType] = example.options;
+				console.log(this.userOptions, this.userSelection);
+				this.userSelection.dsaFormat = example.format;
+				this.toggleFormatSelection();
 				this.toggleSwitches();
-				this.submitBtn.dispatchEvent(new Event('click'));
+				// this.toggleAll();
+				this.validate();
+				// this.submitBtn.dispatchEvent(new Event('click'));
 			});
 
 			btns.push(btn);

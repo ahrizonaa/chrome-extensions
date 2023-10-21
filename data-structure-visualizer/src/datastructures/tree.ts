@@ -249,6 +249,10 @@ class Tree extends DataStructure {
 					let yr =
 						this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
 
+					if (yr - this.radius <= 0) {
+						yr = this.radius;
+					}
+
 					this.nodelist.push(
 						new RelativePoint(xr, yr, this.canvas.width, this.canvas.height)
 					);

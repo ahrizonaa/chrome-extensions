@@ -24,9 +24,12 @@ canvas {
 	object-fit: contain;
 }
 
-textarea {
+#textarea {
 	resize: none !important;
 	height: 125px !important;
+}
+#textarea::placeholder {
+	font-size: 0.75rem;
 }
 
 div.options-panel {

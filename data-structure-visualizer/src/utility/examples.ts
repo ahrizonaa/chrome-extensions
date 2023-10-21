@@ -1,4 +1,19 @@
-const examples = {
+interface Example {
+	title: string;
+	dataset: any[];
+	options: {};
+	format: string;
+}
+
+interface Examples {
+	graph: Example[];
+	tree: Example[];
+	stack: Example[];
+	queue: Example[];
+	linkedlist: Example[];
+}
+
+const examples: Examples = {
 	graph: [
 		{
 			title: 'Connected Components',
@@ -10,7 +25,8 @@ const examples = {
 			options: {
 				directed: false,
 				weighted: false
-			}
+			},
+			format: 'adjacency_list'
 		},
 		{
 			title: 'Find the Town Judge',
@@ -22,7 +38,8 @@ const examples = {
 			options: {
 				directed: true,
 				weighted: false
-			}
+			},
+			format: 'adjacency_list'
 		},
 		{
 			title: 'If Path Exists',
@@ -36,7 +53,8 @@ const examples = {
 			options: {
 				directed: false,
 				weighted: false
-			}
+			},
+			format: 'adjacency_list'
 		}
 	],
 	tree: [
@@ -63,7 +81,8 @@ const examples = {
 				binary: false,
 				minHeap: false,
 				maxHeap: false
-			}
+			},
+			format: 'tree_array'
 		},
 		{
 			title: 'Diameter of Binary Tree',
@@ -72,7 +91,8 @@ const examples = {
 				binary: false,
 				minHeap: false,
 				maxHeap: false
-			}
+			},
+			format: 'tree_array'
 		},
 		{
 			title: 'Symmetric Tree',
@@ -81,7 +101,8 @@ const examples = {
 				binary: false,
 				minHeap: false,
 				maxHeap: false
-			}
+			},
+			format: 'tree_array'
 		}
 	],
 	stack: [],
@@ -92,21 +113,24 @@ const examples = {
 			dataset: [1, 2, 3, 4, 5],
 			options: {
 				doubly: false
-			}
+			},
+			format: 'linkedlist_array'
 		},
 		{
 			title: 'Middle of Linked List',
 			dataset: [1, 2, 3, 4, 5, 6],
 			options: {
 				doubly: false
-			}
+			},
+			format: 'linkedlist_array'
 		},
 		{
 			title: 'Delete Middle Node of Linked List',
 			dataset: [1, 3, 4, 7, 1, 2, 6],
 			options: {
 				doubly: false
-			}
+			},
+			format: 'linkedlist_array'
 		}
 	]
 };

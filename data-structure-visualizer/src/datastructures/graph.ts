@@ -141,6 +141,10 @@ class Graph extends DataStructure {
 				let xr = this.cell_size * row + this.cell_size / 2 + offset_x;
 				let yr = this.cell_size * col + this.cell_size / 2 + offset_y;
 
+				if (yr - this.radius <= 0) {
+					yr = this.radius;
+				}
+
 				this.matrix[row][col].point = new RelativePoint(
 					xr,
 					yr,

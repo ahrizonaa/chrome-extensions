@@ -58,7 +58,7 @@ function visualize() {
 	let input = JSON.parse(rawInput, function (k, v) {
 		return typeof v === 'object' || isNaN(v) ? v : parseInt(v, 10);
 	});
-	localStorage.setItem('user-input', input);
+	localStorage.setItem('user-input', JSON.stringify(input));
 	canvasOverlay.style.display = 'none';
 	clearCanvas();
 	switch (UI.userSelection.dsaType) {

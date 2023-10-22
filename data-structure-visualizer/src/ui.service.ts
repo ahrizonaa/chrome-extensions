@@ -36,6 +36,7 @@ import { Stack } from './datastructures/stack';
 import { Tree } from './datastructures/tree';
 import { examples } from './utility/examples';
 import { btnInactive } from './examples-pane/btn-inactive';
+import { clearCanvas } from './popup';
 
 class UserInput {
 	ds: Graph | Tree | Stack | any = null;
@@ -370,18 +371,13 @@ class UserInput {
 			btn.addEventListener('click', (event: any) => {
 				this.textarea.value = JSON.stringify(example.dataset);
 				this.userOptions[this.userSelection.dsaType] = example.options;
-				console.log(this.userOptions, this.userSelection);
 				this.userSelection.dsaFormat = example.format;
 				this.toggleFormatSelection();
 				this.toggleSwitches();
-				// this.toggleAll();
 				this.validate();
-				// this.submitBtn.dispatchEvent(new Event('click'));
 			});
 
 			btns.push(btn);
-
-			// this.examplesList.appendChild(btn);
 		}
 		if (btns.length == 0) {
 			let emptyMsg = document.createElement('span');
@@ -473,6 +469,11 @@ class UserInput {
 		);
 	}
 
+	clearForm() {
+		this.textarea.value = '';
+		clearCanvas();
+	}
+
 	createRadio(): void {
 		let btnGroup = document.querySelector('radio-group');
 
@@ -505,6 +506,12 @@ class UserInput {
 				listBtn.innerText = format.text;
 				listBtn.addEventListener('click', (event: any) => {
 					let evtBtn = event.target as HTMLButtonElement;
+					if (
+						this.userSelection.dsaType != evtBtn.dataset.dsaType ||
+						this.userSelection.dsaFormat != evtBtn.dataset.dsaFormat
+					) {
+						this.clearForm();
+					}
 					this.userSelection.dsaFormat = evtBtn.dataset.dsaFormat;
 					this.cacheObj(this.userSelection, 'user-selection');
 					[...(evtBtn.parentElement.childNodes as any)]

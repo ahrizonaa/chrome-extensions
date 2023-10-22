@@ -136,3 +136,5 @@ function init() {
 }
 
 init();
+
+export { clearCanvas };

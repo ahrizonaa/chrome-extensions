@@ -9,6 +9,8 @@ import {
 import { DSA, Aesthetics } from '../utility/dsa-metadata';
 import { UI } from '../ui.service';
 
+import { Animate } from '../utility/animation-controller';
+
 class Graph extends DataStructure {
 	ctx: CanvasRenderingContext2D;
 	canvas: HTMLCanvasElement;
@@ -129,7 +131,6 @@ class Graph extends DataStructure {
 	Draw() {
 		this.DrawNodes();
 		this.DrawEdges();
-		this.AnimateEdges.bind(this);
 		this.AnimateEdges();
 	}
 
@@ -278,9 +279,7 @@ class Graph extends DataStructure {
 
 		if (res.done == false) {
 			let { curr, next } = res.value;
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateEdges.bind(this)
-			);
+			Animate.Request(this.AnimateEdges.bind(this));
 
 			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
@@ -289,7 +288,7 @@ class Graph extends DataStructure {
 			this.ctx.stroke();
 		} else if (res.done == true) {
 			let { first, last } = res.value;
-			cancelAnimationFrame(this.animation_frame_id);
+			Animate.Cancel();
 			this.ctx.closePath();
 			this.current_edge += 1;
 
@@ -298,9 +297,7 @@ class Graph extends DataStructure {
 			}
 
 			if (this.current_edge < this.edges.length) {
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateEdges.bind(this)
-				);
+				Animate.Request(this.AnimateEdges.bind(this));
 			}
 			return;
 		}

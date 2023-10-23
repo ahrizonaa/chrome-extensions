@@ -1,4 +1,5 @@
 import { UI } from '../ui.service';
+import { Animate } from '../utility/animation-controller';
 import {
 	CartesianCoordinate,
 	CartesianPoint,
@@ -21,7 +22,6 @@ class LinkedList extends DataStructure {
 	nodelist: RelativePoint[] = [];
 	edges: any[] = [];
 	current_edge: number = 0;
-	animation_frame_id: number = NaN;
 	head: BTreeNode;
 
 	constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
@@ -130,9 +130,7 @@ class LinkedList extends DataStructure {
 
 		if (res.done == false) {
 			let { curr, next } = res.value;
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateEdges.bind(this)
-			);
+			Animate.Request(this.AnimateEdges.bind(this));
 
 			this.ctx.strokeStyle = this.edgeColor;
 			this.ctx.moveTo(curr.x, curr.y);
@@ -140,16 +138,14 @@ class LinkedList extends DataStructure {
 			this.ctx.stroke();
 		} else if (res.done == true) {
 			let { first, last } = res.value;
-			cancelAnimationFrame(this.animation_frame_id);
+			Animate.Cancel();
 			this.ctx.closePath();
 			this.current_edge += 1;
 
 			this.PlotArrowHead(last, first);
 
 			if (this.current_edge < this.edges.length) {
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateEdges.bind(this)
-				);
+				Animate.Request(this.AnimateEdges.bind(this));
 			}
 			return;
 		}

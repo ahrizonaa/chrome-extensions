@@ -37,6 +37,7 @@ import { Tree } from './datastructures/tree';
 import { examples } from './utility/examples';
 import { btnInactive } from './examples-pane/btn-inactive';
 import { clearCanvas } from './popup';
+import { Animate } from './utility/animation-controller';
 
 class UserInput {
 	ds: Graph | Tree | Stack | any = null;
@@ -505,6 +506,8 @@ class UserInput {
 				listBtn.dataset.dsaFormat = format.value;
 				listBtn.innerText = format.text;
 				listBtn.addEventListener('click', (event: any) => {
+					Animate.Cancel();
+					clearCanvas();
 					let evtBtn = event.target as HTMLButtonElement;
 					if (
 						this.userSelection.dsaType != evtBtn.dataset.dsaType ||

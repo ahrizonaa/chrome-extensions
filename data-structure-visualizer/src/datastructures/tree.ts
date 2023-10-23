@@ -1,4 +1,5 @@
 import { UI } from '../ui.service';
+import { Animate } from '../utility/animation-controller';
 import { Maths, RelativePoint } from '../utility/math-functions';
 import { BTreeNode, DataStructure, Edge, EdgeSegment } from './data-structure';
 
@@ -16,7 +17,6 @@ class Tree extends DataStructure {
 	nodelist: RelativePoint[] = [];
 	edges: any[] = [];
 	current_edge: number = 0;
-	animation_frame_id: number = NaN;
 	root: BTreeNode;
 
 	constructor(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
@@ -34,7 +34,6 @@ class Tree extends DataStructure {
 	Draw(): void {
 		this.DrawNodesBFS();
 		this.DrawEdges();
-		this.AnimateEdges.bind(this);
 		this.AnimateEdges();
 	}
 
@@ -342,9 +341,7 @@ class Tree extends DataStructure {
 
 		if (res.done == false) {
 			let { curr, next } = res.value;
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateEdges.bind(this)
-			);
+			Animate.Request(this.AnimateEdges.bind(this));
 
 			this.ctx.beginPath();
 			this.ctx.strokeStyle = this.edgeColor;
@@ -352,19 +349,12 @@ class Tree extends DataStructure {
 			this.ctx.lineTo(next.x, next.y);
 			this.ctx.stroke();
 		} else if (res.done == true) {
-			let { first, last } = res.value;
-			cancelAnimationFrame(this.animation_frame_id);
+			Animate.Cancel();
 			this.ctx.closePath();
 			this.current_edge += 1;
 
-			// if (UI.userOptions.graph.directed) {
-			// 	this.plotArrowHead(last, first);
-			// }
-
 			if (this.current_edge < this.edges.length) {
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateEdges.bind(this)
-				);
+				Animate.Request(this.AnimateEdges.bind(this));
 			}
 			return;
 		}

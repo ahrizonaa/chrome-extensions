@@ -1,6 +1,6 @@
+import { Animate } from '../utility/animation-controller';
 import { RelativePoint } from '../utility/math-functions';
 import { DataStructure, Edge, EdgeSegment } from './data-structure';
-import { UI } from '../ui.service';
 
 class StackBox {
 	points: RelativePoint[];
@@ -30,7 +30,6 @@ class Stack extends DataStructure {
 	beizerSpeed: number = 0.05;
 	edges: any[] = [];
 	current_edge: number = 0;
-	animation_frame_id: number = null;
 	maxHeight: number = 50;
 	prev: RelativePoint = new RelativePoint(0, 0, 0, 0);
 	animationQueue: StackBox[] = [];
@@ -172,8 +171,8 @@ class Stack extends DataStructure {
 	EnqueueAnimation(box: StackBox) {
 		this.animationQueue.push(box);
 
-		if (this.animation_frame_id === null) {
-			this.animation_frame_id = requestAnimationFrame(
+		if (Animate.IsInactive()) {
+			Animate.Request(
 				this.AnimateStackPush.bind(this, this.animationQueue.shift())
 			);
 		}
@@ -218,12 +217,9 @@ class Stack extends DataStructure {
 
 			box.curr += 1;
 
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateStackPush.bind(this, box)
-			);
+			Animate.Request(this.AnimateStackPush.bind(this, box));
 		} else {
-			cancelAnimationFrame(this.animation_frame_id);
-			this.animation_frame_id = null;
+			Animate.Cancel();
 			if (box.push) this.boxes.push(box);
 
 			if (box.push) {
@@ -249,9 +245,7 @@ class Stack extends DataStructure {
 
 			if (this.animationQueue.length) {
 				let next = this.animationQueue.shift();
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateStackPush.bind(this, next)
-				);
+				Animate.Request(this.AnimateStackPush.bind(this, next));
 			}
 		}
 	}
@@ -272,4 +266,4 @@ class Stack extends DataStructure {
 	}
 }
 
-export { Stack };
+export { Stack, StackBox };

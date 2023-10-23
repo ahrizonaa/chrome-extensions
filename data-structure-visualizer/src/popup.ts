@@ -16,6 +16,7 @@ import { Tree } from './datastructures/tree';
 import { Stack } from './datastructures/stack';
 import { Queue } from './datastructures/queue';
 import { LinkedList } from './datastructures/linkedlist';
+import { Animate } from './utility/animation-controller';
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -54,13 +55,14 @@ function goClicked(): void {
 }
 
 function visualize() {
+	Animate.Cancel();
+	clearCanvas();
 	let rawInput = UI.textarea.value;
 	let input = JSON.parse(rawInput, function (k, v) {
 		return typeof v === 'object' || isNaN(v) ? v : parseInt(v, 10);
 	});
 	localStorage.setItem('user-input', JSON.stringify(input));
 	canvasOverlay.style.display = 'none';
-	clearCanvas();
 	switch (UI.userSelection.dsaType) {
 		case null:
 			return;

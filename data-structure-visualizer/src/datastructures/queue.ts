@@ -1,5 +1,6 @@
+import { Animate } from '../utility/animation-controller';
 import { Maths, RelativePoint } from '../utility/math-functions';
-import { DataStructure, Edge, EdgeSegment } from './data-structure';
+import { DataStructure } from './data-structure';
 
 class QueueBox {
 	points: RelativePoint[];
@@ -41,7 +42,6 @@ class Queue extends DataStructure {
 	beizerSpeed: number = 0.05;
 	edges: any[] = [];
 	current_edge: number = 0;
-	animation_frame_id: number = null;
 	maxHeight: number = 50;
 	prev: RelativePoint = new RelativePoint(0, 0, 0, 0);
 	animationQueue: QueueBox[] = [];
@@ -112,7 +112,7 @@ class Queue extends DataStructure {
 		if (this.dataset.length >= 6) {
 			return;
 		}
-		if (this.animation_frame_id != null) {
+		if (Animate.IsActive()) {
 			return;
 		}
 		this.dataset.push('');
@@ -142,7 +142,7 @@ class Queue extends DataStructure {
 		if (this.dataset.length == 0) {
 			return;
 		}
-		if (this.animation_frame_id != null) {
+		if (Animate.IsActive()) {
 			return;
 		}
 		let y = this.canvas.height / 2 - 45;
@@ -189,8 +189,8 @@ class Queue extends DataStructure {
 	EnqueueAnimation(box: QueueBox) {
 		this.animationQueue.push(box);
 
-		if (this.animation_frame_id === null) {
-			this.animation_frame_id = requestAnimationFrame(
+		if (Animate.IsInactive()) {
+			Animate.Request(
 				this.AnimateStackPush.bind(this, this.animationQueue.shift())
 			);
 		}
@@ -225,12 +225,9 @@ class Queue extends DataStructure {
 
 			box.curr += 1;
 
-			this.animation_frame_id = requestAnimationFrame(
-				this.AnimateStackPush.bind(this, box)
-			);
+			Animate.Request(this.AnimateStackPush.bind(this, box));
 		} else {
-			cancelAnimationFrame(this.animation_frame_id);
-			this.animation_frame_id = null;
+			Animate.Cancel();
 			if (box.enqueue) {
 				this.boxes.push(box);
 			}
@@ -259,12 +256,10 @@ class Queue extends DataStructure {
 
 			if (this.animationQueue.length) {
 				let next = this.animationQueue.shift();
-				this.animation_frame_id = requestAnimationFrame(
-					this.AnimateStackPush.bind(this, next)
-				);
+				Animate.Request(this.AnimateStackPush.bind(this, next));
 			}
 		}
 	}
 }
 
-export { Queue };
+export { Queue, QueueBox };

@@ -18,6 +18,10 @@ body {
 	background-color: #101010;
 }
 
+#content {
+	position: relative;
+}
+
 canvas {
 	height: 380px;
 	width: 380px;
@@ -98,4 +102,64 @@ div[data-te-popconfirm-body] {
 *::-webkit-scrollbar-thumb {
 	background-color: #848484;
 	border-radius: 10px;
+}
+
+#color-picker-label {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	margin-bottom: 25px;
+	width: 25px;
+	height: 25px;
+	background-color: transparent;
+	transition: all 0.2s linear;
+	/* padding: 5px 5px 5px 5px; */
+	box-sizing: content-box;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.5);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 10px;
+	text-transform: lowercase;
+	font-weight: 300;
+}
+
+#color-picker-label[data-node] {
+	margin-right: 25px;
+	background-color: #d1d1d1;
+	color: #101010;
+}
+
+#color-picker-label[data-edge] {
+	margin-right: 75px;
+	background-color: #eeeeee;
+	color: #101010;
+}
+
+#color-picker-label:hover {
+	transform: scale(1.1);
+}
+
+#color-picker-label > input {
+	visibility: hidden;
+	height: 0px !important;
+}
+
+#examples-list {
+	border-radius: 10px;
+	border: 1px solid #21212100;
+	transition: border 0.2s linear;
+}
+#examples-list:hover {
+	border: 1px solid #212121;
+}
+
+#examples-list > button {
+	margin-bottom: 3px;
+}
+
+#examples-list > button:last-child {
+	margin-bottom: 0 !important;
 }

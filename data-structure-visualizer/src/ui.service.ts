@@ -1,4 +1,5 @@
 import {
+	Aesthetics,
 	DataStructureOptions,
 	DataStructureRadioOption,
 	DataStructureSelection,
@@ -38,6 +39,7 @@ import { examples } from './utility/examples';
 import { btnInactive } from './examples-pane/btn-inactive';
 import { clearCanvas } from './popup';
 import { Animate } from './utility/animation-controller';
+import { Maths } from './utility/math-functions';
 
 class UserInput {
 	ds: Graph | Tree | Stack | any = null;
@@ -70,6 +72,10 @@ class UserInput {
 	dequeueBtn: HTMLButtonElement;
 	examplesList: HTMLDivElement;
 	examplePane: HTMLDivElement;
+	colorPickerNode: HTMLInputElement;
+	colorPickerEdge: HTMLInputElement;
+	nodeLabel: HTMLLabelElement;
+	edgeLabel: HTMLLabelElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -175,6 +181,22 @@ class UserInput {
 		this.examplePane = document.getElementById(
 			'example-pane'
 		) as HTMLDivElement;
+
+		this.colorPickerNode = document.getElementById(
+			'color-picker-node'
+		) as HTMLInputElement;
+
+		this.colorPickerEdge = document.getElementById(
+			'color-picker-edge'
+		) as HTMLInputElement;
+
+		this.nodeLabel = document.querySelector(
+			'#color-picker-label[data-node]'
+		) as HTMLLabelElement;
+
+		this.edgeLabel = document.querySelector(
+			'#color-picker-label[data-edge]'
+		) as HTMLLabelElement;
 	}
 
 	cacheObj(val: any, key: string = 'user-options'): void {
@@ -281,6 +303,40 @@ class UserInput {
 		this.doublySwitch.addEventListener('click', (event: any) => {
 			this.userOptions.linkedlist.doubly = event.target.checked;
 			this.switchChanged();
+		});
+
+		this.colorPickerNode.addEventListener('input', () => {
+			Aesthetics.NodeColor = this.colorPickerNode.value;
+
+			this.nodeLabel.style.backgroundColor = this.colorPickerNode.value;
+			let rgb = Maths.HexToRgb(this.colorPickerNode.value);
+			let greyscale = (rgb[0] + rgb[1] + rgb[2]) / 3;
+			if (greyscale <= 128) {
+				Aesthetics.NodeFontColor = '#DDDDDD';
+				this.nodeLabel.style.color = '#DDDDDD';
+			} else {
+				Aesthetics.NodeFontColor = '#111111';
+				this.nodeLabel.style.color = '#111111';
+			}
+
+			Animate.enabled = false;
+			if (UI && UI.submitBtn) UI.submitBtn.dispatchEvent(new Event('click'));
+		});
+
+		this.colorPickerEdge.addEventListener('input', () => {
+			Aesthetics.EdgeColor = this.colorPickerEdge.value;
+
+			this.edgeLabel.style.backgroundColor = this.colorPickerEdge.value;
+			let rgb = Maths.HexToRgb(this.colorPickerEdge.value);
+			let greyscale = (rgb[0] + rgb[1] + rgb[2]) / 3;
+			if (greyscale <= 128) {
+				this.edgeLabel.style.color = '#DDDDDD';
+			} else {
+				this.edgeLabel.style.color = '#111111';
+			}
+
+			Animate.enabled = false;
+			if (UI && UI.submitBtn) UI.submitBtn.dispatchEvent(new Event('click'));
 		});
 	}
 

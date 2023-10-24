@@ -203,9 +203,17 @@ class Graph extends DataStructure {
 				dist_ratio
 			);
 
-			this.edges.push(
-				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
-			);
+			if (Animate.enabled) {
+				this.edges.push(
+					Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
+				);
+			} else {
+				this.ctx.beginPath();
+				this.ctx.strokeStyle = this.edgeColor;
+				this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+				this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+				this.ctx.stroke();
+			}
 
 			if (UI.userOptions.graph.weighted) {
 				this.PlotEdgeLabel(node1, node2, key_from, key_to);
@@ -274,6 +282,8 @@ class Graph extends DataStructure {
 	}
 
 	AnimateEdges() {
+		console.log(Animate.enabled);
+		if (!Animate.enabled) return;
 		let res: { done: boolean; value: EdgeSegment } =
 			this.edges[this.current_edge].next();
 
@@ -423,6 +433,8 @@ class Graph extends DataStructure {
 		this.ctx.lineTo(dp2.x, dp2.y);
 		this.ctx.stroke();
 	}
+
+	Recolor() {}
 }
 
 export { Graph };

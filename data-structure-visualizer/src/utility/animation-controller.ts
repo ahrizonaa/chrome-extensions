@@ -1,5 +1,6 @@
 class AnimationController {
 	id: number;
+	enabled: boolean = true;
 
 	constructor() {
 		this.id = undefined;

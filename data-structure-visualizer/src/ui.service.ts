@@ -318,7 +318,6 @@ class UserInput {
 				Aesthetics.NodeFontColor = '#111111';
 				this.nodeLabel.style.color = '#111111';
 			}
-
 			Animate.enabled = false;
 			if (UI && UI.submitBtn) UI.submitBtn.dispatchEvent(new Event('click'));
 		});
@@ -334,7 +333,6 @@ class UserInput {
 			} else {
 				this.edgeLabel.style.color = '#111111';
 			}
-
 			Animate.enabled = false;
 			if (UI && UI.submitBtn) UI.submitBtn.dispatchEvent(new Event('click'));
 		});

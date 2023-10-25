@@ -213,6 +213,9 @@ class Graph extends DataStructure {
 				this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
 				this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
 				this.ctx.stroke();
+				if (UI.userOptions.graph.directed) {
+					this.PlotArrowHead(pr2_edge, pr1_edge);
+				}
 			}
 
 			if (UI.userOptions.graph.weighted) {

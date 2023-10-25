@@ -87,6 +87,7 @@ function visualize() {
 
 	ds.Parse(input);
 	ds.Plot();
+	Animate.enabled = true;
 }
 
 function clearCanvas() {

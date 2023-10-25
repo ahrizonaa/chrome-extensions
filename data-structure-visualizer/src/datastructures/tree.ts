@@ -302,9 +302,17 @@ class Tree extends DataStructure {
 					distRatio
 				);
 
-				this.edges.push(
-					Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
-				);
+				if (Animate.enabled) {
+					this.edges.push(
+						Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
+					);
+				} else {
+					this.ctx.beginPath();
+					this.ctx.strokeStyle = this.edgeColor;
+					this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+					this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+					this.ctx.stroke();
+				}
 			}
 			if (
 				2 * i + 2 < this.nodelist.length &&
@@ -328,14 +336,23 @@ class Tree extends DataStructure {
 					distRatio
 				);
 
-				this.edges.push(
-					Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
-				);
+				if (Animate.enabled) {
+					this.edges.push(
+						Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
+					);
+				} else {
+					this.ctx.beginPath();
+					this.ctx.strokeStyle = this.edgeColor;
+					this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+					this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+					this.ctx.stroke();
+				}
 			}
 		}
 	}
 
 	AnimateEdges(): void {
+		if (!Animate.enabled) return;
 		let res: { done: boolean; value: EdgeSegment } =
 			this.edges[this.current_edge].next();
 

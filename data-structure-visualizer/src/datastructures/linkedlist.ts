@@ -39,7 +39,6 @@ class LinkedList extends DataStructure {
 	Draw() {
 		this.DrawNodes();
 		this.DrawEdges();
-		this.AnimateEdges.bind(this);
 		this.AnimateEdges();
 	}
 
@@ -47,8 +46,6 @@ class LinkedList extends DataStructure {
 		input = this.TrimNulls(input);
 		this.datasetCache = input;
 		this.dataset = input;
-
-		// this.head = this.ConstructTree(this.dataset);
 
 		this.gridWidth = Math.min(this.gridMaxWidth, this.dataset.length);
 		this.gridHeight = Math.ceil(this.dataset.length / this.gridWidth);
@@ -117,9 +114,17 @@ class LinkedList extends DataStructure {
 			let pr1_edge = Maths.FindPointOnLine(node1, node2, dist_ratio);
 			let pr2_edge = Maths.FindPointOnLine(node2, node1, dist_ratio);
 
-			this.edges.push(
-				Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
-			);
+			if (Animate.enabled) {
+				this.edges.push(
+					Edge.bind(this)(Maths.SegmentLine(pr1_edge, pr2_edge, this.steps))
+				);
+			} else {
+				this.ctx.beginPath();
+				this.ctx.strokeStyle = this.edgeColor;
+				this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+				this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+				this.ctx.stroke();
+			}
 		}
 	}
 

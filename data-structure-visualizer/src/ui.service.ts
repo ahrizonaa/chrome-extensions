@@ -562,6 +562,14 @@ class UserInput {
 				listBtn.addEventListener('click', (event: any) => {
 					Animate.Cancel();
 					clearCanvas();
+					if (
+						this.userSelection.dsaType == 'stack' ||
+						this.userSelection.dsaType == 'queue'
+					) {
+						this.edgeLabel.style.display = 'none';
+					} else {
+						this.edgeLabel.style.display = 'flex';
+					}
 					let evtBtn = event.target as HTMLButtonElement;
 					if (
 						this.userSelection.dsaType != evtBtn.dataset.dsaType ||

@@ -1,4 +1,5 @@
 import { Animate } from '../utility/animation-controller';
+import { Aesthetics } from '../utility/dsa-metadata';
 import { RelativePoint } from '../utility/math-functions';
 import { DataStructure, Edge, EdgeSegment } from './data-structure';
 
@@ -56,7 +57,6 @@ class Stack extends DataStructure {
 	Draw() {
 		this.DrawStack();
 		this.DrawBoxes();
-		this.AnimateStackPush.bind(this);
 		this.AnimateStackPush();
 	}
 
@@ -169,6 +169,27 @@ class Stack extends DataStructure {
 	}
 
 	EnqueueAnimation(box: StackBox) {
+		if (!Animate.enabled) {
+			this.ctx.fillStyle = Aesthetics.NodeColor;
+			this.ctx.fillRect(
+				box.points[box.points.length - 1].x - 1,
+				box.points[box.points.length - 1].y - 1,
+				this.boxWidth + 2,
+				this.boxHeight
+			);
+
+			this.ctx.fillStyle = this.nodeFontColor;
+			this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+			this.ctx.textAlign = 'center';
+			this.ctx.fillText(
+				box.val,
+				box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
+				box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
+			);
+
+			return;
+		}
+
 		this.animationQueue.push(box);
 
 		if (Animate.IsInactive()) {
@@ -205,7 +226,7 @@ class Stack extends DataStructure {
 			this.ctx.lineTo(x + 100, this.stackHeight + 50);
 			this.ctx.stroke();
 
-			this.ctx.fillStyle = '#bad989';
+			this.ctx.fillStyle = Aesthetics.NodeColor;
 			this.ctx.fillRect(
 				box.points[box.curr].x,
 				box.points[box.curr].y,
@@ -223,7 +244,6 @@ class Stack extends DataStructure {
 			if (box.push) this.boxes.push(box);
 
 			if (box.push) {
-				this.ctx.beginPath();
 				this.ctx.fillStyle = 'black';
 				this.ctx.font = '10px monospace';
 				this.ctx.textAlign = 'center';
@@ -232,7 +252,6 @@ class Stack extends DataStructure {
 					box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
 					box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
 				);
-				this.ctx.closePath();
 			} else if (!box.push) {
 				this.ctx.fillStyle = this.canvasBgColor;
 				this.ctx.fillRect(

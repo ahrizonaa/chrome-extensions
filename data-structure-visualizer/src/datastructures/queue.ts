@@ -1,4 +1,5 @@
 import { Animate } from '../utility/animation-controller';
+import { Aesthetics } from '../utility/dsa-metadata';
 import { Maths, RelativePoint } from '../utility/math-functions';
 import { DataStructure } from './data-structure';
 
@@ -187,6 +188,27 @@ class Queue extends DataStructure {
 	}
 
 	EnqueueAnimation(box: QueueBox) {
+		if (!Animate.enabled) {
+			this.ctx.fillStyle = Aesthetics.NodeColor;
+			this.ctx.fillRect(
+				box.points[box.points.length - 1].x - 1,
+				box.points[box.points.length - 1].y - 1,
+				this.boxWidth,
+				this.boxHeight
+			);
+
+			this.ctx.fillStyle = this.nodeFontColor;
+			this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+			this.ctx.textAlign = 'center';
+			this.ctx.fillText(
+				box.val,
+				box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
+				box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
+			);
+
+			return;
+		}
+
 		this.animationQueue.push(box);
 
 		if (Animate.IsInactive()) {
@@ -213,7 +235,7 @@ class Queue extends DataStructure {
 				);
 			}
 
-			this.ctx.fillStyle = '#bad989';
+			this.ctx.fillStyle = Aesthetics.NodeColor;
 			this.ctx.fillRect(
 				box.points[box.curr].x,
 				box.points[box.curr].y,
@@ -234,8 +256,8 @@ class Queue extends DataStructure {
 
 			if (box.enqueue || box.shift) {
 				this.ctx.beginPath();
-				this.ctx.fillStyle = 'black';
-				this.ctx.font = '10px monospace';
+				this.ctx.fillStyle = this.nodeFontColor;
+				this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
 				this.ctx.textAlign = 'center';
 				this.ctx.fillText(
 					box.val,

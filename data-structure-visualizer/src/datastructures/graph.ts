@@ -285,7 +285,6 @@ class Graph extends DataStructure {
 	}
 
 	AnimateEdges() {
-		console.log(Animate.enabled);
 		if (!Animate.enabled) return;
 		let res: { done: boolean; value: EdgeSegment } =
 			this.edges[this.current_edge].next();

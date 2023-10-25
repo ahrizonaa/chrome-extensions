@@ -67,18 +67,23 @@ function visualize() {
 		case null:
 			return;
 		case 'graph':
+			UI.edgeLabel.style.display = 'flex';
 			ds = new Graph(ctx, canvas);
 			break;
 		case 'tree':
+			UI.edgeLabel.style.display = 'flex';
 			ds = new Tree(ctx, canvas);
 			break;
 		case 'stack':
+			UI.edgeLabel.style.display = 'none';
 			ds = new Stack(ctx, canvas);
 			break;
 		case 'queue':
+			UI.edgeLabel.style.display = 'none';
 			ds = new Queue(ctx, canvas);
 			break;
 		case 'linkedlist':
+			UI.edgeLabel.style.display = 'flex';
 			ds = new LinkedList(ctx, canvas);
 			break;
 		default:

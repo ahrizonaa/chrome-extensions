@@ -76,6 +76,7 @@ class UserInput {
 	colorPickerEdge: HTMLInputElement;
 	nodeLabel: HTMLLabelElement;
 	edgeLabel: HTMLLabelElement;
+	resetBtn: HTMLButtonElement;
 
 	constructor() {
 		this.setDefaultOptions();
@@ -197,6 +198,8 @@ class UserInput {
 		this.edgeLabel = document.querySelector(
 			'#color-picker-label[data-edge]'
 		) as HTMLLabelElement;
+
+		this.resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
 	}
 
 	cacheObj(val: any, key: string = 'user-options'): void {
@@ -336,7 +339,13 @@ class UserInput {
 			Animate.enabled = false;
 			if (UI && UI.submitBtn) UI.submitBtn.dispatchEvent(new Event('click'));
 		});
+
+		this.resetBtn.addEventListener('click', (event: any) => {
+			this.reset();
+		});
 	}
+
+	reset(): void {}
 
 	toggleTreeSwitches(id: string) {
 		this.userOptions.tree.binary = id == 'bst-switch';

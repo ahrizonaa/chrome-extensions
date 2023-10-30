@@ -163,3 +163,13 @@ div[data-te-popconfirm-body] {
 #examples-list > button:last-child {
 	margin-bottom: 0 !important;
 }
+
+#reset-btn-container {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+#reset-btn {
+	font-size: 8px !important;
+}

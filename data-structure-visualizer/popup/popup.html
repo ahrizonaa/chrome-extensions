@@ -37,7 +37,7 @@
 			<div class="w-full flex flex-grow">
 				<div
 					id="form-wrapper"
-					class="h-full w-full p-4 flex flex-col justify-end">
+					class="relative h-full w-full p-4 flex flex-col justify-end">
 					<div class="collapse py-2 w-full">
 						<div class="!visible hidden" id="collapse-item">
 							<div
@@ -75,6 +75,16 @@
 								<draw-button> </draw-button>
 							</div>
 						</form>
+					</div>
+					<div id="reset-btn-container">
+						<button
+							id="reset-btn"
+							type="button"
+							data-te-ripple-init
+							data-te-ripple-color="light"
+							class="inline-block rounded px-1 mx-4 pb-1 pt-1 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:bg-neutral-100 hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700">
+							Reset
+						</button>
 					</div>
 				</div>
 				<div

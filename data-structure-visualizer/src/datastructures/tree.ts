@@ -247,6 +247,7 @@ class Tree extends DataStructure {
 					let xr = half;
 					let yr =
 						this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
+					this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
 
 					if (yr - this.radius <= 0) {
 						yr = this.radius;

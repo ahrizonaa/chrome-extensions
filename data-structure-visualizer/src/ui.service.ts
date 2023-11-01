@@ -19,14 +19,7 @@ import { RadioBtn } from './radio-buttons/radio-btn';
 import { ListBtn } from './radio-buttons/list-btn';
 import { PopDiv } from './radio-buttons/pop-div';
 
-import {
-	map,
-	distinctUntilChanged,
-	fromEvent,
-	debounceTime,
-	tap,
-	empty
-} from 'rxjs';
+import { map, distinctUntilChanged, fromEvent, debounceTime, tap } from 'rxjs';
 import { RadioGroup } from './radio-buttons/radio-group-div';
 import { SwitchPanel } from './switch-panel/switch-panel';
 import { DrawButton } from './draw-button/draw-button';
@@ -85,6 +78,7 @@ class UserInput {
 	}
 
 	setDefaultOptions(): void {
+		console.log(UserOptions);
 		this.userSelection = UserSelection;
 		this.userOptions = UserOptions;
 		this.typeOptions = [
@@ -310,8 +304,8 @@ class UserInput {
 
 		this.colorPickerNode.addEventListener('input', () => {
 			Aesthetics.NodeColor = this.colorPickerNode.value;
-
 			this.nodeLabel.style.backgroundColor = this.colorPickerNode.value;
+
 			let rgb = Maths.HexToRgb(this.colorPickerNode.value);
 			let greyscale = (rgb[0] + rgb[1] + rgb[2]) / 3;
 			if (greyscale <= 128) {
@@ -327,7 +321,6 @@ class UserInput {
 
 		this.colorPickerEdge.addEventListener('input', () => {
 			Aesthetics.EdgeColor = this.colorPickerEdge.value;
-
 			this.edgeLabel.style.backgroundColor = this.colorPickerEdge.value;
 			let rgb = Maths.HexToRgb(this.colorPickerEdge.value);
 			let greyscale = (rgb[0] + rgb[1] + rgb[2]) / 3;
@@ -345,7 +338,43 @@ class UserInput {
 		});
 	}
 
-	reset(): void {}
+	toggleColorPickers() {
+		if (
+			this.userSelection.dsaType == 'stack' ||
+			this.userSelection.dsaType == 'queue'
+		) {
+			this.edgeLabel.style.display = 'none';
+		} else {
+			this.edgeLabel.style.display = 'flex';
+		}
+	}
+
+	resetColorPickers() {
+		this.nodeLabel.style.backgroundColor = Aesthetics.NodeColor;
+		this.nodeLabel.style.color = Aesthetics.NodeFontColor;
+		this.edgeLabel.style.backgroundColor = Aesthetics.EdgeColor;
+		this.edgeLabel.style.color = Aesthetics.NodeFontColor;
+		this.toggleColorPickers();
+	}
+
+	switchChanged() {
+		this.cacheObj(this.userOptions);
+		this.validate();
+	}
+
+	reset(): void {
+		console.log('reset');
+		this.clearForm();
+		localStorage.clear();
+		Aesthetics.reset();
+		this.userOptions.reset();
+		console.log(this.userSelection);
+		this.userSelection.reset();
+		this.formValid = false;
+		this.toggleAll();
+		this.resetColorPickers();
+		this.validate();
+	}
 
 	toggleTreeSwitches(id: string) {
 		this.userOptions.tree.binary = id == 'bst-switch';
@@ -356,13 +385,13 @@ class UserInput {
 		this.maxHeapSwitch.checked = id == 'max-heap-switch';
 	}
 
-	switchChanged() {
-		this.cacheObj(this.userOptions);
-		this.validate();
-	}
-
 	toggleAll() {
+		console.log('toggle all');
+		console.log(this);
+		if (Object.keys(this.userOptions).length == 0) return;
+		if (!this.userOptions || !this.userSelection) return;
 		this.toggleSwitches();
+		this.toggleTreeSwitches('reset');
 
 		if (this.userSelection.dsaType) {
 			this.toggleTypeRadio();
@@ -399,6 +428,7 @@ class UserInput {
 	validate() {
 		this.textarea.value = this.textarea.value.replace(/null/gi, 'null');
 		if (!this.textarea.value) return;
+		if (!this.userOptions || !this.userSelection) return;
 		this.currFeedback = Parser.isValid(this.textarea.value, '', '');
 		if (this.currFeedback === true) {
 			this.formValid = true;
@@ -437,6 +467,7 @@ class UserInput {
 				this.userOptions[this.userSelection.dsaType] = example.options;
 				this.userSelection.dsaFormat = example.format;
 				this.toggleFormatSelection();
+				console.log('toggle example');
 				this.toggleSwitches();
 				this.validate();
 			});
@@ -571,14 +602,7 @@ class UserInput {
 				listBtn.addEventListener('click', (event: any) => {
 					Animate.Cancel();
 					clearCanvas();
-					if (
-						this.userSelection.dsaType == 'stack' ||
-						this.userSelection.dsaType == 'queue'
-					) {
-						this.edgeLabel.style.display = 'none';
-					} else {
-						this.edgeLabel.style.display = 'flex';
-					}
+					this.toggleColorPickers();
 					let evtBtn = event.target as HTMLButtonElement;
 					if (
 						this.userSelection.dsaType != evtBtn.dataset.dsaType ||

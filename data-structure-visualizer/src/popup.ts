@@ -122,7 +122,7 @@ function restoreCache() {
 	if (userSelection) {
 		UI.userSelection = JSON.parse(userSelection);
 	}
-	if (userOptions) {
+	if (userOptions && Object.keys(userOptions).length) {
 		UI.userOptions = JSON.parse(userOptions);
 	}
 

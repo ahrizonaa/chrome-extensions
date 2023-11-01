@@ -56,14 +56,14 @@ class DataStructureRepresentations {
 	};
 
 	constructor() {
-		this.setDefaults();
+		this.reset();
 	}
 
 	findPlaceholder(dsaType: string, dsaFormat: string, opts: any): string {
 		return this[dsaType][dsaFormat].findPlaceholder(opts.weighted);
 	}
 
-	setDefaults(): void {
+	reset(): void {
 		this.graph = {
 			adjacency_list: new DataStructureRepresentation(
 				'adjacency_list',
@@ -119,6 +119,10 @@ class DataStructureOptions {
 	linkedlist: LinkedListOptions;
 
 	constructor() {
+		this.reset();
+	}
+
+	reset(): void {
 		this.graph = new GraphOptions();
 		this.tree = new TreeOptions();
 		this.stack = new StackOptions();
@@ -128,20 +132,37 @@ class DataStructureOptions {
 }
 
 class CanvasAesthetics {
-	CanvasBgColor: string = '#101010';
-	EdgeColor: string = '#EEEEEE';
-	NodeColor: string = '#d1d1d1';
-	NodeFontSize: string = '0.66rem';
-	NodeFontFamily: string = 'monospace';
-	NodeFontColor: string = '#212121';
-	ArrowheadSize: number = 10;
+	CanvasBgColor: string;
+	EdgeColor: string;
+	NodeColor: string;
+	NodeFontSize: string;
+	NodeFontFamily: string;
+	NodeFontColor: string;
+	ArrowheadSize: number;
 
-	constructor() {}
+	constructor() {
+		this.reset();
+	}
+
+	reset(): void {
+		this.CanvasBgColor = '#101010';
+		this.EdgeColor = '#EEEEEE';
+		this.NodeColor = '#d1d1d1';
+		this.NodeFontSize = '0.66rem';
+		this.NodeFontFamily = 'monospace';
+		this.NodeFontColor = '#212121';
+		this.ArrowheadSize = 10;
+	}
 }
 
 class DataStructureSelection {
 	dsaType: string = '';
 	dsaFormat: string = '';
+
+	public reset(): void {
+		this.dsaType = '';
+		this.dsaFormat = '';
+	}
 }
 
 class DataStructureRadioOption {

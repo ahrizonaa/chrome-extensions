@@ -1,0 +1,13 @@
+.root-view {
+  max-width: 600px !important;
+  max-height: 600px !important;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: fit-content;
+}
+
+app-tab-view {
+  width: 100%;
+  height: fit-content;
+}

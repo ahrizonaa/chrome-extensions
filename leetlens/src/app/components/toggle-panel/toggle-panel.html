@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-content>
+    <div class="format-container">
+      <mat-select placeholder="Select Format">
+        <mat-option *ngFor="let format of options.formats" [value]="format.name"
+          >{{ format.name }}</mat-option
+        >
+      </mat-select>
+    </div>
+    <div class="switch-container">
+      <div
+        class="switch-row"
+        *ngFor="let toggle of $any(options.toggles | keyvalue)"
+      >
+        <mat-slide-toggle [(ngModel)]="options.toggles[toggle.key]">
+          {{ toggle.key }}</mat-slide-toggle
+        >
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

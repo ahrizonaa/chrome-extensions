@@ -1,1 +1,9 @@
-<p>examples-list works!</p>
+<mat-card>
+  <mat-card-content id="examples-list">
+    <div class="col">
+      <div class="row" *ngFor="let example of examples">
+        <button color="primary" mat-raised-button>{{ example.title }}</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Example } from 'src/app/types/Example';
+import { Options } from 'src/app/types/Options';
 
 @Component({
   selector: 'content-view',
@@ -7,6 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ContentView {
   @Input('title') title: string = '';
-  @Input('options') options!: any;
-  @Input('examples') examples: any[] = [];
+  @Input('options')
+  options!: Options;
+  @Input('examples') examples: Example[] = [];
 }

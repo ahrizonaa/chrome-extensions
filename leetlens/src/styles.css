@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "app/styles/scrollbar.css";
 
 html,
 body {
@@ -13,4 +14,69 @@ app-root {
   max-width: 600px !important;
   max-height: 600px !important;
   margin: 0;
+}
+
+button[mat-raised-button] {
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
+  width: 100%;
+  text-align: left !important;
+  font-size: 0.65rem !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  line-height: normal !important;
+  & span {
+    width: 100% !important;
+  }
+}
+.controls-view {
+  width: 30% !important;
+  min-width: 180px !important;
+}
+
+#examples-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100px !important;
+}
+
+mat-card-content {
+  padding: 8px !important;
+  /* font-size: 0.75rem !important; */
+}
+mat-option {
+  display: inline !important;
+  max-height: 35px !important;
+  font-size: 0.7rem !important;
+}
+
+toggle-panel {
+  margin-bottom: 5px;
+  & span,
+  label {
+    font-size: 0.75rem !important;
+  }
+
+  & mat-slide-toggle {
+    margin-bottom: 5px !important;
+  }
+}
+examples-list {
+  margin-bottom: 5px;
+}
+
+json-input {
+  & mat-form-field {
+    width: 100%;
+  }
+  & mat-label {
+    font-size: 12px !important;
+  }
+}
+
+textarea[matInput] {
+  height: 50px !important;
+  max-height: 200px !important;
+  font-size: 10px !important;
+  line-height: normal !important;
 }

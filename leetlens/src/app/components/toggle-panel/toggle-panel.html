@@ -7,6 +7,11 @@
         >
       </mat-select>
     </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
     <div class="switch-container">
       <div
         class="switch-row"
@@ -15,6 +20,9 @@
         <mat-slide-toggle [(ngModel)]="options.toggles[toggle.key]">
           {{ toggle.key }}</mat-slide-toggle
         >
+      </div>
+      <div *ngIf="!keys(options.toggles).length" class="empty-toggles">
+        <span>no variants</span>
       </div>
     </div>
   </mat-card-content>

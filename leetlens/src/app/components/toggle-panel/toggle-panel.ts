@@ -13,6 +13,9 @@ export class TogglePanel {
   };
 
   keys(obj: any) {
+    if (!obj) {
+      return [];
+    }
     return Object.keys(obj);
   }
 }

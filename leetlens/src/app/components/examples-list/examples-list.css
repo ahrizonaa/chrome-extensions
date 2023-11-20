@@ -1,8 +1,21 @@
 .col {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  max-height: 100px;
+  height: 100px;
+  overflow-y: auto;
+  padding-right: 3px;
 }
 .row {
   display: block;
   margin-bottom: 5px;
+}
+
+.empty-examples-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 0.75em;
 }

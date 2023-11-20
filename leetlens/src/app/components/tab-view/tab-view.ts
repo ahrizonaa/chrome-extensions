@@ -4,6 +4,12 @@ import {
   LinkedListArray,
   TreeArray,
 } from 'src/app/constants/Formats';
+import {
+  LinkedListArr,
+  QueueArr,
+  StackArr,
+  TreeArr,
+} from 'src/app/constants/Placeholders';
 import { Options } from 'src/app/types/Options';
 import { Tab } from 'src/app/types/Tab';
 
@@ -84,8 +90,17 @@ export class TabView implements OnInit {
       {
         title: 'Tree',
         options: {
-          formats: [],
-          toggles: undefined,
+          formats: [
+            {
+              name: 'Array',
+              placeholder: TreeArr,
+            },
+          ],
+          toggles: {
+            BST: false,
+            maxheap: false,
+            minheap: false,
+          },
         },
         examples: [
           {
@@ -139,7 +154,12 @@ export class TabView implements OnInit {
       {
         title: 'Stack',
         options: {
-          formats: [],
+          formats: [
+            {
+              name: 'Array',
+              placeholder: StackArr,
+            },
+          ],
           toggles: {},
         },
         examples: [],
@@ -147,7 +167,12 @@ export class TabView implements OnInit {
       {
         title: 'Queue',
         options: {
-          formats: [],
+          formats: [
+            {
+              name: 'Array',
+              placeholder: QueueArr,
+            },
+          ],
           toggles: {},
         },
         examples: [],
@@ -155,8 +180,15 @@ export class TabView implements OnInit {
       {
         title: 'LinkedList',
         options: {
-          formats: [],
-          toggles: {},
+          formats: [
+            {
+              name: 'Array',
+              placeholder: LinkedListArr,
+            },
+          ],
+          toggles: {
+            doubly: false,
+          },
         },
         examples: [
           {

@@ -10,8 +10,5 @@
 .controls-view {
   display: flex;
   flex-direction: column;
-}
-
-.canvas-view {
-  height: fit-content;
+  padding-right: 10px;
 }

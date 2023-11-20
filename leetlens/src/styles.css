@@ -4,16 +4,16 @@
 html,
 body {
   height: 100%;
+  max-height: 600px !important;
+  max-width: 600px !important;
+  height: fit-content;
+  width: fit-content;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-app-root {
-  max-width: 600px !important;
-  max-height: 600px !important;
-  margin: 0;
+  /* background: #212121; */
+  border: 3px solid grey;
+  border-radius: 4px;
 }
 
 button[mat-raised-button] {
@@ -32,12 +32,10 @@ button[mat-raised-button] {
 .controls-view {
   width: 30% !important;
   min-width: 180px !important;
-}
 
-#examples-list {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 100px !important;
+  & mat-card {
+    background-color: #2b2b2b !important;
+  }
 }
 
 mat-card-content {
@@ -51,10 +49,14 @@ mat-option {
 }
 
 toggle-panel {
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   & span,
   label {
-    font-size: 0.75rem !important;
+    font-size: 0.75em !important;
+  }
+
+  & mat-card {
+    margin-bottom: 5px;
   }
 
   & mat-slide-toggle {
@@ -79,4 +81,12 @@ textarea[matInput] {
   max-height: 200px !important;
   font-size: 10px !important;
   line-height: normal !important;
+}
+
+canvas.canvas-view {
+  width: -webkit-fill-available;
+  height: auto !important;
+  border: 1px solid #ccc;
+  margin-bottom: 22px;
+  border-radius: 10px;
 }

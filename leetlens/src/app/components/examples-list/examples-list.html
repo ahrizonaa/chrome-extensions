@@ -4,6 +4,9 @@
       <div class="row" *ngFor="let example of examples">
         <button color="primary" mat-raised-button>{{ example.title }}</button>
       </div>
+      <div *ngIf="!examples || !examples.length" class="empty-examples-list">
+        <span>no examples</span>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

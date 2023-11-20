@@ -42,6 +42,7 @@ mat-card-content {
   padding: 8px !important;
   /* font-size: 0.75rem !important; */
 }
+
 mat-option {
   display: inline !important;
   max-height: 35px !important;
@@ -52,7 +53,7 @@ toggle-panel {
   /* margin-bottom: 5px; */
   & span,
   label {
-    font-size: 0.75em !important;
+    font-size: 0.85em !important;
   }
 
   & mat-card {
@@ -89,4 +90,17 @@ canvas.canvas-view {
   border: 1px solid #ccc;
   margin-bottom: 22px;
   border-radius: 10px;
+}
+
+idle-art {
+  position: absolute;
+  width: 334px;
+  height: 334px;
+  right: 0;
+  z-index: 10;
+  margin-right: 10px;
+
+  & div {
+    height: 334px;
+  }
 }

@@ -20,6 +20,7 @@ import { TogglePanel } from './components/toggle-panel/toggle-panel';
 import { TabView } from './components/tab-view/tab-view';
 import { ContentView } from './components/content-view/content-view';
 import { FormsModule } from '@angular/forms';
+import { IdleArtComponent } from './components/idle-art/idle-art.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     TogglePanel,
     TabView,
     ContentView,
+    IdleArtComponent,
   ],
   imports: [
     BrowserModule,

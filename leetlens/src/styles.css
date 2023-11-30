@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "app/styles/scrollbar.css";
+@import "app/styles/rotate-center.css";
 
 html,
 body {
@@ -13,7 +14,11 @@ body {
   margin: 0;
   /* background: #212121; */
   border: 3px solid grey;
-  border-radius: 4px;
+  border-radius: 5px;
+}
+
+tab-view {
+  position: relative;
 }
 
 button[mat-raised-button] {
@@ -33,9 +38,9 @@ button[mat-raised-button] {
   width: 30% !important;
   min-width: 180px !important;
 
-  & mat-card {
+  /* & mat-card {
     background-color: #2b2b2b !important;
-  }
+  } */
 }
 
 mat-card-content {
@@ -78,10 +83,11 @@ json-input {
 }
 
 textarea[matInput] {
-  height: 50px !important;
+  height: 75px !important;
   max-height: 200px !important;
   font-size: 10px !important;
   line-height: normal !important;
+  resize: none;
 }
 
 canvas.canvas-view {
@@ -92,15 +98,41 @@ canvas.canvas-view {
   border-radius: 10px;
 }
 
+.mat-mdc-tab-body-wrapper {
+  display: none;
+  max-height: 0px !important;
+}
+
 idle-art {
   position: absolute;
   width: 334px;
   height: 334px;
   right: 0;
+  bottom: 0;
   z-index: 10;
   margin-right: 10px;
+  margin-bottom: 32px;
 
   & div {
     height: 334px;
   }
+}
+
+.mdc-switch__ripple {
+  height: 30px !important;
+  width: 30px !important;
+}
+
+.mat-error {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  line-height: 20px;
+  text-align: left;
+  display: block;
+  height: 22px;
+  font-family: Roboto, sans-serif;
+  position: absolute;
+  bottom: 0;
+  left: 5px;
 }

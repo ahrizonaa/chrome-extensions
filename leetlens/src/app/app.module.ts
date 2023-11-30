@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
@@ -21,6 +22,7 @@ import { TabView } from './components/tab-view/tab-view';
 import { ContentView } from './components/content-view/content-view';
 import { FormsModule } from '@angular/forms';
 import { IdleArtComponent } from './components/idle-art/idle-art.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,11 @@ import { IdleArtComponent } from './components/idle-art/idle-art.component';
     MatSlideToggleModule,
     MatSelectModule,
     FormsModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
     MatDividerModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [App],

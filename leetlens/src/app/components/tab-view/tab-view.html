@@ -1,10 +1,16 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  <mat-tab *ngFor="let tab of tabs; let i = index" [label]="tab.title">
-    <content-view
-      [title]="tab.title"
-      [options]="tab.options"
-      [examples]="tab.examples"
-    >
-    </content-view>
+<mat-tab-group
+  style="margin-bottom: 10px"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+  (selectedTabChange)="tabSelected($event)"
+>
+  <mat-tab *ngFor="let tab of ui.tabs; let i = index" [label]="tab.title">
   </mat-tab>
 </mat-tab-group>
+<content-view
+  [title]="ui.currTab.title"
+  [options]="ui.currTab.options"
+  [examples]="ui.currTab.examples"
+>
+</content-view>
+<idle-art></idle-art>

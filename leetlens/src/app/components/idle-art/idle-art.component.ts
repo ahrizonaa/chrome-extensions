@@ -1,21 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
-import { IdleArt } from './idle-art';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'idle-art',
   templateUrl: './idle-art.component.html',
   styleUrls: ['./idle-art.component.css'],
 })
-export class IdleArtComponent implements AfterViewInit {
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      document.getElementById('idle-art')?.appendChild(IdleArt as any);
-    }, 0);
-  }
-}
+export class IdleArtComponent {}

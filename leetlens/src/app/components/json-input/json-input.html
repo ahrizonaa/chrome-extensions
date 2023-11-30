@@ -1,7 +1,38 @@
-<div>
+<div class="textarea-root">
   <mat-form-field>
-    <mat-label>Adjacency List</mat-label>
-
-    <textarea matInput type="text"></textarea>
+    <textarea
+      #input="ngModel"
+      name="ta"
+      [(ngModel)]="ui.currInput"
+      [placeholder]="ui.currFormat.placeholder + '\n\n'"
+      (ngModelChange)="textareaValueChanged($event)"
+      matInput
+      type="text"
+    >
+    </textarea>
+    <mat-slide-toggle
+      matTooltip="Auto Refresh"
+      id="auto-refresh-toggle"
+      color="primary"
+      name="tg"
+      [(ngModel)]="ui.autoRefreshDisabled"
+      (change)="autoRefreshChanged($event)"
+    ></mat-slide-toggle>
+    <button
+      [disabled]="ui.refreshDisabled"
+      id="execute-btn"
+      mat-icon-button
+      matTooltip="Refresh"
+      color="primary"
+      aria-label="Refresh"
+      (click)="refreshClicked($event)"
+    >
+      <mat-icon [ngClass]="{'rotate-center': this.ui.refreshDisabled }"
+        >refresh</mat-icon
+      >
+    </button>
   </mat-form-field>
+  <mat-error *ngIf="ui.currError" class="mat-error"
+    >{{ ui.currError }}</mat-error
+  >
 </div>

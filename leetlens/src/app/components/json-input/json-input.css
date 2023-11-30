@@ -1,0 +1,26 @@
+.textarea-root {
+  position: relative;
+}
+
+#auto-refresh-toggle {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 5px;
+  font-size: 8px !important;
+}
+
+#execute-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  max-width: 30px;
+  max-height: 30px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+}

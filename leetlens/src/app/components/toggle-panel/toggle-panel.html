@@ -1,7 +1,12 @@
 <mat-card>
   <mat-card-content>
     <div class="format-container">
-      <mat-select placeholder="Select Format">
+      <mat-select
+        #select
+        [value]="ui.currFormat.name"
+        (selectionChange)="formatSelected($event)"
+        placeholder="Select Format"
+      >
         <mat-option *ngFor="let format of options.formats" [value]="format.name"
           >{{ format.name }}</mat-option
         >
@@ -15,9 +20,14 @@
     <div class="switch-container">
       <div
         class="switch-row"
-        *ngFor="let toggle of $any(options.toggles | keyvalue)"
+        [style.marginBottom]="index !== array.length - 1 ? '5px' : '0'"
+        *ngFor="let toggle of $any(options.toggles | keyvalue); let index; let array"
       >
-        <mat-slide-toggle [(ngModel)]="options.toggles[toggle.key]">
+        <mat-slide-toggle
+          color="primary"
+          (change)="toggleChanged($event, toggle.key)"
+          [(ngModel)]="options.toggles[toggle.key]"
+        >
           {{ toggle.key }}</mat-slide-toggle
         >
       </div>

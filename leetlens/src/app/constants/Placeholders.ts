@@ -1,3 +1,5 @@
+import { Placeholder } from '../types/Placeholder';
+
 const t = '\xA0\xA0\xA0\xA0';
 const n = '\x0A';
 const d0 = '\u2080';
@@ -5,8 +7,6 @@ const d1 = '\u2081';
 const d2 = '\u2082';
 const nsub = '\u2099';
 const msub = '\u208B';
-
-type Placeholder = string;
 
 const GraphListUnweighted: Placeholder = `N x 2 array of node, neighbor${
   n + n

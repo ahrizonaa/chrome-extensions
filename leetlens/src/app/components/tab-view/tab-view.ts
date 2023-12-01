@@ -19,5 +19,6 @@ export class TabView implements OnInit {
       (tab: Tab) => tab.title == evt.tab.textLabel
     )[0];
     this.ui.currFormat = this.ui.currTab.options.formats[0];
+    this.ui.tabChanged();
   }
 }

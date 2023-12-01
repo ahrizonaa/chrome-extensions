@@ -2,6 +2,10 @@
 @import "app/styles/scrollbar.css";
 @import "app/styles/rotate-center.css";
 
+html {
+  background-color: #313131;
+}
+
 html,
 body {
   height: 100%;
@@ -90,9 +94,9 @@ textarea[matInput] {
   resize: none;
 }
 
-canvas.canvas-view {
-  width: -webkit-fill-available;
-  height: auto !important;
+canvas-view {
+  height: auto;
+  width: 100%;
   border: 1px solid #ccc;
   margin-bottom: 22px;
   border-radius: 10px;

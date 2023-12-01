@@ -1,7 +1,4 @@
 import { Theme } from '../constants/Theme';
-import { Anime } from '../services/anime.service';
-import { Mathematics } from '../services/mathematics.service';
-import { UserInput } from '../services/user-input.service';
 import { CartesianCoordinate, CartesianSlope } from '../types/Geometric';
 import { CartesianPoint } from './cartesian-point';
 import { DataStructure, EdgeSegment } from './data-structure';
@@ -10,8 +7,6 @@ import { RelativePoint } from './relative-point';
 import { TreeNode } from './tree-node';
 
 class Graph extends DataStructure {
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
   dataset: any[] = [];
   matrix: any[] = [];
   graph: any = {};
@@ -27,16 +22,8 @@ class Graph extends DataStructure {
   current_edge: number = 0;
   animation_frame_id: number = NaN;
 
-  constructor(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    public ui: UserInput,
-    public math: Mathematics,
-    public anime: Anime
-  ) {
-    super();
-    this.ctx = ctx;
-    this.canvas = canvas;
+  constructor(ui: any) {
+    super(ui);
   }
 
   Parse(input_dataset: any) {
@@ -52,7 +39,7 @@ class Graph extends DataStructure {
         break;
     }
 
-    this.cell_size = this.canvas.width / this.grid_size;
+    this.cell_size = this.cs.canvas.width / this.grid_size;
     this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
   }
 
@@ -127,8 +114,8 @@ class Graph extends DataStructure {
   }
 
   Plot() {
-    this.ctx.fillStyle = this.canvasBgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.cs.ctx.fillStyle = this.canvasBgColor;
+    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();
   }
 
@@ -153,24 +140,24 @@ class Graph extends DataStructure {
         this.matrix[row][col].point = new RelativePoint(
           xr,
           yr,
-          this.canvas.width,
-          this.canvas.height
+          this.cs.canvas.width,
+          this.cs.canvas.height
         );
         this.matrix[row][col].r = this.radius;
         this.graph[this.matrix[row][col].val] = this.matrix[row][col];
 
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.nodeColor;
-        this.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-        this.ctx.closePath();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.fillStyle = this.nodeColor;
+        this.cs.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
+        this.cs.ctx.fill();
+        this.cs.ctx.closePath();
 
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.nodeFontColor;
-        this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(String(this.matrix[row][col].val), xr, yr + 3);
-        this.ctx.closePath();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.fillStyle = this.nodeFontColor;
+        this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+        this.cs.ctx.textAlign = 'center';
+        this.cs.ctx.fillText(String(this.matrix[row][col].val), xr, yr + 3);
+        this.cs.ctx.closePath();
       }
     }
   }
@@ -212,11 +199,11 @@ class Graph extends DataStructure {
           Edge.bind(this)(this.math.SegmentLine(pr1_edge, pr2_edge, this.steps))
         );
       } else {
-        this.ctx.beginPath();
-        this.ctx.strokeStyle = this.edgeColor;
-        this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
-        this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
-        this.ctx.stroke();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.strokeStyle = this.edgeColor;
+        this.cs.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+        this.cs.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+        this.cs.ctx.stroke();
         if (this.ui.currTab.options.toggles.directed) {
           this.PlotArrowHead(pr2_edge, pr1_edge);
         }
@@ -245,16 +232,16 @@ class Graph extends DataStructure {
       edge_label
     );
 
-    this.ctx.beginPath();
-    this.ctx.fillStyle = '#CCCCCC';
-    this.ctx.font = '10px monospace';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText(
+    this.cs.ctx.beginPath();
+    this.cs.ctx.fillStyle = '#CCCCCC';
+    this.cs.ctx.font = '10px monospace';
+    this.cs.ctx.textAlign = 'center';
+    this.cs.ctx.fillText(
       edge_label,
       mid_point.x + label_x_offset,
       mid_point.y + label_y_offset
     );
-    this.ctx.closePath();
+    this.cs.ctx.closePath();
   }
 
   FormatEdgeLabel(key_to: any, key_from: any) {
@@ -297,15 +284,15 @@ class Graph extends DataStructure {
       let { curr, next } = res.value;
       this.anime.Request(this.AnimateEdges.bind(this));
 
-      this.ctx.beginPath();
-      this.ctx.strokeStyle = this.edgeColor;
-      this.ctx.moveTo(curr.x, curr.y);
-      this.ctx.lineTo(next.x, next.y);
-      this.ctx.stroke();
+      this.cs.ctx.beginPath();
+      this.cs.ctx.strokeStyle = this.edgeColor;
+      this.cs.ctx.moveTo(curr.x, curr.y);
+      this.cs.ctx.lineTo(next.x, next.y);
+      this.cs.ctx.stroke();
     } else if (res.done == true) {
       let { first, last } = res.value;
       this.anime.Cancel();
-      this.ctx.closePath();
+      this.cs.ctx.closePath();
       this.current_edge += 1;
 
       if (this.ui.currTab.options.toggles.directed) {
@@ -389,14 +376,14 @@ class Graph extends DataStructure {
     let cr1 = RelativePoint.FromCartesian(
       cx,
       cy,
-      this.canvas.width,
-      this.canvas.height
+      this.cs.canvas.width,
+      this.cs.canvas.height
     );
     let cr2 = RelativePoint.FromCartesian(
       cx2,
       cy2,
-      this.canvas.width,
-      this.canvas.height
+      this.cs.canvas.width,
+      this.cs.canvas.height
     );
 
     let dp1: any = null,
@@ -422,18 +409,18 @@ class Graph extends DataStructure {
       }
     }
 
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = this.edgeColor;
-    this.ctx.moveTo(last.x, last.y);
-    this.ctx.lineTo(dp1.x, dp1.y);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    this.cs.ctx.beginPath();
+    this.cs.ctx.strokeStyle = this.edgeColor;
+    this.cs.ctx.moveTo(last.x, last.y);
+    this.cs.ctx.lineTo(dp1.x, dp1.y);
+    this.cs.ctx.stroke();
+    this.cs.ctx.closePath();
 
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = this.edgeColor;
-    this.ctx.moveTo(last.x, last.y);
-    this.ctx.lineTo(dp2.x, dp2.y);
-    this.ctx.stroke();
+    this.cs.ctx.beginPath();
+    this.cs.ctx.strokeStyle = this.edgeColor;
+    this.cs.ctx.moveTo(last.x, last.y);
+    this.cs.ctx.lineTo(dp2.x, dp2.y);
+    this.cs.ctx.stroke();
   }
 
   Recolor() {}

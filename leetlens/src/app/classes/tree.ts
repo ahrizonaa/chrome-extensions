@@ -7,8 +7,6 @@ import { Edge } from './edge';
 import { RelativePoint } from './relative-point';
 
 class Tree extends DataStructure {
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
   datasetCache!: any[];
   dataset!: any[];
   gridWidth!: number;
@@ -22,21 +20,13 @@ class Tree extends DataStructure {
   current_edge: number = 0;
   root!: BTreeNode;
 
-  constructor(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    public ui: UserInput,
-    public math: Mathematics,
-    public anime: Anime
-  ) {
-    super();
-    this.ctx = ctx;
-    this.canvas = canvas;
+  constructor(ui: any) {
+    super(ui);
   }
 
   Plot() {
-    this.ctx.fillStyle = this.canvasBgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.cs.ctx.fillStyle = this.canvasBgColor;
+    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();
   }
 
@@ -63,7 +53,7 @@ class Tree extends DataStructure {
 
     this.gridHeight = this.depthZeroIndexed + 1;
     this.gridWidth = Math.pow(2, this.depthZeroIndexed);
-    this.cellSize = this.canvas.width / this.gridWidth;
+    this.cellSize = this.cs.canvas.width / this.gridWidth;
 
     this.radius = Math.max(
       Math.min(this.maxRadius, this.cellSize * 0.25),
@@ -253,34 +243,40 @@ class Tree extends DataStructure {
 
           // plot node
           // each x has to go halfway between its respective sector
-          let cell = this.canvas.width / Math.pow(2, depth);
+          let cell = this.cs.canvas.width / Math.pow(2, depth);
           let start = j * cell;
           let half = start + cell / 2;
           let xr = half;
           let yr =
-            this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
-          this.cellSize / 2 + (this.canvas.height / this.gridHeight) * depth;
+            this.cellSize / 2 +
+            (this.cs.canvas.height / this.gridHeight) * depth;
+          this.cellSize / 2 + (this.cs.canvas.height / this.gridHeight) * depth;
 
           if (yr - this.radius <= 0) {
             yr = this.radius;
           }
 
           this.nodelist.push(
-            new RelativePoint(xr, yr, this.canvas.width, this.canvas.height)
+            new RelativePoint(
+              xr,
+              yr,
+              this.cs.canvas.width,
+              this.cs.canvas.height
+            )
           );
 
-          this.ctx.beginPath();
-          this.ctx.fillStyle = this.nodeColor;
-          this.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
-          this.ctx.fill();
-          this.ctx.closePath();
+          this.cs.ctx.beginPath();
+          this.cs.ctx.fillStyle = this.nodeColor;
+          this.cs.ctx.arc(xr, yr, this.radius, 0, 2 * Math.PI);
+          this.cs.ctx.fill();
+          this.cs.ctx.closePath();
 
-          this.ctx.beginPath();
-          this.ctx.fillStyle = this.nodeFontColor;
-          this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-          this.ctx.textAlign = 'center';
-          this.ctx.fillText(String(node.val), xr, yr + 3);
-          this.ctx.closePath();
+          this.cs.ctx.beginPath();
+          this.cs.ctx.fillStyle = this.nodeFontColor;
+          this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+          this.cs.ctx.textAlign = 'center';
+          this.cs.ctx.fillText(String(node.val), xr, yr + 3);
+          this.cs.ctx.closePath();
         }
       }
 
@@ -322,11 +318,11 @@ class Tree extends DataStructure {
             )
           );
         } else {
-          this.ctx.beginPath();
-          this.ctx.strokeStyle = this.edgeColor;
-          this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
-          this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
-          this.ctx.stroke();
+          this.cs.ctx.beginPath();
+          this.cs.ctx.strokeStyle = this.edgeColor;
+          this.cs.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+          this.cs.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+          this.cs.ctx.stroke();
         }
       }
       if (
@@ -358,11 +354,11 @@ class Tree extends DataStructure {
             )
           );
         } else {
-          this.ctx.beginPath();
-          this.ctx.strokeStyle = this.edgeColor;
-          this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
-          this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
-          this.ctx.stroke();
+          this.cs.ctx.beginPath();
+          this.cs.ctx.strokeStyle = this.edgeColor;
+          this.cs.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+          this.cs.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+          this.cs.ctx.stroke();
         }
       }
     }
@@ -377,14 +373,14 @@ class Tree extends DataStructure {
       let { curr, next } = res.value;
       this.anime.Request(this.AnimateEdges.bind(this));
 
-      this.ctx.beginPath();
-      this.ctx.strokeStyle = this.edgeColor;
-      this.ctx.moveTo(curr.x, curr.y);
-      this.ctx.lineTo(next.x, next.y);
-      this.ctx.stroke();
+      this.cs.ctx.beginPath();
+      this.cs.ctx.strokeStyle = this.edgeColor;
+      this.cs.ctx.moveTo(curr.x, curr.y);
+      this.cs.ctx.lineTo(next.x, next.y);
+      this.cs.ctx.stroke();
     } else if (res.done == true) {
       this.anime.Cancel();
-      this.ctx.closePath();
+      this.cs.ctx.closePath();
       this.current_edge += 1;
 
       if (this.current_edge < this.edges.length) {

@@ -1,7 +1,4 @@
 import { Theme } from '../constants/Theme';
-import { Anime } from '../services/anime.service';
-import { Mathematics } from '../services/mathematics.service';
-import { UserInput } from '../services/user-input.service';
 import { DataStructure } from './data-structure';
 import { RelativePoint } from './relative-point';
 
@@ -34,8 +31,6 @@ class QueueBox {
 }
 
 class Queue extends DataStructure {
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
   datasetCache!: any[];
   dataset!: any[];
   queueWidth: number = 100;
@@ -50,28 +45,20 @@ class Queue extends DataStructure {
   animationQueue: QueueBox[] = [];
   boxes: QueueBox[] = [];
 
-  constructor(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    public ui: UserInput,
-    public math: Mathematics,
-    public anime: Anime
-  ) {
-    super();
-    this.ctx = ctx;
-    this.canvas = canvas;
+  constructor(ui: any) {
+    super(ui);
   }
 
   Parse(input: number[]) {
     this.dataset = input.slice(0, 6);
 
-    this.queueWidth = this.canvas.width - 100;
+    this.queueWidth = this.cs.canvas.width - 100;
     this.queueHeight = 100;
   }
 
   Plot() {
-    this.ctx.fillStyle = this.canvasBgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.cs.ctx.fillStyle = this.canvasBgColor;
+    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();
   }
 
@@ -83,31 +70,36 @@ class Queue extends DataStructure {
   }
 
   DrawQueue() {
-    let x = this.canvas.width - this.queueWidth - 50;
-    let y = this.canvas.height / 2 - this.queueHeight / 2;
-    this.ctx.strokeStyle = '#CCC';
+    let x = this.cs.canvas.width - this.queueWidth - 50;
+    let y = this.cs.canvas.height / 2 - this.queueHeight / 2;
+    this.cs.ctx.strokeStyle = '#CCC';
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, y);
-    this.ctx.lineTo(x + this.queueWidth, y);
-    this.ctx.moveTo(x, y + 100);
-    this.ctx.lineTo(x + this.queueWidth, y + 100);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    this.cs.ctx.beginPath();
+    this.cs.ctx.moveTo(x, y);
+    this.cs.ctx.lineTo(x + this.queueWidth, y);
+    this.cs.ctx.moveTo(x, y + 100);
+    this.cs.ctx.lineTo(x + this.queueWidth, y + 100);
+    this.cs.ctx.stroke();
+    this.cs.ctx.closePath();
   }
 
   DrawBoxes() {
     for (let i = 0; i < this.dataset.length; i++) {
       let x = 52.5 + i * (this.boxWidth + 2.5);
-      let y = this.canvas.height / 2 - 45;
+      let y = this.cs.canvas.height / 2 - 45;
 
       let p0 = new RelativePoint(
-        this.canvas.width - 5 - this.boxWidth,
+        this.cs.canvas.width - 5 - this.boxWidth,
         y,
-        this.canvas.width,
-        this.canvas.height
+        this.cs.canvas.width,
+        this.cs.canvas.height
       );
-      let p1 = new RelativePoint(x, y, this.canvas.width, this.canvas.height);
+      let p1 = new RelativePoint(
+        x,
+        y,
+        this.cs.canvas.width,
+        this.cs.canvas.height
+      );
 
       let points: RelativePoint[] = this.math.SegmentLine(p0, p1, 25);
 
@@ -129,16 +121,21 @@ class Queue extends DataStructure {
     let i = this.dataset.length - 1;
 
     let x = 52.5 + i * (this.boxWidth + 2.5);
-    let y = this.canvas.height / 2 - 45;
+    let y = this.cs.canvas.height / 2 - 45;
 
     let p0 = new RelativePoint(
-      this.canvas.width - 5 - this.boxWidth,
+      this.cs.canvas.width - 5 - this.boxWidth,
       y,
-      this.canvas.width,
-      this.canvas.height
+      this.cs.canvas.width,
+      this.cs.canvas.height
     );
 
-    let p1 = new RelativePoint(x, y, this.canvas.width, this.canvas.height);
+    let p1 = new RelativePoint(
+      x,
+      y,
+      this.cs.canvas.width,
+      this.cs.canvas.height
+    );
 
     let points: RelativePoint[] = this.math.SegmentLine(p0, p1, 25);
 
@@ -154,15 +151,20 @@ class Queue extends DataStructure {
     if (this.anime.IsActive()) {
       return;
     }
-    let y = this.canvas.height / 2 - 45;
+    let y = this.cs.canvas.height / 2 - 45;
     let box: QueueBox = this.boxes.shift() as QueueBox;
 
-    let p0 = new RelativePoint(10, y, this.canvas.width, this.canvas.height);
+    let p0 = new RelativePoint(
+      10,
+      y,
+      this.cs.canvas.width,
+      this.cs.canvas.height
+    );
     let p1 = new RelativePoint(
       box.points[box.points.length - 1].x,
       box.points[box.points.length - 1].y,
-      this.canvas.width,
-      this.canvas.height
+      this.cs.canvas.width,
+      this.cs.canvas.height
     );
 
     let points: RelativePoint[] = this.math.SegmentLine(p1, p0, 25);
@@ -181,8 +183,13 @@ class Queue extends DataStructure {
   QueueShift(): void {
     for (let i = 0; i < this.dataset.length; i++) {
       let x0 = 2.5 + i * (this.boxWidth + 2.5) + 50;
-      let y = this.canvas.height / 2 - 45;
-      let p0 = new RelativePoint(x0, y, this.canvas.width, this.canvas.height);
+      let y = this.cs.canvas.height / 2 - 45;
+      let p0 = new RelativePoint(
+        x0,
+        y,
+        this.cs.canvas.width,
+        this.cs.canvas.height
+      );
 
       let p1 = this.boxes[i].points[this.boxes[i].points.length - 1];
 
@@ -197,18 +204,18 @@ class Queue extends DataStructure {
 
   EnqueueAnimation(box: QueueBox) {
     if (!this.anime.enabled) {
-      this.ctx.fillStyle = Theme.NodeColor;
-      this.ctx.fillRect(
+      this.cs.ctx.fillStyle = Theme.NodeColor;
+      this.cs.ctx.fillRect(
         box.points[box.points.length - 1].x - 1,
         box.points[box.points.length - 1].y - 1,
         this.boxWidth,
         this.boxHeight
       );
 
-      this.ctx.fillStyle = this.nodeFontColor;
-      this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-      this.ctx.textAlign = 'center';
-      this.ctx.fillText(
+      this.cs.ctx.fillStyle = this.nodeFontColor;
+      this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+      this.cs.ctx.textAlign = 'center';
+      this.cs.ctx.fillText(
         box.val,
         box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
         box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
@@ -231,11 +238,11 @@ class Queue extends DataStructure {
       return;
     }
     if (box.curr < box.points.length) {
-      this.ctx.beginPath();
+      this.cs.ctx.beginPath();
 
-      this.ctx.fillStyle = this.canvasBgColor;
+      this.cs.ctx.fillStyle = this.canvasBgColor;
       if (box.curr > 0) {
-        this.ctx.fillRect(
+        this.cs.ctx.fillRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,
@@ -243,15 +250,15 @@ class Queue extends DataStructure {
         );
       }
 
-      this.ctx.fillStyle = Theme.NodeColor;
-      this.ctx.fillRect(
+      this.cs.ctx.fillStyle = Theme.NodeColor;
+      this.cs.ctx.fillRect(
         box.points[box.curr].x,
         box.points[box.curr].y,
         this.boxWidth,
         this.boxHeight
       );
 
-      this.ctx.closePath();
+      this.cs.ctx.closePath();
 
       box.curr += 1;
 
@@ -263,19 +270,19 @@ class Queue extends DataStructure {
       }
 
       if (box.enqueue || box.shift) {
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.nodeFontColor;
-        this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(
+        this.cs.ctx.beginPath();
+        this.cs.ctx.fillStyle = this.nodeFontColor;
+        this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+        this.cs.ctx.textAlign = 'center';
+        this.cs.ctx.fillText(
           box.val,
           box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
           box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
         );
-        this.ctx.closePath();
+        this.cs.ctx.closePath();
       } else if (box.dequeue) {
-        this.ctx.fillStyle = this.canvasBgColor;
-        this.ctx.fillRect(
+        this.cs.ctx.fillStyle = this.canvasBgColor;
+        this.cs.ctx.fillRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,

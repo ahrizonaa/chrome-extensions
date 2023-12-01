@@ -13,4 +13,4 @@
   [examples]="ui.currTab.examples"
 >
 </content-view>
-<idle-art></idle-art>
+<idle-art *ngIf="!ui.hasDrawing"></idle-art>

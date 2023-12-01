@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Canvas } from './components/canvas/canvas';
+import { CanvasView } from './components/canvas-view/canvas-view';
 import { Colorpicker } from './components/colorpicker/colorpicker';
 import { JsonInput } from './components/json-input/json-input';
 import { ExamplesList } from './components/examples-list/examples-list';
@@ -27,7 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @NgModule({
   declarations: [
     App,
-    Canvas,
+    CanvasView,
     Colorpicker,
     JsonInput,
     ExamplesList,

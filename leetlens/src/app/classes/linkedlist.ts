@@ -9,8 +9,6 @@ import { Edge } from './edge';
 import { RelativePoint } from './relative-point';
 
 class LinkedList extends DataStructure {
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
   datasetCache!: any[];
   dataset!: any[];
   gridWidth!: number;
@@ -24,21 +22,13 @@ class LinkedList extends DataStructure {
   current_edge: number = 0;
   head!: BTreeNode;
 
-  constructor(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    public ui: UserInput,
-    public math: Mathematics,
-    public anime: Anime
-  ) {
-    super();
-    this.ctx = ctx;
-    this.canvas = canvas;
+  constructor(ui: any) {
+    super(ui);
   }
 
   Plot() {
-    this.ctx.fillStyle = this.canvasBgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.cs.ctx.fillStyle = this.canvasBgColor;
+    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();
   }
 
@@ -56,7 +46,7 @@ class LinkedList extends DataStructure {
     this.gridWidth = Math.min(this.gridMaxWidth, this.dataset.length);
     this.gridHeight = Math.ceil(this.dataset.length / this.gridWidth);
 
-    this.cellSize = this.canvas.width / this.gridWidth;
+    this.cellSize = this.cs.canvas.width / this.gridWidth;
 
     this.radius = Math.max(
       Math.min(this.maxRadius, this.cellSize * 0.25),
@@ -86,27 +76,28 @@ class LinkedList extends DataStructure {
         }
         let x = col * this.cellSize + this.cellSize / 2;
         if (row % 2 != 0) {
-          x = this.canvas.width - x;
+          x = this.cs.canvas.width - x;
         }
-        let toppad = (this.canvas.height - this.gridHeight * this.cellSize) / 2;
+        let toppad =
+          (this.cs.canvas.height - this.gridHeight * this.cellSize) / 2;
         let y = toppad + row * this.cellSize + this.cellSize / 2;
 
         this.nodelist.push(
-          new RelativePoint(x, y, this.canvas.width, this.canvas.height)
+          new RelativePoint(x, y, this.cs.canvas.width, this.cs.canvas.height)
         );
 
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.nodeColor;
-        this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-        this.ctx.closePath();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.fillStyle = this.nodeColor;
+        this.cs.ctx.arc(x, y, this.radius, 0, 2 * Math.PI);
+        this.cs.ctx.fill();
+        this.cs.ctx.closePath();
 
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.nodeFontColor;
-        this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(String(this.dataset[index]), x, y + 3);
-        this.ctx.closePath();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.fillStyle = this.nodeFontColor;
+        this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+        this.cs.ctx.textAlign = 'center';
+        this.cs.ctx.fillText(String(this.dataset[index]), x, y + 3);
+        this.cs.ctx.closePath();
       }
     }
   }
@@ -125,11 +116,11 @@ class LinkedList extends DataStructure {
           Edge.bind(this)(this.math.SegmentLine(pr1_edge, pr2_edge, this.steps))
         );
       } else {
-        this.ctx.beginPath();
-        this.ctx.strokeStyle = this.edgeColor;
-        this.ctx.moveTo(pr1_edge.x, pr1_edge.y);
-        this.ctx.lineTo(pr2_edge.x, pr2_edge.y);
-        this.ctx.stroke();
+        this.cs.ctx.beginPath();
+        this.cs.ctx.strokeStyle = this.edgeColor;
+        this.cs.ctx.moveTo(pr1_edge.x, pr1_edge.y);
+        this.cs.ctx.lineTo(pr2_edge.x, pr2_edge.y);
+        this.cs.ctx.stroke();
       }
     }
   }
@@ -143,14 +134,14 @@ class LinkedList extends DataStructure {
       let { curr, next } = res.value;
       this.anime.Request(this.AnimateEdges.bind(this));
 
-      this.ctx.strokeStyle = this.edgeColor;
-      this.ctx.moveTo(curr.x, curr.y);
-      this.ctx.lineTo(next.x, next.y);
-      this.ctx.stroke();
+      this.cs.ctx.strokeStyle = this.edgeColor;
+      this.cs.ctx.moveTo(curr.x, curr.y);
+      this.cs.ctx.lineTo(next.x, next.y);
+      this.cs.ctx.stroke();
     } else if (res.done == true) {
       let { first, last } = res.value;
       this.anime.Cancel();
-      this.ctx.closePath();
+      this.cs.ctx.closePath();
       this.current_edge += 1;
 
       this.PlotArrowHead(last as any, first as any);
@@ -237,31 +228,31 @@ class LinkedList extends DataStructure {
       let L = RelativePoint.FromCartesian(
         x3 as any,
         y3 as any,
-        this.canvas.width,
-        this.canvas.height
+        this.cs.canvas.width,
+        this.cs.canvas.height
       );
       let R = RelativePoint.FromCartesian(
         x4 as any,
         y4 as any,
-        this.canvas.width,
-        this.canvas.height
+        this.cs.canvas.width,
+        this.cs.canvas.height
       );
-      // this.ctx.beginPath();
-      this.ctx.strokeStyle = this.edgeColor;
-      this.ctx.moveTo(start.x, start.y);
-      this.ctx.lineTo(L.x, L.y);
-      this.ctx.moveTo(start.x, start.y);
-      this.ctx.lineTo(R.x, R.y);
-      this.ctx.stroke();
+      // this.cs.ctx.beginPath();
+      this.cs.ctx.strokeStyle = this.edgeColor;
+      this.cs.ctx.moveTo(start.x, start.y);
+      this.cs.ctx.lineTo(L.x, L.y);
+      this.cs.ctx.moveTo(start.x, start.y);
+      this.cs.ctx.lineTo(R.x, R.y);
+      this.cs.ctx.stroke();
     }
 
-    this.ctx.strokeStyle = this.edgeColor;
-    this.ctx.moveTo(last.x, last.y);
-    this.ctx.lineTo(leftWingPoint.x, leftWingPoint.y);
-    this.ctx.moveTo(last.x, last.y);
-    this.ctx.lineTo(rightWingPoint.x, rightWingPoint.y);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    this.cs.ctx.strokeStyle = this.edgeColor;
+    this.cs.ctx.moveTo(last.x, last.y);
+    this.cs.ctx.lineTo(leftWingPoint.x, leftWingPoint.y);
+    this.cs.ctx.moveTo(last.x, last.y);
+    this.cs.ctx.lineTo(rightWingPoint.x, rightWingPoint.y);
+    this.cs.ctx.stroke();
+    this.cs.ctx.closePath();
   }
 }
 

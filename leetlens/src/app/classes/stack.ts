@@ -22,8 +22,6 @@ class StackBox {
 }
 
 class Stack extends DataStructure {
-  ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
   datasetCache!: any[];
   dataset!: any[];
   stackWidth: number = 100;
@@ -38,27 +36,19 @@ class Stack extends DataStructure {
   animationQueue: StackBox[] = [];
   boxes: StackBox[] = [];
 
-  constructor(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
-    public ui: UserInput,
-    public math: Mathematics,
-    public anime: Anime
-  ) {
-    super();
-    this.ctx = ctx;
-    this.canvas = canvas;
+  constructor(ui: any) {
+    super(ui);
   }
 
   Parse(input: number[]) {
     this.dataset = input.slice(0, 6);
 
-    this.stackHeight = this.canvas.height - 100;
+    this.stackHeight = this.cs.canvas.height - 100;
   }
 
   Plot() {
-    this.ctx.fillStyle = this.canvasBgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.cs.ctx.fillStyle = this.canvasBgColor;
+    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();
   }
 
@@ -69,32 +59,32 @@ class Stack extends DataStructure {
   }
 
   DrawStack() {
-    let x = this.canvas.width / 2 - 50;
+    let x = this.cs.canvas.width / 2 - 50;
     let y = 50;
-    this.ctx.strokeStyle = '#CCC';
+    this.cs.ctx.strokeStyle = '#CCC';
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, y);
-    this.ctx.lineTo(x, this.stackHeight + 50);
-    this.ctx.moveTo(x, this.stackHeight + 50);
-    this.ctx.lineTo(x + this.stackWidth, this.stackHeight + 50);
-    this.ctx.moveTo(x + this.stackWidth, this.stackHeight + 50);
-    this.ctx.lineTo(x + this.stackWidth, 50);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    this.cs.ctx.beginPath();
+    this.cs.ctx.moveTo(x, y);
+    this.cs.ctx.lineTo(x, this.stackHeight + 50);
+    this.cs.ctx.moveTo(x, this.stackHeight + 50);
+    this.cs.ctx.lineTo(x + this.stackWidth, this.stackHeight + 50);
+    this.cs.ctx.moveTo(x + this.stackWidth, this.stackHeight + 50);
+    this.cs.ctx.lineTo(x + this.stackWidth, 50);
+    this.cs.ctx.stroke();
+    this.cs.ctx.closePath();
   }
 
   DrawBoxes() {
     for (let i = 0; i < this.dataset.length; i++) {
-      let x = this.canvas.width / 2 - 45;
-      let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
+      let x = this.cs.canvas.width / 2 - 45;
+      let y = this.cs.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
       let p0 = { x: 10, y: 10 };
-      let p1 = { x: this.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
-      let p2 = { x: this.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
+      let p1 = { x: this.cs.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
+      let p2 = { x: this.cs.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
       let p3 = {
-        x: this.canvas.width / 2 - 45,
-        y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12,
+        x: this.cs.canvas.width / 2 - 45,
+        y: this.cs.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12,
       };
 
       let points: RelativePoint[] = [];
@@ -102,7 +92,12 @@ class Stack extends DataStructure {
       for (var j = 0; j < 1; j += this.beizerSpeed) {
         var p = this.Bezier(j, p0, p1, p2, p3);
         points.push(
-          new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
+          new RelativePoint(
+            p.x,
+            p.y,
+            this.cs.canvas.width,
+            this.cs.canvas.height
+          )
         );
       }
 
@@ -117,14 +112,14 @@ class Stack extends DataStructure {
 
     let i = this.dataset.length - 1;
 
-    let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
+    let y = this.cs.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
     let p0 = { x: 10, y: 10 };
-    let p1 = { x: this.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
-    let p2 = { x: this.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
+    let p1 = { x: this.cs.canvas.width / 2 - 45, y: 10 + (y - 10) / 4 };
+    let p2 = { x: this.cs.canvas.width / 2 - 45, y: y - (y - 10) / 4 };
     let p3 = {
-      x: this.canvas.width / 2 - 45,
-      y: this.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12,
+      x: this.cs.canvas.width / 2 - 45,
+      y: this.cs.canvas.height - (50 + (i + 1) * (this.boxHeight + 4)) + 12,
     };
 
     let points: RelativePoint[] = [];
@@ -132,7 +127,7 @@ class Stack extends DataStructure {
     for (var j = 0; j < 1; j += this.beizerSpeed) {
       var p = this.Bezier(j, p0, p1, p2, p3);
       points.push(
-        new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
+        new RelativePoint(p.x, p.y, this.cs.canvas.width, this.cs.canvas.height)
       );
     }
 
@@ -146,13 +141,13 @@ class Stack extends DataStructure {
       return;
     }
     let i = this.dataset.length - 1;
-    let y = this.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
+    let y = this.cs.canvas.height - (50 + (i + 1) * (this.boxHeight + 2));
 
     let box: StackBox = this.boxes.pop() as StackBox;
 
-    let p0 = { x: this.canvas.width - 10, y: 10 };
-    let p1 = { x: this.canvas.width / 2 + 45, y: 10 + (y - 10) / 4 };
-    let p2 = { x: this.canvas.width / 2 + 45, y: y - (y - 10) / 4 };
+    let p0 = { x: this.cs.canvas.width - 10, y: 10 };
+    let p1 = { x: this.cs.canvas.width / 2 + 45, y: 10 + (y - 10) / 4 };
+    let p2 = { x: this.cs.canvas.width / 2 + 45, y: y - (y - 10) / 4 };
     let p3 = {
       x: box.points[box.points.length - 1].x,
       y: box.points[box.points.length - 1].y,
@@ -163,7 +158,7 @@ class Stack extends DataStructure {
     for (var j = 0; j < 1; j += this.beizerSpeed) {
       var p = this.Bezier(j, p3, p2, p1, p0);
       points.push(
-        new RelativePoint(p.x, p.y, this.canvas.width, this.canvas.height)
+        new RelativePoint(p.x, p.y, this.cs.canvas.width, this.cs.canvas.height)
       );
     }
 
@@ -178,18 +173,18 @@ class Stack extends DataStructure {
 
   EnqueueAnimation(box: StackBox) {
     if (!this.anime.enabled) {
-      this.ctx.fillStyle = Theme.NodeColor;
-      this.ctx.fillRect(
+      this.cs.ctx.fillStyle = Theme.NodeColor;
+      this.cs.ctx.fillRect(
         box.points[box.points.length - 1].x - 1,
         box.points[box.points.length - 1].y - 1,
         this.boxWidth + 2,
         this.boxHeight
       );
 
-      this.ctx.fillStyle = this.nodeFontColor;
-      this.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
-      this.ctx.textAlign = 'center';
-      this.ctx.fillText(
+      this.cs.ctx.fillStyle = this.nodeFontColor;
+      this.cs.ctx.font = `${this.nodeFontSize} ${this.nodeFontFamily}`;
+      this.cs.ctx.textAlign = 'center';
+      this.cs.ctx.fillText(
         box.val,
         box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
         box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
@@ -211,11 +206,11 @@ class Stack extends DataStructure {
       return;
     }
     if (box.curr < box.points.length) {
-      this.ctx.beginPath();
+      this.cs.ctx.beginPath();
 
-      this.ctx.fillStyle = this.canvasBgColor;
+      this.cs.ctx.fillStyle = this.canvasBgColor;
       if (box.curr > 0) {
-        this.ctx.fillRect(
+        this.cs.ctx.fillRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,
@@ -223,26 +218,26 @@ class Stack extends DataStructure {
         );
       }
 
-      let x = this.canvas.width / 2 - 50;
+      let x = this.cs.canvas.width / 2 - 50;
       let y = 50;
-      this.ctx.strokeStyle = '#CCC';
+      this.cs.ctx.strokeStyle = '#CCC';
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x, this.stackHeight + 50);
-      this.ctx.moveTo(x + 100, y);
-      this.ctx.lineTo(x + 100, this.stackHeight + 50);
-      this.ctx.stroke();
+      this.cs.ctx.beginPath();
+      this.cs.ctx.moveTo(x, y);
+      this.cs.ctx.lineTo(x, this.stackHeight + 50);
+      this.cs.ctx.moveTo(x + 100, y);
+      this.cs.ctx.lineTo(x + 100, this.stackHeight + 50);
+      this.cs.ctx.stroke();
 
-      this.ctx.fillStyle = Theme.NodeColor;
-      this.ctx.fillRect(
+      this.cs.ctx.fillStyle = Theme.NodeColor;
+      this.cs.ctx.fillRect(
         box.points[box.curr].x,
         box.points[box.curr].y,
         this.boxWidth,
         this.boxHeight
       );
 
-      this.ctx.closePath();
+      this.cs.ctx.closePath();
 
       box.curr += 1;
 
@@ -252,17 +247,17 @@ class Stack extends DataStructure {
       if (box.push) this.boxes.push(box);
 
       if (box.push) {
-        this.ctx.fillStyle = 'black';
-        this.ctx.font = '10px monospace';
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(
+        this.cs.ctx.fillStyle = 'black';
+        this.cs.ctx.font = '10px monospace';
+        this.cs.ctx.textAlign = 'center';
+        this.cs.ctx.fillText(
           box.val,
           box.points[box.points.length - 1].x + this.boxWidth / 2 - 2,
           box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
         );
       } else if (!box.push) {
-        this.ctx.fillStyle = this.canvasBgColor;
-        this.ctx.fillRect(
+        this.cs.ctx.fillStyle = this.canvasBgColor;
+        this.cs.ctx.fillRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,

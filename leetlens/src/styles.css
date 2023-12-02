@@ -95,8 +95,8 @@ textarea[matInput] {
 }
 
 canvas-view {
-  height: auto;
-  width: 100%;
+  width: 330px;
+  height: 330px;
   margin-bottom: 22px;
   border-radius: 10px;
 }

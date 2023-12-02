@@ -97,7 +97,6 @@ textarea[matInput] {
 canvas-view {
   height: auto;
   width: 100%;
-  border: 1px solid #ccc;
   margin-bottom: 22px;
   border-radius: 10px;
 }

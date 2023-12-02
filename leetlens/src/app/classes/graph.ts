@@ -36,11 +36,14 @@ class Graph extends DataStructure {
         this.AdjacencyMatrix();
         break;
       default:
+        console.error(`Unknown format: ${this.ui.currFormat.name}`);
         break;
     }
 
     this.cell_size = this.cs.canvas.width / this.grid_size;
     this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
+
+    console.debug(this);
   }
 
   AdjacencyList() {
@@ -114,6 +117,7 @@ class Graph extends DataStructure {
   }
 
   Plot() {
+    console.log(this);
     this.cs.ctx.fillStyle = this.canvasBgColor;
     this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();

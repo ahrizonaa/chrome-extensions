@@ -2,7 +2,13 @@
   <mat-card-content id="examples-list">
     <div class="col">
       <div class="row" *ngFor="let example of examples">
-        <button color="primary" mat-raised-button>{{ example.title }}</button>
+        <button
+          (click)="exampleClicked(example)"
+          color="primary"
+          mat-raised-button
+        >
+          {{ example.title }}
+        </button>
       </div>
       <div *ngIf="!examples || !examples.length" class="empty-examples-list">
         <span>no examples</span>

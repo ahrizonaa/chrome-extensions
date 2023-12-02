@@ -8,6 +8,7 @@ import { Tree } from '../classes/tree';
 import { Stack } from '../classes/stack';
 import { Queue } from '../classes/queue';
 import { LinkedList } from '../classes/linkedlist';
+import { Example } from '../types/Example';
 
 @Injectable({
   providedIn: 'root',
@@ -79,8 +80,21 @@ export class UserInput {
     }
   }
 
+  exampleClicked(example: Example) {
+    this.currInput = JSON.stringify(example.dataset);
+
+    for (let option of Object.keys(example.options)) {
+      this.currTab.options.toggles[option] = example.options[option];
+    }
+
+    this.currFormat = example.format;
+
+    this.refresh();
+  }
+
   refresh() {
     if (this.validate()) {
+      this.currError = '';
       this.draw();
     } else {
     }

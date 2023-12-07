@@ -21,10 +21,6 @@ body {
   border-radius: 5px;
 }
 
-tab-view {
-  position: relative;
-}
-
 button[mat-raised-button] {
   /* text-overflow: ellipsis;
   white-space: nowrap; */
@@ -38,14 +34,6 @@ button[mat-raised-button] {
     width: 100% !important;
   }
 }
-.controls-view {
-  width: 30% !important;
-  min-width: 180px !important;
-
-  /* & mat-card {
-    background-color: #2b2b2b !important;
-  } */
-}
 
 mat-card-content {
   padding: 8px !important;
@@ -58,34 +46,6 @@ mat-option {
   font-size: 0.7rem !important;
 }
 
-toggle-panel {
-  /* margin-bottom: 5px; */
-  & span,
-  label {
-    font-size: 0.85em !important;
-  }
-
-  & mat-card {
-    margin-bottom: 5px;
-  }
-
-  & mat-slide-toggle {
-    margin-bottom: 5px !important;
-  }
-}
-examples-list {
-  margin-bottom: 5px;
-}
-
-json-input {
-  & mat-form-field {
-    width: 100%;
-  }
-  & mat-label {
-    font-size: 12px !important;
-  }
-}
-
 textarea[matInput] {
   height: 75px !important;
   max-height: 200px !important;
@@ -94,31 +54,9 @@ textarea[matInput] {
   resize: none;
 }
 
-canvas-view {
-  width: 330px;
-  height: 330px;
-  margin-bottom: 22px;
-  border-radius: 10px;
-}
-
 .mat-mdc-tab-body-wrapper {
   display: none;
   max-height: 0px !important;
-}
-
-idle-art {
-  position: absolute;
-  width: 334px;
-  height: 334px;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-  margin-right: 10px;
-  margin-bottom: 32px;
-
-  & div {
-    height: 334px;
-  }
 }
 
 .mdc-switch__ripple {
@@ -138,4 +76,34 @@ idle-art {
   position: absolute;
   bottom: 0;
   left: 5px;
+}
+
+canvas#canvas-main {
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  transition: all 0.5s ease-in-out;
+}
+
+.floating-control {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  z-index: 150;
+}
+
+.floating-control-label {
+  font-size: 0.55em;
+  text-align: center;
+  line-height: normal;
+  color: #000000;
+  font-weight: 500;
+}
+
+.text-centered-overflow {
+  margin-left: -100%;
+  margin-right: -100%;
+  text-align: center;
 }

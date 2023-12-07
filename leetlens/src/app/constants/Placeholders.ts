@@ -8,7 +8,7 @@ const d2 = '\u2082';
 const nsub = '\u2099';
 const msub = '\u208B';
 
-const GraphListUnweighted: Placeholder = `N x 2 array of node, neighbor${
+const GraphListUnWeighted: Placeholder = `N x 2 array of node, neighbor${
   n + n
 }e.g.,${n}[${n + t}[1, 2]${n + t}[2, 3]${n + t}[4, 2]${n}]`;
 
@@ -16,7 +16,7 @@ const GraphListWeighted: Placeholder = `N x 3 array of weight, node, neighbor${
   n + n
 }e.g.,${n}[${n + t}[2, 1, 2]${n + t}[4, 2, 3]${n + t}[1, 4, 2]${n}]`;
 
-const GraphMatrixUnweighted: Placeholder = `N x N matrix where matrix[row][col] defines edge between row and col${
+const GraphMatrixUnWeighted: Placeholder = `N x N matrix where matrix[row][col] defines edge between row and col${
   n + n
 }e.g.,${n}[${n + t}[0, 1, 0, 1]${n + t}[0, 1, 1, 0]${n + t}[1, 0, 0, 0]${n}]`;
 
@@ -39,9 +39,9 @@ const LinkedListArr: Placeholder = `1D array of length n where i${d0} is the lis
 } is the list tail${n + n}e.g.,${n + n}[0, 2, 4, 6, 8, 10]`;
 
 export {
-  GraphListUnweighted,
+  GraphListUnWeighted,
   GraphListWeighted,
-  GraphMatrixUnweighted,
+  GraphMatrixUnWeighted,
   GraphMatrixWeighted,
   TreeArr,
   StackArr,

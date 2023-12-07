@@ -20,7 +20,6 @@
     <div class="switch-container">
       <div
         class="switch-row"
-        [style.marginBottom]="index !== array.length - 1 ? '5px' : '0'"
         *ngFor="let toggle of $any(options.toggles | keyvalue); let index; let array"
       >
         <mat-slide-toggle

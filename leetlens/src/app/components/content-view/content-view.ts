@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserInput } from 'src/app/services/user-input.service';
 import { Example } from 'src/app/types/Example';
 import { Options } from 'src/app/types/Options';
 
@@ -12,4 +13,6 @@ export class ContentView {
   @Input('options')
   options!: Options;
   @Input('examples') examples: Example[] = [];
+
+  constructor(protected ui: UserInput) {}
 }

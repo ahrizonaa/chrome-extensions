@@ -43,11 +43,11 @@ class Tree extends DataStructure {
 
     this.root = this.ConstructTree(this.dataset);
 
-    if (this.ui.currTab.options.toggles.binary) {
+    if (this.ui.currTab.options.toggles.BST) {
       this.root = this.ToBST([...input]);
-    } else if (this.ui.currTab.options.toggles.maxheap) {
+    } else if (this.ui.currTab.options.toggles.MaxHeap) {
       this.root = this.ToHeap([...input], 'MAX');
-    } else if (this.ui.currTab.options.toggles.minheap) {
+    } else if (this.ui.currTab.options.toggles.MinHeap) {
       this.root = this.ToHeap([...input], 'MIN');
     }
 

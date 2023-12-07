@@ -1,16 +1,17 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Theme } from '../constants/Theme';
 import { EdgeSegment } from './edge-segment';
 import { UserInput } from '../services/user-input.service';
 import { Mathematics } from '../services/mathematics.service';
 import { Anime } from '../services/anime.service';
 import { CanvasService } from '../services/canvas.service';
+import { AppModule } from '../app.module';
 
 class DataStructure {
   public ui!: UserInput;
-  public math: Mathematics = inject(Mathematics);
-  public anime: Anime = inject(Anime);
-  public cs: CanvasService = inject(CanvasService);
+  public math: Mathematics;
+  public anime: Anime;
+  public cs: CanvasService;
   canvasBgColor = Theme.CanvasBgColor;
   maxCellSize = 50;
   maxRadius = 50;
@@ -22,7 +23,14 @@ class DataStructure {
   nodeFontColor = Theme.NodeFontColor;
 
   constructor(ui: any) {
+    this.math = AppModule.injector.get(Mathematics);
+    this.anime = AppModule.injector.get(Anime);
+    this.cs = AppModule.injector.get(CanvasService);
     this.ui = ui as UserInput;
+  }
+
+  public ResetBackground() {
+    this.cs.ctx.drawImage(Theme.CanvasBackground, 0, 0);
   }
 }
 

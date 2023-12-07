@@ -1,3 +1,12 @@
+:host {
+  & mat-form-field {
+    width: 100%;
+  }
+  & mat-label {
+    font-size: 12px !important;
+  }
+}
+
 .textarea-root {
   position: relative;
 }

@@ -1,1 +1,11 @@
-<canvas width="330" height="330" #canvas id="canvas-main"></canvas>
+<canvas width="300" height="300" #canvas id="canvas-main"></canvas>
+<colorpicker
+  [options]="nodeOptions"
+  class="node-colorpicker floating-control"
+></colorpicker>
+<colorpicker
+  [options]="edgeOptions"
+  class="edge-colorpicker floating-control"
+></colorpicker>
+<bgpicker [options]="bgOptions" class="floating-control"></bgpicker>
+<idle-art *ngIf="!ui.hasDrawing"></idle-art>

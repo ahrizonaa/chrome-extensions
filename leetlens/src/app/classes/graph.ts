@@ -64,7 +64,7 @@ class Graph extends DataStructure {
       );
     }
 
-    if (this.ui.currTab.options.toggles.weighted) {
+    if (this.ui.currTab.options.toggles.Weighted) {
       for (let edge of this.dataset) {
         let key = edge[1] + '_' + edge[2];
         let key_reverse = edge[2] + '_' + edge[1];
@@ -92,7 +92,7 @@ class Graph extends DataStructure {
         if (this.dataset[row][col] != 0) {
           let edge = [row + 1, col + 1];
           this.edgelist.push(edge);
-          if (this.ui.currTab.options.toggles.weighted) {
+          if (this.ui.currTab.options.toggles.Weighted) {
             let key = edge[0] + '_' + edge[1];
             let key_reverse = edge[1] + '_' + edge[0];
             if (key in this.weights) {
@@ -117,9 +117,7 @@ class Graph extends DataStructure {
   }
 
   Plot() {
-    console.log(this);
-    this.cs.ctx.fillStyle = this.canvasBgColor;
-    this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
+    this.ResetBackground();
     this.Draw();
   }
 
@@ -174,7 +172,7 @@ class Graph extends DataStructure {
       let key_from = to + '_' + from;
 
       if (
-        this.ui.currTab.options.toggles.weighted &&
+        this.ui.currTab.options.toggles.Weighted &&
         this.weights[key_to as any].length == 0 &&
         this.weights[key_from as any].length == 0
       ) {
@@ -208,12 +206,12 @@ class Graph extends DataStructure {
         this.cs.ctx.moveTo(pr1_edge.x, pr1_edge.y);
         this.cs.ctx.lineTo(pr2_edge.x, pr2_edge.y);
         this.cs.ctx.stroke();
-        if (this.ui.currTab.options.toggles.directed) {
+        if (this.ui.currTab.options.toggles.Directed) {
           this.PlotArrowHead(pr2_edge, pr1_edge);
         }
       }
 
-      if (this.ui.currTab.options.toggles.weighted) {
+      if (this.ui.currTab.options.toggles.Weighted) {
         this.PlotEdgeLabel(node1, node2, key_from, key_to);
       }
     }
@@ -299,7 +297,7 @@ class Graph extends DataStructure {
       this.cs.ctx.closePath();
       this.current_edge += 1;
 
-      if (this.ui.currTab.options.toggles.directed) {
+      if (this.ui.currTab.options.toggles.Directed) {
         this.PlotArrowHead(last as any, first as any);
       }
 

@@ -1,15 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { NgxColorsComponent } from 'ngx-colors';
 import { FloatingControlOptions } from 'src/app/types/FloatingControlOptions';
 
 @Component({
-  selector: 'colorpicker',
-  templateUrl: './colorpicker.html',
-  styleUrls: ['./colorpicker.css'],
+  selector: 'bgpicker',
+  templateUrl: './bgpicker.html',
+  styleUrls: ['./bgpicker.css'],
 })
-export class ColorPicker {
+export class BgPicker {
   @Input('options') options!: FloatingControlOptions;
-
   color: string = '';
 
   colorChanged(val: string) {

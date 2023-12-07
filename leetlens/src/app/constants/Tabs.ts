@@ -20,8 +20,8 @@ export const Tabs: Tab[] = [
     options: {
       formats: [AdjacencyList, AdjacencyMatrix],
       toggles: {
-        directed: false,
-        weighted: false,
+        Directed: false,
+        Weighted: false,
       },
     },
     examples: [
@@ -33,8 +33,8 @@ export const Tabs: Tab[] = [
           [3, 4],
         ],
         options: {
-          directed: false,
-          weighted: false,
+          Directed: false,
+          Weighted: false,
         },
         format: AdjacencyList,
       },
@@ -46,8 +46,8 @@ export const Tabs: Tab[] = [
           [3, 1],
         ],
         options: {
-          directed: true,
-          weighted: false,
+          Directed: true,
+          Weighted: false,
         },
         format: AdjacencyList,
       },
@@ -61,8 +61,8 @@ export const Tabs: Tab[] = [
           [4, 3],
         ],
         options: {
-          directed: false,
-          weighted: false,
+          Directed: false,
+          Weighted: false,
         },
         format: AdjacencyList,
       },
@@ -74,8 +74,8 @@ export const Tabs: Tab[] = [
       formats: [TreeArray],
       toggles: {
         BST: false,
-        maxheap: false,
-        minheap: false,
+        MaxHeap: false,
+        MinHeap: false,
       },
     },
     examples: [
@@ -99,9 +99,9 @@ export const Tabs: Tab[] = [
           1,
         ],
         options: {
-          binary: false,
-          minHeap: false,
-          maxHeap: false,
+          BST: false,
+          MinHeap: false,
+          MaxHeap: false,
         },
         format: TreeArray,
       },
@@ -109,9 +109,9 @@ export const Tabs: Tab[] = [
         title: 'Diameter of Binary Tree',
         dataset: [1, 2, 3, 4, 5],
         options: {
-          binary: false,
-          minHeap: false,
-          maxHeap: false,
+          BST: false,
+          MinHeap: false,
+          MaxHeap: false,
         },
         format: TreeArray,
       },
@@ -119,9 +119,9 @@ export const Tabs: Tab[] = [
         title: 'Symmetric Tree',
         dataset: [1, 2, 2, 3, 4, 4, 3],
         options: {
-          binary: false,
-          minHeap: false,
-          maxHeap: false,
+          BST: false,
+          MinHeap: false,
+          MaxHeap: false,
         },
         format: TreeArray,
       },
@@ -148,7 +148,7 @@ export const Tabs: Tab[] = [
     options: {
       formats: [LinkedListArray],
       toggles: {
-        doubly: false,
+        Doubly: false,
       },
     },
     examples: [
@@ -156,7 +156,7 @@ export const Tabs: Tab[] = [
         title: 'Reverse Linked List',
         dataset: [1, 2, 3, 4, 5],
         options: {
-          doubly: false,
+          Doubly: false,
         },
         format: LinkedListArray,
       },
@@ -164,7 +164,7 @@ export const Tabs: Tab[] = [
         title: 'Middle of Linked List',
         dataset: [1, 2, 3, 4, 5, 6],
         options: {
-          doubly: false,
+          Doubly: false,
         },
         format: LinkedListArray,
       },
@@ -172,7 +172,7 @@ export const Tabs: Tab[] = [
         title: 'Delete Middle Node of Linked List',
         dataset: [1, 3, 4, 7, 1, 2, 6],
         options: {
-          doubly: false,
+          Doubly: false,
         },
         format: LinkedListArray,
       },

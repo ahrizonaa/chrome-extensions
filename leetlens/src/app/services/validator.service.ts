@@ -22,7 +22,7 @@ export class ValidatorService {
           return 'Expected 2D array';
         }
       }
-      let rowsize = ui.currTab.options.toggles.weighted ? 3 : 2;
+      let rowsize = ui.currTab.options.toggles.Weighted ? 3 : 2;
       for (let row of obj) {
         if (row.length != rowsize) {
           return `Expected N x ${rowsize} matrix`;

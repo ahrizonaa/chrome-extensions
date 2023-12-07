@@ -1,7 +1,7 @@
 import { Format } from '../types/Format';
 import {
-  GraphListUnweighted,
-  GraphMatrixUnweighted,
+  GraphListUnWeighted,
+  GraphMatrixUnWeighted,
   LinkedListArr,
   QueueArr,
   StackArr,
@@ -10,12 +10,12 @@ import {
 
 const AdjacencyList: Format = {
   name: 'Adjacency List',
-  placeholder: GraphListUnweighted,
+  placeholder: GraphListUnWeighted,
 };
 
 const AdjacencyMatrix: Format = {
   name: 'Adjacency Matrix',
-  placeholder: GraphMatrixUnweighted,
+  placeholder: GraphMatrixUnWeighted,
 };
 
 const TreeArray: Format = {

@@ -1,0 +1,17 @@
+:host {
+  text-align: center;
+}
+
+.bg-btn {
+  background-image: url("/assets/canvas-backgrounds/600/blueprint_paper-2x600.jpg");
+  background-size: auto;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px,
+    rgba(0, 0, 0, 0.14) 0px 1px 1px 1px, rgba(0, 0, 0, 0.12) 0px 1px 1px 1px;
+}

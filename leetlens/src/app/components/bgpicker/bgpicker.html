@@ -1,15 +1,24 @@
-<!-- <ngx-colors
-  ngx-colors-trigger
-  [(ngModel)]="color"
-  (change)="colorChanged($event)"
-  [format]="'rgba'"
-  [colorsAnimation]="'popup'"
-></ngx-colors> -->
-
-<button class="bg-btn" mat-icon-button aria-label="Background selector">
-  <!-- <mat-icon>more_vert</mat-icon> -->
-</button>
+<button
+  class="bg-btn"
+  id="bg-btn"
+  mat-icon-button
+  aria-label="Background selector"
+  (click)="bgPickerClicked($event)"
+></button>
 
 <div class="floating-control-label text-centered-overflow">
   {{ options.title }}
+</div>
+
+<div *ngIf="bgSelectorVisible" #bgselector id="bgselector">
+  <ng-container *ngFor="let bg of backgrounds; index as i">
+    <div
+      (click)="bgSelected($event, bg)"
+      style="background-image: url('{{ bg.url }}')"
+      class="bg-square"
+    >
+      {{ bg.name }}
+    </div>
+    <hr *ngIf="i != backgrounds.length - 1" class="bg-divisor" />
+  </ng-container>
 </div>

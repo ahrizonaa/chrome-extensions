@@ -1,3 +1,5 @@
+import { UserInput } from './../../services/user-input.service';
+import { Background, Backgrounds } from './../../constants/Backgrounds';
 import {
   AfterViewInit,
   Component,
@@ -5,7 +7,9 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
+import { CanvasService } from 'src/app/services/canvas.service';
 import { FloatingControlOptions } from 'src/app/types/FloatingControlOptions';
+import { Theme } from 'src/app/constants/Theme';
 
 @Component({
   selector: 'bgpicker',
@@ -14,62 +18,41 @@ import { FloatingControlOptions } from 'src/app/types/FloatingControlOptions';
 })
 export class BgPicker implements AfterViewInit {
   @Input('options') options!: FloatingControlOptions;
-  @ViewChild('bgselector') bgselector: ElementRef<HTMLDivElement>;
+  @ViewChild('bgcarousel') bgcarousel: ElementRef<HTMLDivElement>;
 
   color: string = '';
-  bgSelectorVisible: boolean = false;
-  backgrounds: { name: string; url: string }[];
+  bgcarouselVisible: boolean = false;
+  backgrounds: Background[] = Backgrounds;
 
-  constructor() {
-    this.backgrounds = [
-      {
-        name: 'Steel',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-1x300.jpg',
-      },
-      {
-        name: 'Grey',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-2x300.jpg',
-      },
-      {
-        name: 'Dark',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-3x300.jpg',
-      },
-      {
-        name: 'Cement',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-4x300.jpg',
-      },
-      {
-        name: 'Urban',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-5x300.jpg',
-      },
-      {
-        name: 'Vinny',
-        url: '../../../assets/canvas-backgrounds/300/blueprint_paper-6x300.jpg',
-      },
-    ];
-  }
+  constructor(private ui: UserInput, private cs: CanvasService) {}
 
   ngAfterViewInit(): void {
     document.body.addEventListener('click', (ev: MouseEvent) => {
-      let element = ev.target as HTMLElement;
+      let target = ev.target as HTMLElement;
 
-      if (element.id == 'bgselector') {
-        console.log('exiting');
+      if (this.bgcarouselVisible == false) {
         return;
       }
-      if (element && element.id != 'bgselector') {
-        console.log('hiding');
-        this.bgSelectorVisible = false;
+
+      if (target && target.id == 'bg-btn') {
+        return;
+      }
+
+      if (target && target.id != 'bgcarousel' && target.id != 'bg-btn') {
+        this.bgcarouselVisible = false;
       }
     });
   }
 
   bgSelected(evt: MouseEvent, bg: any) {
-    console.log(bg);
-    this.bgSelectorVisible = false;
+    this.bgcarouselVisible = false;
+    Theme.ChangeBackground(bg);
+    this.ui.currDS.ResetBackground();
+    this.ui.currDS.Draw();
   }
 
   bgPickerClicked(evt: MouseEvent) {
-    this.bgSelectorVisible = !this.bgSelectorVisible;
+    evt.stopPropagation();
+    this.bgcarouselVisible = !this.bgcarouselVisible;
   }
 }

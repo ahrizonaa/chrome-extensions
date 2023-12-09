@@ -30,7 +30,7 @@ class DataStructure {
   }
 
   public ResetBackground() {
-    this.cs.ctx.drawImage(Theme.CanvasBackground, 0, 0);
+    this.cs.DrawBackground();
   }
 }
 

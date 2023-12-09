@@ -7,12 +7,6 @@ import {
   StackArray,
   TreeArray,
 } from 'src/app/constants/Formats';
-import {
-  LinkedListArr,
-  QueueArr,
-  StackArr,
-  TreeArr,
-} from 'src/app/constants/Placeholders';
 
 export const Tabs: Tab[] = [
   {

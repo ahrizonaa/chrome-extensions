@@ -10,7 +10,7 @@
   {{ options.title }}
 </div>
 
-<div *ngIf="bgSelectorVisible" #bgselector id="bgselector">
+<div *ngIf="bgcarouselVisible" #bgcarousel id="bgcarousel">
   <ng-container *ngFor="let bg of backgrounds; index as i">
     <div
       (click)="bgSelected($event, bg)"

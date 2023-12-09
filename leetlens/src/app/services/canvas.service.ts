@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Theme } from '../constants/Theme';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,10 @@ export class CanvasService {
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
       }
     }, 100);
+  }
+
+  DrawBackground() {
+    console.log(Theme);
+    this.ctx.drawImage(Theme.CanvasBackground, 0, 0);
   }
 }

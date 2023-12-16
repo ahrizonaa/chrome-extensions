@@ -3,7 +3,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Injector, NgModule } from '@angular/core';
+import { Injector, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +25,8 @@ import { IdleArtComponent } from './components/idle-art/idle-art.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BgPicker } from './components/bgpicker/bgpicker';
 import { NgxColorsModule } from 'ngx-colors';
+import { CanvasBackground } from './components/canvas-background/canvas-background';
+import { BgSelectorBackground } from './components/bg-selector-background/bg-selector-background';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { NgxColorsModule } from 'ngx-colors';
     ContentView,
     IdleArtComponent,
     BgPicker,
+    CanvasBackground,
+    BgSelectorBackground,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +62,7 @@ import { NgxColorsModule } from 'ngx-colors';
   ],
   providers: [],
   bootstrap: [App],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppModule {
   static injector: Injector;

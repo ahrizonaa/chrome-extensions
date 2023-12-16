@@ -42,8 +42,6 @@ class Graph extends DataStructure {
 
     this.cell_size = this.cs.canvas.width / this.grid_size;
     this.radius = Math.min(this.maxRadius, this.cell_size * 0.25);
-
-    console.debug(this);
   }
 
   AdjacencyList() {
@@ -122,6 +120,7 @@ class Graph extends DataStructure {
   }
 
   Draw() {
+    console.log('Draw()');
     this.DrawNodes();
     this.DrawEdges();
     this.AnimateEdges();
@@ -278,6 +277,7 @@ class Graph extends DataStructure {
   }
 
   AnimateEdges() {
+    // console.log('AnimateEdges()');
     if (!this.anime.enabled) return;
     let res: { done: boolean; value: EdgeSegment } =
       this.edges[this.current_edge].next();

@@ -21,8 +21,5 @@ export class CanvasService {
     }, 100);
   }
 
-  DrawBackground() {
-    console.log(Theme);
-    this.ctx.drawImage(Theme.CanvasBackground, 0, 0);
-  }
+  DrawBackground() {}
 }

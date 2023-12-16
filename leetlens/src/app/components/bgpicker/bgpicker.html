@@ -4,21 +4,23 @@
   mat-icon-button
   aria-label="Background selector"
   (click)="bgPickerClicked($event)"
-></button>
+>
+  <span bg-selector-background></span>
+</button>
 
 <div class="floating-control-label text-centered-overflow">
   {{ options.title }}
 </div>
 
 <div *ngIf="bgcarouselVisible" #bgcarousel id="bgcarousel">
-  <ng-container *ngFor="let bg of backgrounds; index as i">
+  <ng-container *ngFor="let colorTheme of colorThemes; index as i">
     <div
-      (click)="bgSelected($event, bg)"
-      style="background-image: url('{{ bg.url }}')"
+      (click)="bgSelected(colorTheme)"
+      style="background-image: url('{{ colorTheme.url }}')"
       class="bg-square"
     >
-      {{ bg.name }}
+      {{ colorTheme.name }}
     </div>
-    <hr *ngIf="i != backgrounds.length - 1" class="bg-divisor" />
+    <hr *ngIf="i != colorThemes.length - 1" class="bg-divisor" />
   </ng-container>
 </div>

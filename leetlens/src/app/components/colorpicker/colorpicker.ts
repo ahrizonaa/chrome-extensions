@@ -12,7 +12,5 @@ export class ColorPicker {
 
   color: string = '';
 
-  colorChanged(val: string) {
-    console.log(val);
-  }
+  colorChanged(val: string) {}
 }

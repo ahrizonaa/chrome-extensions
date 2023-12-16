@@ -1,13 +1,8 @@
 :host {
   text-align: center;
-  /* position: relative; */
 }
 
 .bg-btn {
-  background-image: url("/assets/canvas-backgrounds/600/blueprint_paper-2x600.jpg");
-  background-size: auto;
-  background-position: center center;
-  background-repeat: no-repeat;
   padding: 0;
   width: 24px;
   height: 24px;
@@ -61,4 +56,14 @@
 
 .bg-divisor {
   border: 2px solid #00000000;
+}
+
+span[bg-selector-background] {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+
+  & svg {
+    border-radius: 5px;
+  }
 }

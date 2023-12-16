@@ -2,10 +2,6 @@
 @import "app/styles/scrollbar.css";
 @import "app/styles/rotate-center.css";
 
-html {
-  background-color: #313131;
-}
-
 html,
 body {
   height: 100%;
@@ -13,12 +9,11 @@ body {
   max-width: 600px !important;
   height: fit-content;
   width: fit-content;
-}
-body {
   margin: 0;
-  /* background: #212121; */
-  border: 3px solid grey;
+  background: transparent;
   border-radius: 5px;
+  position: relative;
+  overflow: hidden;
 }
 
 button[mat-raised-button] {
@@ -88,7 +83,7 @@ canvas#canvas-main {
 .floating-control {
   position: absolute;
   bottom: 0;
-  margin-bottom: 32px;
+  margin-bottom: -12px;
   max-width: 32px;
   max-height: 32px;
   z-index: 150;
@@ -98,7 +93,7 @@ canvas#canvas-main {
   font-size: 0.55em;
   text-align: center;
   line-height: normal;
-  color: #000000;
+  color: var(--theme-font);
   font-weight: 500;
 }
 
@@ -106,4 +101,70 @@ canvas#canvas-main {
   margin-left: -100%;
   margin-right: -100%;
   text-align: center;
+}
+
+div#canvas-bg-container {
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  z-index: -10;
+}
+
+.mat-mdc-text-field-wrapper {
+  border-bottom-right-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+
+.bg-background {
+  fill: var(--bg-background, #9db4c0);
+}
+.bg-edges {
+  fill: var(--bg-edges, #818181);
+}
+
+.bg-vertices {
+  fill: var(--bg-vertices), #515151;
+}
+
+div[role="tablist"] {
+  width: fit-content;
+  background-color: var(--theme-ui);
+}
+
+svg * {
+  transition: fill 0.2s linear;
+}
+
+.mdc-tab__text-label {
+  color: var(--theme-tabs-font) !important;
+}
+
+mat-card {
+  background-color: var(--theme-ui) !important;
+  color: var(--theme-font) !important;
+}
+
+mat-select {
+  color: var(--theme-font) !important;
+}
+
+mat-slide-toggle > .mdc-form-field {
+  color: var(--theme-font) !important;
+}
+
+textarea,
+.mat-mdc-text-field-wrapper {
+  color: var(--theme-font) !important;
+  background-color: var(--theme-ui) !important;
+}
+
+div[role="listbox"] {
+  background-color: var(--theme-ui) !important;
+}
+
+span.mdc-list-item__primary-text {
+  color: var(--theme-font) !important;
 }

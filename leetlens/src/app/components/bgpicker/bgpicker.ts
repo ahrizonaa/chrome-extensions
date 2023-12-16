@@ -1,5 +1,3 @@
-import { UserInput } from './../../services/user-input.service';
-import { Background, Backgrounds } from './../../constants/Backgrounds';
 import {
   AfterViewInit,
   Component,
@@ -7,9 +5,9 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { CanvasService } from 'src/app/services/canvas.service';
 import { FloatingControlOptions } from 'src/app/types/FloatingControlOptions';
 import { Theme } from 'src/app/constants/Theme';
+import { ColorTheme } from 'src/app/types/ColorTheme';
 
 @Component({
   selector: 'bgpicker',
@@ -22,9 +20,9 @@ export class BgPicker implements AfterViewInit {
 
   color: string = '';
   bgcarouselVisible: boolean = false;
-  backgrounds: Background[] = Backgrounds;
+  colorThemes: ColorTheme[] = Theme.ColorThemes;
 
-  constructor(private ui: UserInput, private cs: CanvasService) {}
+  constructor() {}
 
   ngAfterViewInit(): void {
     document.body.addEventListener('click', (ev: MouseEvent) => {
@@ -44,11 +42,9 @@ export class BgPicker implements AfterViewInit {
     });
   }
 
-  bgSelected(evt: MouseEvent, bg: any) {
+  bgSelected(colorTheme: ColorTheme) {
     this.bgcarouselVisible = false;
-    Theme.ChangeBackground(bg);
-    this.ui.currDS.ResetBackground();
-    this.ui.currDS.Draw();
+    Theme.ChangeBackground(colorTheme);
   }
 
   bgPickerClicked(evt: MouseEvent) {

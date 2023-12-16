@@ -1,4 +1,3 @@
-import { inject, Injectable } from '@angular/core';
 import { Theme } from '../constants/Theme';
 import { EdgeSegment } from './edge-segment';
 import { UserInput } from '../services/user-input.service';
@@ -12,7 +11,7 @@ class DataStructure {
   public math: Mathematics;
   public anime: Anime;
   public cs: CanvasService;
-  canvasBgColor = Theme.CanvasBgColor;
+  canvasBgColor = '#31313100';
   maxCellSize = 50;
   maxRadius = 50;
   minRadius = 11;

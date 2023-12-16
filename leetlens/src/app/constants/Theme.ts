@@ -31,7 +31,7 @@ class AppTheme {
   readonly TabsFontDark: string = '#00000099';
   readonly FontLight: string = '#FFFFFF';
   readonly TabsFontLight: string = '#FFFFFF99';
-  readonly UIDark: string = '#313131';
+  readonly UIDark: string = '#515151';
   readonly UILight: string = '#FFFFFF';
 
   ColorThemes: ColorTheme[] = [

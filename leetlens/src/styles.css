@@ -155,11 +155,11 @@ mat-slide-toggle > .mdc-form-field {
   color: var(--theme-font) !important;
 }
 
-textarea,
+/* textarea,
 .mat-mdc-text-field-wrapper {
   color: var(--theme-font) !important;
-  background-color: var(--theme-ui) !important;
-}
+  background-color: var(--theme-ui-textarea) !important;
+} */
 
 div[role="listbox"] {
   background-color: var(--theme-ui) !important;

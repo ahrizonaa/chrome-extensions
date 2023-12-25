@@ -28,8 +28,8 @@ class DataStructure {
     this.ui = ui as UserInput;
   }
 
-  public ResetBackground() {
-    this.cs.DrawBackground();
+  public ClearCanvas() {
+    this.cs.ClearCanvas();
   }
 }
 

@@ -115,7 +115,7 @@ class Graph extends DataStructure {
   }
 
   Plot() {
-    this.ResetBackground();
+    this.ClearCanvas();
     this.Draw();
   }
 

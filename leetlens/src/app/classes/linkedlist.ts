@@ -33,6 +33,7 @@ class LinkedList extends DataStructure {
   }
 
   Draw() {
+    this.ClearCanvas();
     this.DrawNodes();
     this.DrawEdges();
     this.AnimateEdges();

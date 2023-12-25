@@ -21,5 +21,7 @@ export class CanvasService {
     }, 100);
   }
 
-  DrawBackground() {}
+  ClearCanvas() {
+    this.ctx.clearRect(0, 0, 300, 300);
+  }
 }

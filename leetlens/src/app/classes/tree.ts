@@ -25,6 +25,7 @@ class Tree extends DataStructure {
   }
 
   Plot() {
+    this.ClearCanvas();
     this.cs.ctx.fillStyle = this.canvasBgColor;
     this.cs.ctx.fillRect(0, 0, this.cs.canvas.width, this.cs.canvas.height);
     this.Draw();

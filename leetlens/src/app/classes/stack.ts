@@ -53,6 +53,7 @@ class Stack extends DataStructure {
   }
 
   Draw() {
+    this.ClearCanvas();
     this.DrawStack();
     this.DrawBoxes();
     this.AnimateStackPush();
@@ -208,9 +209,9 @@ class Stack extends DataStructure {
     if (box.curr < box.points.length) {
       this.cs.ctx.beginPath();
 
-      this.cs.ctx.fillStyle = this.canvasBgColor;
+      // this.cs.ctx.fillStyle = this.canvasBgColor;
       if (box.curr > 0) {
-        this.cs.ctx.fillRect(
+        this.cs.ctx.clearRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,
@@ -256,8 +257,8 @@ class Stack extends DataStructure {
           box.points[box.points.length - 1].y + this.boxHeight / 2 + 3
         );
       } else if (!box.push) {
-        this.cs.ctx.fillStyle = this.canvasBgColor;
-        this.cs.ctx.fillRect(
+        // this.cs.ctx.fillStyle = this.canvasBgColor;
+        this.cs.ctx.clearRect(
           box.points[box.curr - 1].x - 1,
           box.points[box.curr - 1].y - 1,
           this.boxWidth + 2,

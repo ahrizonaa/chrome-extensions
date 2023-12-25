@@ -61,7 +61,6 @@ export class UserInput {
     let input = this.parse(this.currInput);
     if (input) {
       this.hasDrawing = true;
-
       this.currDS.Parse(input);
       this.currDS.Plot();
     }

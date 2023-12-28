@@ -11,3 +11,8 @@ app-tab-view {
   width: 100%;
   height: fit-content;
 }
+
+.banner {
+  margin-top: 120px;
+  text-align: center;
+}

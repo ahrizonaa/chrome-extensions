@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "app/styles/scrollbar.css";
 @import "app/styles/rotate-center.css";
+@import "app/styles/popup.css";
 
 html,
 body {

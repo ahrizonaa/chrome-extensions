@@ -1,5 +1,5 @@
 .controls-canvas-view {
-  width: fit-content;
+  width: auto;
   height: fit-content;
   display: flex;
   flex-direction: row;

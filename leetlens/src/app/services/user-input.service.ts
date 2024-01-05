@@ -86,7 +86,6 @@ export class UserInput {
     for (let option of Object.keys(example.options)) {
       this.currTab.options.toggles[option] = example.options[option];
     }
-
     this.currFormat = example.format;
 
     this.refresh();
@@ -95,7 +94,8 @@ export class UserInput {
   refresh() {
     if (this.validate()) {
       this.currError = '';
-      this.draw();
+      // this.draw();
+      this.tabChanged();
     } else {
     }
   }

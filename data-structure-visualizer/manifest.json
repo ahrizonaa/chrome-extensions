@@ -1,6 +1,6 @@
 {
 	"manifest_version": 3,
-	"name": "Data Structure Visualizer",
+	"name": "LeetLens",
 	"version": "1.0",
 	"action": {
 		"default_popup": "popup/popup.html",

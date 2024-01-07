@@ -1,3 +1,6 @@
 [submodule "leetlens"]
 	path = leetlens
 	url = https://github.com/ahrizonaa/leetlens
+[submodule "dsa-visualizer"]
+	path = dsa-visualizer
+	url = https://github.com/ahrizonaa/dsa-visualizer

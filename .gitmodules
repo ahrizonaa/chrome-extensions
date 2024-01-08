@@ -4,3 +4,6 @@
 [submodule "dsa-visualizer"]
 	path = dsa-visualizer
 	url = https://github.com/ahrizonaa/dsa-visualizer
+[submodule "structsculptor"]
+	path = structsculptor
+	url = https://github.com/ahrizonaa/structsculptor
